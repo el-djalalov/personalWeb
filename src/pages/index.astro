@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/main.astro";
+import Home from "./home.astro";
+import Projects from "../components/home/projects.astro";
+import Separator from "../components/home/separator.astro";
+import Writings from "../components/home/writings.astro";
+---
+
+<Layout title="Home">
+  <Home />
+  <Separator text="Check out my projects" />
+  <Projects />
+  <Separator text="Some of my writing" />
+  <Writings />
+</Layout>

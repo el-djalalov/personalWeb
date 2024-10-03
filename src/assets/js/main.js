@@ -11,7 +11,7 @@ const stickyClassesContainer = [
   "bg-white/80",
   "dark:border-slate-600/40",
   "dark:bg-slate-900/60",
-  "backdrop-blur-2xl",
+  "backdrop-blur-xl",
 ];
 const unstickyClassesContainer = ["border-transparent"];
 let headerElement = null;

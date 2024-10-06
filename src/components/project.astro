@@ -18,7 +18,11 @@ const { name, description, url, image } = Astro.props;
   >
     <span class="block w-full"
       >x
-      <img src={image} class="w-full h-auto rounded-lg aspect-[16/9]" />
+      <img
+        alt={`Project image ${name}`}
+        src={image}
+        class="w-full h-auto rounded-lg aspect-[16/9]"
+      />
     </span>
     <span class="block w-full px-1 mt-5 mb-1 sm:mt-3">
       <span

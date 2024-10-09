@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "deploy": "astro build && touch dist/.nojekyll"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.3",

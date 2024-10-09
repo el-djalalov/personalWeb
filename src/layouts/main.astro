@@ -11,23 +11,52 @@ const { title } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <!--  <meta
       http-equiv="Content-Security-Policy"
       content="
-      default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://*.google.com chrome-extension: 'report-sample';
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      img-src 'self' data: blob: https: chrome-extension:;
-      font-src 'self' https://fonts.gstatic.com;
-      connect-src 'self' https://*.google.com;
-      frame-src 'self' https://*.google.com;
+      default-src 'self' https://*.cloudflareinsights.com;
+      script-src 'self'
+        'unsafe-inline'
+        'unsafe-eval'
+        https://*.cloudflare.com
+        https://*.cloudflareinsights.com
+        https://cdnjs.cloudflare.com
+        https://*.google.com
+        https://*.githubusercontent.com
+        chrome-extension:
+        'report-sample';
+      style-src 'self'
+        'unsafe-inline'
+        https://fonts.googleapis.com
+        https://*.githubusercontent.com;
+      img-src 'self'
+        data:
+        blob:
+        https:
+        chrome-extension:
+        https://*.githubusercontent.com;
+      font-src 'self'
+        https://fonts.gstatic.com
+        data:;
+      connect-src 'self'
+        https://*.google.com
+        https://*.cloudflare.com
+        https://*.cloudflareinsights.com
+        https://*.githubusercontent.com
+        https://*.github.io;
+      frame-src 'self'
+        https://*.google.com;
+      worker-src 'self'
+        blob:;
+      manifest-src 'self';
+      media-src 'self';
       object-src 'none';
       base-uri 'self';
       form-action 'self';"
     /> -->
-    <title>{title}</title>
-    <!-- Used to add dark mode right away, adding here prevents any flicker -->
 
+    <title>{title}</title>
     <style>
       .prose img {
         border-radius: 20px;
@@ -39,6 +68,7 @@ const { title } = Astro.props;
 
     <script src="../assets/css/main.css"></script>
     <Fragment set:html={import.meta.env.HEADER_INJECT} />
+    <slot name="head" />
   </head>
 
   <body

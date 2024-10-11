@@ -6,7 +6,7 @@ const postCollection = defineCollection({
     title: z.string(),
     description: z.string(),
     date:  z.string().transform((str) => new Date(str)),
-    relatedPosts: z.array(reference("postCollection", "newsCollection"))
+    relatedPosts: z.array(reference("newsCollection"))
   }),
 });
 
@@ -16,7 +16,7 @@ const newsCollection = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.string().transform((str) => new Date(str)),
-    relatedPosts: z.array(reference("newsCollection", "postCollection" ))
+    relatedPosts: z.array(reference("postCollection" ))
   }),
 });
 

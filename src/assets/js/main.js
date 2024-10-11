@@ -191,7 +191,7 @@ window.closeMobileMenu = () => {
 document.addEventListener("astro:page-load", function () {
   new TypeIt( "#typingElements", {
     loop: true,
-    strings: [ "JavaScript", "React.js", "Website Design", "Front-end Development",],
+    strings: [ "JavaScript", "React.js", "TypeScript", "Next js", "Astro js", "Redux js", "Redux Tool Kit", "AntD v5", "Material UI", "Shadcn", "Axios", "TanStack React Query v3", "Zustand", "TanStack Table v8", "ESLInt", "StoryBook"],
     lifeLike: true,
     breakLines: false,
     nextStringDelay: [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000]

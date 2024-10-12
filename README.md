@@ -2,4 +2,4 @@
 
 This is a personal blog and a portfolio
 
-![image](https://github.com/user-attachments/assets/4a70fb48-36b4-4c0a-9a87-3e85764d0e9e)
+![personalPage](https://github.com/user-attachments/assets/dc9c8b3e-8232-4d8d-90ee-5bf17c33d143)

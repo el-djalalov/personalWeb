@@ -4,11 +4,14 @@ import Home from "./home.astro";
 import Projects from "../components/home/projects.astro";
 import Separator from "../components/home/separator.astro";
 import Writings from "../components/home/writings.astro";
-import { BackgroundBeams } from "../components/bg-beams";
+import { ExperiencesTimeLine } from "../components/home/experiences";
+import experiences from "../collections/experiences.json";
 ---
 
 <Layout title="Home">
   <Home />
+  <!-- <Separator text="Check out my experiences" />
+  <ExperiencesTimeLine client:visible /> -->
   <Separator text="Check out my projects" />
   <Projects />
   <Separator text="Some of my writing" />

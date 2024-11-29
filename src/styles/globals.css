@@ -49,23 +49,13 @@
   }
 }
 .active {
-  color: #ff5733; /* Change this to whatever color you prefer */
+  color: #fff; /* Change this to whatever color you prefer */
   font-weight: bold; /* Optional: Makes the text bold for better visibility */
 }
 
 .prose img {
   border-radius: 30px;
 }
-
-/*
-.animate {
-  @apply opacity-0 translate-y-3;
-  @apply transition-all duration-700 ease-out;
-}
-
-.animate.show {
-  @apply opacity-100 translate-y-0;
-} */
 
 .horizon .setting {
   animation: 1s ease 0s 1 setting;

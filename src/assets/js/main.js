@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-// Add your javascript here
 import TypeIt from "typeit";
 
 window.darkMode = false;
@@ -141,17 +140,6 @@ window.evaluateHeaderPosition = () => {
 
 /* Mobile view */
 
-window.applyMenuItemClasses = () => {
-  const menuItems = document.querySelectorAll("#menu a");
-  for (let i = 0; i < menuItems.length; i++) {
-    if (menuItems[i].pathname === window.location.pathname) {
-      menuItems[i].classList.add("text-slate-900", "dark:text-white");
-    } else {
-      menuItems[i].classList.remove("text-slate-900", "dark:text-white");
-    }
-  }
-};
-
 function mobileMenuFunctionality() {
   document.getElementById("openMenu").addEventListener("click", () => {
     openMobileMenu();
@@ -211,27 +199,21 @@ document.addEventListener("astro:page-load", function () {
 });
 
 // Animate on scroll
-
-// Include the scroll handling JS logic here
 document.addEventListener("astro:page-load", () => {
-  // Just make sure all elements with scrollTitle animate in on page load
   const scrollElements = document.querySelectorAll(".elementAnimate");
 
-  // Ensure all scrollTitle elements are visible on load (in case they start with the class).
   scrollElements.forEach((scrollTitle) => {
-    scrollTitle.classList.add("elementAnimate"); // Apply the animation when the page loads
+    scrollTitle.classList.add("elementAnimate");
   });
 });
 
 document.addEventListener("astro:page-load", () => {
-  // Create an IntersectionObserver to detect when cards come into view
   const observer = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
-        // If the card is in the viewport, add the 'visible' class
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
-          observer.unobserve(entry.target); // Stop observing once the card is in view
+          observer.unobserve(entry.target);
         }
       });
     },

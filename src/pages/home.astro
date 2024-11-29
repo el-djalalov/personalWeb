@@ -1,6 +1,7 @@
 ---
 //import Button from "../components/button.astro";
 import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 ---
 
 <div
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
   <div class="flex flex-col items-center md:flex-row justify-between">
     <div class="flex flex-col flex-1 elementAnimate">
       <h1
-        class="flex flex-row mb-5 text-6xl font-bold leading-tight md:text-5xl lg:text-[110px]
+        class="flex flex-row mb-5 text-6xl font-bold leading-tight sm:text-6xl md:text-8xl lg:text-[110px]
 bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
       >
         Hi, I'm Elyor
@@ -23,7 +24,7 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
         I'm a front-end developer
       </p>
       <div class="flex gap-2">
-        <p class="text-slate-800 dark:text-slate-200 text-lg">
+        <p class="text-lg">
           I am goot at: <p
             class="text-slate-800 dark:text-slate-200 font-semibold text-lg"
             id="typingElements"
@@ -32,7 +33,7 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
         </p>
       </div>
       <a href="/assets/Resume.pdf" class="pt-4" download="Resume.pdf">
-        <Button className="rounded-full"> Download resume </Button>
+        <Button className="rounded-full"> Download resume <Download /></Button>
       </a>
     </div>
 
@@ -42,10 +43,10 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           class="absolute bottom-0 z-40 w-16 h-16 -translate-x-6 -translate-y-1/2 lg:top-auto top-0 lg:-translate-y-[330px] rounded-full"
         >
           <span
-            class="elementAnimate relative z-20 flex items-center justify-center w-full h-full text-2xl border-8 border-white rounded-full dark:border-slate-950 bg-slate-100 dark:bg-slate-900/60 backdrop-blur-sm"
+            class="elementAnimate relative z-20 flex items-center justify-center w-full h-full text-2xl border-8 border-white rounded-full dark:border-slate-950 bg-slate-100 dark:bg-background"
           >
             <span
-              class="flex items-center justify-center w-full h-full bg-white border border-dashed rounded-full dark:bg-slate-950 backdrop-blur-sm border-slate-300 dark:border-slate-700"
+              class="flex items-center justify-center w-full h-full bg-white border border-dashed rounded-full dark:bg-background border-slate-300 dark:border-slate-700"
               >👋</span
             >
           </span>

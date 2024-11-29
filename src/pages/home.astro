@@ -38,8 +38,14 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           </p>
         </p>
       </div>
+      <!-- 
+      <a href="/Resume.pdf" class="pt-4" download="Resume.pdf">
+        <Button className="rounded-full">
+          <Download size={24} /> Download resume
+        </Button>
+      </a> -->
 
-      <div class="relative group w-60 mt-8">
+      <div class="relative group sm:w-60 mt-8">
         <div
           class="absolute transitiona-all duration-1000 opacity-80 -inset-px bg-gradient-to-r from-blue-900 via-cyan-800 to-fuchsia-700 rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-2 group-hover:duration-200 animate-tilt"
         >
@@ -48,20 +54,17 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           download="Resume.pdf"
           href="/"
           title="Get quote now"
-          class="relative inline-flex items-center justify-center px-6 py-3 font-bold transition-all duration-200 dark:bg-background bg-background rounded-xl focus:outline-none text-slate-700 dark:text-slate-200"
+          class="relative inline-flex items-center justify-center px-6 text-sm sm:text-base sm:py-3 py-2 sm:font-bold transition-all duration-200 dark:bg-background bg-background rounded-xl focus:outline-none text-slate-700 dark:text-slate-200"
           role="button"
         >
           <Download
-            size={20}
+            size="18"
             className="mr-2 text-slate-700 dark:text-slate-200"
           />
-          Download Resume
+          <span class="text-slate-700 dark:text-slate-200">
+            Download Resume
+          </span>
         </a>
-        <!--    <a href="/assets/Resume.pdf" class="pt-4" download="Resume.pdf">
-        <Button className="rounded-full">
-          <Download size={24} /> Download resume
-        </Button>
-      </a> -->
       </div>
     </div>
 

@@ -48,6 +48,7 @@
     animation: fadeInUp 0.6s ease-out forwards; /* Apply fade-in-up animation */
   }
 }
+
 .active {
   color: #fff; /* Change this to whatever color you prefer */
   font-weight: bold; /* Optional: Makes the text bold for better visibility */

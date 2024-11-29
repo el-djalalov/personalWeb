@@ -1,16 +1,26 @@
 ---
 import projects from "../collections/projects.json";
-import PageHeading from "../components/page-heading.astro";
-import Project from "../components/project.astro";
-import SquareLines from "../components/square-lines.astro";
-import Layout from "../layouts/main.astro";
+
+import Project from ".././components/project.astro";
+import { Button } from ".././components/ui/button";
 ---
 
-<section class="relative z-20 max-w-5xl">
-  <h2 class="mb-2 text-2xl font-bold">My Projects</h2>
-
+<section class="relative max-w-5xl mx-auto">
+  <div class="flex flex-col">
+    <h1
+      class="px-4 flex flex-row mb-5 font-bold leading-tight lg:text-[50px] text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
+    >
+      My Projects
+    </h1>
+    <p class="mb-6 px-4 text-base dark:text-muted-foreground">
+      Here are some of my recent projects. I'm always working on something new,
+      so check back often!
+    </p>
+  </div>
   <div
-    class="z-50 grid items-stretch w-full grid-cols-1 my-8 gap-7 sm:gap-5 sm:grid-cols-2"
+    class="card px-4 relative grid items-stretch w-full sm:grid-cols-2 md:grid-cols-3 gap-7 mt-7"
+    id="projects"
   >
     {
       projects.map(project => {
@@ -25,4 +35,9 @@ import Layout from "../layouts/main.astro";
       })
     }
   </div>
+  <!--  <div class="flex items-center justify-center w-full py-5">
+    <a href="/projects">
+      <Button className="rounded-full"> View All My Projects </Button>
+    </a>
+  </div> -->
 </section>

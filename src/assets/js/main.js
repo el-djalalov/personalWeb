@@ -19,7 +19,6 @@ document.addEventListener("astro:page-load", () => {
   headerElement = document.getElementById("header");
 
   stickyHeaderFuncionality();
-  applyMenuItemClasses();
   evaluateHeaderPosition();
   mobileMenuFunctionality();
 });

@@ -6,18 +6,18 @@ import Logo from "../components/logo.astro";
   class="bg-white border-t mt-10 dark:bg-background border-slate-200 dark:border-slate-800"
 >
   <div
-    class="container flex flex-col items-center py-8 mx-auto px-7 max-w-7xl sm:flex-row justify-between"
+    class="container flex items-center py-8 mx-auto px-4 md:px-7 w-full md:max-w-7xl justify-between"
   >
-    <div class="flex">
+    <div class="flex gap-4 justify-center items-center">
       <Logo />
       <p
-        class="mt-4 text-sm dark:text-muted-foreground sm:ml-4 sm:pl-4 sm:border-l sm:border-slate-300 dark:sm:border-slate-700 sm:mt-0"
+        class="text-sm dark:text-muted-foreground sm:ml-4 sm:pl-4 sm:border-l sm:border-slate-300 dark:sm:border-slate-700 sm:mt-0"
       >
         © {new Date().getFullYear()} Elyor Djalalov
       </p>
     </div>
 
-    <div class="flex gap-2">
+    <div class="flex gap-4">
       <a
         href="https://www.t.me/ElyorDjalalov"
         target="_blank"
@@ -41,8 +41,6 @@ import Logo from "../components/logo.astro";
           image-rendering="optimizeQuality"
           shape-rendering="geometricPrecision"
           text-rendering="geometricPrecision"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
           xml:space="preserve"
           ><path
             id="telegram-1"
@@ -72,6 +70,7 @@ import Logo from "../components/logo.astro";
           image-rendering="optimizeQuality"
           shape-rendering="geometricPrecision"
           text-rendering="geometricPrecision"
+          class="lucide lucide-facebook"
           ><path
             d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
           ></path></svg

@@ -35,9 +35,10 @@ import { ModeToggle } from "./ModeToggle";
           stroke="currentColor"><path d="M4 8h16M4 16h16"></path></svg
         >
       </div>
+
       <div
         id="closeMenu"
-        class="flex flex-col items-end justify-center w-6 h-6 ml-4 -translate-x-1 cursor-pointer sm:hidden"
+        class="hidden flex-col items-end justify-center w-6 h-6 ml-4 -translate-x-1 cursor-pointer"
       >
         <svg
           class="w-6 h-6 text-slate-600 dark:text-slate-200"
@@ -49,6 +50,7 @@ import { ModeToggle } from "./ModeToggle";
           stroke="currentColor"><path d="M6 18L18 6M6 6l12 12"></path></svg
         >
       </div>
+
       <div
         id="menu"
         class="fixed top-[75px] ease-out duration-300 sm:top-0 sm:py-0 pt-7 pb-4 dm:mx-0 left-0 z-40 flex-col items-end justify-start hidden w-full h-auto text-sm sm:h-auto sm:relative sm:flex-row sm:flex sm:text-sm sm:w-auto sm:pr-0 sm:pt-0"
@@ -57,7 +59,7 @@ import { ModeToggle } from "./ModeToggle";
           class="absolute inset-0 top-0 right-0 block w-full h-full px-3 sm:hidden"
         >
           <div
-            class="relative w-full h-full bg-background border border-dashed border-slate-300 dark:border-slate-700 backdrop-blur-sm rounded-xl"
+            class="bg-red-400 relative w-full h-full bg-background border border-dashed border-slate-300 dark:border-slate-700 backdrop-blur-sm rounded-xl"
           >
           </div>
         </div>
@@ -67,7 +69,7 @@ import { ModeToggle } from "./ModeToggle";
               <a
                 data-target={menu.url}
                 href={menu.url}
-                class="relative flex items-center justify-center w-full px-3 py-2 font-medium tracking-wide text-center  sm:py-0 sm:mb-0 md:w-auto hover:text-slate-900 dark:hover:text-white text-muted-foreground"
+                class="relative flex items-center justify-center w-full px-3 py-2 font-medium tracking-wide text-center  sm:py-0 sm:mb-0 md:w-auto hover:text-slate-900 dark:hover:text-white text-slate-700     dark:text-slate-400"
               >
                 {menu.name}
               </a>
@@ -80,7 +82,8 @@ import { ModeToggle } from "./ModeToggle";
         class="relative flex items-center pl-6 ml-4 font-medium tracking-wide cursor-pointer text-slate-800 group dark:text-muted-foreground"
       >
         <div
-          class="absolute left-0 flex items-center justify-center w-6 h-6 overflow-hidden border-b border-transparent horizon"
+          class="absolute left-0 flex items-center justify-center w-6 h-6 overflow-hidden border-b border-transparent horizon text-slate-700
+        dark:text-slate-400"
         >
           <svg
             class="absolute w-6 h-6 transition duration-500 transform ease"

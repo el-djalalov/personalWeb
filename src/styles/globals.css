@@ -50,8 +50,12 @@
 }
 
 .active {
-  color: #fff; /* Change this to whatever color you prefer */
+  color: #5c2ce1; /* Change this to whatever color you prefer */
   font-weight: bold; /* Optional: Makes the text bold for better visibility */
+}
+.bgActive {
+  color: #ffffff; /* Change this to whatever color you prefer */
+  font-weight: bold;
 }
 
 .prose img {

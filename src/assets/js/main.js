@@ -228,3 +228,31 @@ document.addEventListener("astro:page-load", () => {
     observer.observe(card);
   });
 });
+
+// Active menu item
+document.addEventListener("astro:page-load", () => {
+  document.querySelectorAll("a").forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      document
+        .querySelectorAll("a")
+        .forEach((item) => item.classList.remove("active"));
+      anchor.classList.add("active");
+      const targetId = anchor.getAttribute("data-target");
+      if (targetId === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        history.pushState(null, "", "/");
+      } else if (targetId) {
+        const targetElement = document.querySelector(targetId);
+
+        history.pushState(null, "", targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+    });
+  });
+});

@@ -10,11 +10,10 @@
   {
     "dates": "Jul 2021 - May 2022",
     "role": "Front-end Developer",
-    "company": "Intelligent",
+    "company": "Intelligent learning center",
     "description": "Developed Students Management System, Internal social network and landing page",
     "logo": "/assets/images/experiences/Intelligent.jpg",
     "content": null
-
   },
   {
     "dates": "Oct 2018 - Present",
@@ -23,8 +22,5 @@
     "description": "I have been developing several web pages and apps for different businesses for the past 6+ years",
     "logo": "/assets/images/experiences/home.png",
     "content": null
-
   }
 ]
-
-

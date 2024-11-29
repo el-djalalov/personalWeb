@@ -17,109 +17,104 @@ const unstickyClassesContainer = ["border-transparent"];
 let headerElement = null;
 
 document.addEventListener("astro:page-load", () => {
-    headerElement = document.getElementById("header");
+  headerElement = document.getElementById("header");
 
-    stickyHeaderFuncionality();
-    applyMenuItemClasses();
-    evaluateHeaderPosition();
-    mobileMenuFunctionality();
-} );
-
+  stickyHeaderFuncionality();
+  applyMenuItemClasses();
+  evaluateHeaderPosition();
+  mobileMenuFunctionality();
+});
 
 document.addEventListener("astro:page-load", () => {
-    function showDay(animate) {
-      document.getElementById("sun")?.classList.remove("setting");
-      document.getElementById("moon")?.classList.remove("rising");
+  function showDay(animate) {
+    document.getElementById("sun")?.classList.remove("setting");
+    document.getElementById("moon")?.classList.remove("rising");
 
-      let timeout = 0;
+    let timeout = 0;
 
-      if (animate) {
-        timeout = 500;
+    if (animate) {
+      timeout = 500;
 
-        document.getElementById("moon")?.classList.add("setting");
-      }
-
-      setTimeout(() => {
-        document.getElementById("moon")?.classList.add("hidden");
-        document.getElementById("sun")?.classList.remove("hidden");
-
-        if (animate) {
-          document.documentElement.classList.remove("dark");
-          document.getElementById("sun")?.classList.add("rising");
-        }
-      }, timeout);
+      document.getElementById("moon")?.classList.add("setting");
     }
 
-    function showNight(animate) {
-      document.getElementById("moon")?.classList.remove("setting");
-      document.getElementById("sun")?.classList.remove("rising");
-
-      let timeout = 0;
+    setTimeout(() => {
+      document.getElementById("moon")?.classList.add("hidden");
+      document.getElementById("sun")?.classList.remove("hidden");
 
       if (animate) {
-        timeout = 500;
-
-        document.getElementById("sun")?.classList.add("setting");
+        document.documentElement.classList.remove("dark");
+        document.getElementById("sun")?.classList.add("rising");
       }
+    }, timeout);
+  }
 
-      setTimeout(() => {
-        document.getElementById("sun")?.classList.add("hidden");
-        document.getElementById("moon")?.classList.remove("hidden");
+  function showNight(animate) {
+    document.getElementById("moon")?.classList.remove("setting");
+    document.getElementById("sun")?.classList.remove("rising");
 
-        if (animate) {
-          document.documentElement.classList.add("dark");
-          document.getElementById("moon")?.classList.add("rising");
-        }
-      }, timeout);
+    let timeout = 0;
+
+    if (animate) {
+      timeout = 500;
+
+      document.getElementById("sun")?.classList.add("setting");
     }
 
-    const theme = (() => {
-      if (
-        typeof localStorage !== "undefined" &&
-        localStorage.getItem("theme")
-      ) {
-        return localStorage.getItem("theme");
-      }
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        return "dark";
-      }
-      return "light";
-    })();
+    setTimeout(() => {
+      document.getElementById("sun")?.classList.add("hidden");
+      document.getElementById("moon")?.classList.remove("hidden");
 
-    if (theme === "light") {
-      showDay(true);
-      document.documentElement.classList.remove("dark");
-    } else {
+      if (animate) {
+        document.documentElement.classList.add("dark");
+        document.getElementById("moon")?.classList.add("rising");
+      }
+    }, timeout);
+  }
+
+  const theme = (() => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  })();
+
+  if (theme === "light") {
+    showDay(true);
+    document.documentElement.classList.remove("dark");
+  } else {
+    showNight(true);
+    document.documentElement.classList.add("dark");
+  }
+
+  window.localStorage.setItem("theme", theme === "dark" ? "dark" : "light");
+
+  const handleToggleClick = () => {
+    document.documentElement.classList.add("duration-300");
+    const element = document.documentElement;
+
+    element.classList.toggle("dark");
+    const isDark = element.classList.contains("dark");
+    if (isDark) {
+      localStorage.setItem("theme", "dark");
       showNight(true);
-      document.documentElement.classList.add("dark");
+    } else {
+      localStorage.setItem("theme", "light");
+      showDay(true);
     }
+  };
 
-    window.localStorage.setItem("theme", theme === "dark" ? "dark" : "light");
-
-    const handleToggleClick = () => {
-      document.documentElement.classList.add("duration-300");
-      const element = document.documentElement;
-
-      element.classList.toggle("dark");
-      const isDark = element.classList.contains("dark");
-      if (isDark) {
-        localStorage.setItem("theme", "dark");
-        showNight(true);
-      } else {
-        localStorage.setItem("theme", "light");
-        showDay(true);
-      }
-    };
-
-    const themeToggle = document.getElementById("themeToggle");
-    if (themeToggle) {
-      themeToggle.onclick = handleToggleClick;
-    }
-  });
-
+  const themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) {
+    themeToggle.onclick = handleToggleClick;
+  }
+});
 
 window.stickyHeaderFuncionality = () => {
-  window.addEventListener( "scroll", () => {
+  window.addEventListener("scroll", () => {
     evaluateHeaderPosition();
   });
 };
@@ -128,7 +123,7 @@ window.evaluateHeaderPosition = () => {
   if (window.scrollY > 16) {
     headerElement.firstElementChild.classList.add(...stickyClassesContainer);
     headerElement.firstElementChild.classList.remove(
-      ...unstickyClassesContainer
+      ...unstickyClassesContainer,
     );
     headerElement.classList.add(...stickyClasses);
     headerElement.classList.remove(...unstickyClasses);
@@ -151,9 +146,10 @@ window.applyMenuItemClasses = () => {
   for (let i = 0; i < menuItems.length; i++) {
     if (menuItems[i].pathname === window.location.pathname) {
       menuItems[i].classList.add("text-slate-900", "dark:text-white");
+    } else {
+      menuItems[i].classList.remove("text-slate-900", "dark:text-white");
     }
   }
-  //:class="{ 'text-slate-900 dark:text-white': window.location.pathname == '{menu.url}', 'text-slate-700 dark:text-slate-400': window.location.pathname != '{menu.url}' }"
 };
 
 function mobileMenuFunctionality() {
@@ -187,14 +183,66 @@ window.closeMobileMenu = () => {
   document.getElementById("mobileMenuBackground").classList.add("hidden");
 };
 
-
 document.addEventListener("astro:page-load", function () {
-  new TypeIt( "#typingElements", {
+  new TypeIt("#typingElements", {
     loop: true,
-    strings: [ "JavaScript", "React.js", "TypeScript", "Next js", "Astro js", "Redux js", "Redux Tool Kit", "AntD v5", "Material UI", "Shadcn", "Axios", "TanStack React Query v3", "Zustand", "TanStack Table v8", "ESLInt", "StoryBook"],
+    strings: [
+      "JavaScript",
+      "React.js",
+      "TypeScript",
+      "Next js",
+      "Astro js",
+      "Redux js",
+      "Redux Tool Kit",
+      "AntD v5",
+      "Material UI",
+      "Shadcn",
+      "Axios",
+      "TanStack React Query v3",
+      "Zustand",
+      "TanStack Table v8",
+      "ESLInt",
+      "StoryBook",
+    ],
     lifeLike: true,
     breakLines: false,
-    nextStringDelay: [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000]
+    nextStringDelay: [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000],
   }).go();
-} );
+});
 
+// Animate on scroll
+
+// Include the scroll handling JS logic here
+document.addEventListener("astro:page-load", () => {
+  // Just make sure all elements with scrollTitle animate in on page load
+  const scrollElements = document.querySelectorAll(".elementAnimate");
+
+  // Ensure all scrollTitle elements are visible on load (in case they start with the class).
+  scrollElements.forEach((scrollTitle) => {
+    scrollTitle.classList.add("elementAnimate"); // Apply the animation when the page loads
+  });
+});
+
+document.addEventListener("astro:page-load", () => {
+  // Create an IntersectionObserver to detect when cards come into view
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        // If the card is in the viewport, add the 'visible' class
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // Stop observing once the card is in view
+        }
+      });
+    },
+    {
+      threshold: 0.5, // Trigger animation when 50% of the card is in the viewport
+    },
+  );
+
+  // Observe all elements with the '.card' class
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card) => {
+    observer.observe(card);
+  });
+});

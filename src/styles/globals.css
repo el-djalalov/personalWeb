@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add Your Custom CSS Here */
+@layer utilities {
+  @keyframes scroll-fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(30px); /* Start from below */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* Move to normal position */
+    }
+  }
+
+  .elementAnimate {
+    opacity: 0; /* Start with opacity 0 */
+    transform: translateY(30px); /* Start from below */
+    animation: scroll-fade-in 0.6s ease-out forwards; /* Animate in from below */
+  }
+}
+
+@layer utilities {
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px); /* Start from below */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* Move to normal position */
+    }
+  }
+
+  .card {
+    opacity: 0; /* Start as invisible */
+    transform: translateY(30px); /* Start from below */
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out; /* Smooth transition */
+  }
+
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0); /* Final position */
+    animation: fadeInUp 0.6s ease-out forwards; /* Apply fade-in-up animation */
+  }
+}
+.active {
+  color: #ff5733; /* Change this to whatever color you prefer */
+  font-weight: bold; /* Optional: Makes the text bold for better visibility */
+}
+
+.prose img {
+  border-radius: 30px;
+}
+
+/*
+.animate {
+  @apply opacity-0 translate-y-3;
+  @apply transition-all duration-700 ease-out;
+}
+
+.animate.show {
+  @apply opacity-100 translate-y-0;
+} */
+
+.horizon .setting {
+  animation: 1s ease 0s 1 setting;
+}
+
+.horizon .rising {
+  animation: 1s ease 0s 1 rising;
+}
+
+@keyframes setting {
+  0% {
+    transform: translate3d(0, 10px, 0);
+  }
+
+  40% {
+    transform: translate3d(0, -2px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 30px, 0);
+  }
+}
+
+@keyframes rising {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 10, 0);
+  }
+}
+
+@layer base {
+  @layer base {
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 84% 4.9%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 222.2 84% 4.9%;
+      --primary: 221.2 83.2% 53.3%;
+      --primary-foreground: 210 40% 98%;
+      --secondary: 210 40% 96.1%;
+      --secondary-foreground: 222.2 47.4% 11.2%;
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --accent: 210 40% 96.1%;
+      --accent-foreground: 222.2 47.4% 11.2%;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 214.3 31.8% 91.4%;
+      --input: 214.3 31.8% 91.4%;
+      --ring: 221.2 83.2% 53.3%;
+      --radius: 0.5rem;
+      --chart-1: 12 76% 61%;
+      --chart-2: 173 58% 39%;
+      --chart-3: 197 37% 24%;
+      --chart-4: 43 74% 66%;
+      --chart-5: 27 87% 67%;
+    }
+
+    .dark {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+      --card: 222.2 84% 4.9%;
+      --card-foreground: 210 40% 98%;
+      --popover: 222.2 84% 4.9%;
+      --popover-foreground: 210 40% 98%;
+      --primary: 217.2 91.2% 59.8%;
+      --primary-foreground: 222.2 47.4% 11.2%;
+      --secondary: 217.2 32.6% 17.5%;
+      --secondary-foreground: 210 40% 98%;
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+      --accent: 217.2 32.6% 17.5%;
+      --accent-foreground: 210 40% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 217.2 32.6% 17.5%;
+      --input: 217.2 32.6% 17.5%;
+      --ring: 224.3 76.3% 48%;
+      --chart-1: 220 70% 50%;
+      --chart-2: 160 60% 45%;
+      --chart-3: 30 80% 55%;
+      --chart-4: 280 65% 60%;
+      --chart-5: 340 75% 55%;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

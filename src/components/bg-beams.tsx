@@ -1,7 +1,6 @@
-
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 export const BackgroundBeams = React.memo(
   ({ className }: { className?: string }) => {
@@ -58,11 +57,10 @@ export const BackgroundBeams = React.memo(
       "M-37 -581C-37 -581 31 -176 495 -49C959 78 1027 483 1027 483",
     ];
     return (
-      <div className={cn("absolute h-full w-full antialiased bg-white dark:bg-slate-950 backdrop-blur-3xl")}>
       <div
         className={cn(
-          "absolute  h-full w-full inset-0  [mask-size:45px] [mask-repeat:no-repeat] flex items-center justify-center",
-          className
+          "absolute  h-full w-full inset-0  [mask-size:40px] [mask-repeat:no-repeat] flex items-center justify-center",
+          className,
         )}
       >
         <svg
@@ -86,7 +84,7 @@ export const BackgroundBeams = React.memo(
               d={path}
               stroke={`url(#linearGradient-${index})`}
               strokeOpacity="0.4"
-              strokeWidth="0.3"
+              strokeWidth="0.5"
             ></motion.path>
           ))}
           <defs>
@@ -134,10 +132,9 @@ export const BackgroundBeams = React.memo(
             </radialGradient>
           </defs>
         </svg>
-        </div>
-        </div>
+      </div>
     );
-  }
+  },
 );
 
 BackgroundBeams.displayName = "BackgroundBeams";

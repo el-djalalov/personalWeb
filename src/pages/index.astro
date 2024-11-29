@@ -3,8 +3,11 @@ import Layout from "../layouts/main.astro";
 import Home from "./home.astro";
 import Projects from "../components/home/projects.astro";
 import Separator from "../components/home/separator.astro";
-import Writings from "../components/home/writings.astro";
+import Contact from "./contact.astro";
 import { ExperiencesTimeLine } from "../components/home/experiences";
+import { ModeToggle } from "@/components/ModeToggle";
+import Experience from "./experience.astro";
+import { BackgroundBeams } from "@/components/bg-beams";
 //import experiences from "../collections/experiences.json";
 ---
 
@@ -13,7 +16,9 @@ import { ExperiencesTimeLine } from "../components/home/experiences";
   <!-- <Separator text="Check out my experiences" />
   <ExperiencesTimeLine client:visible /> -->
   <Separator text="Check out my projects" />
+  <Experience />
+  <Separator text="Check out my projects" />
   <Projects />
-  <Separator text="Some of my writing" />
-  <Writings />
+  <Separator text="Contact" />
+  <Contact />
 </Layout>

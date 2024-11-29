@@ -1,6 +1,7 @@
 ---
 import menus from "../collections/menu.json";
 import Logo from "../components/logo.astro";
+import { ModeToggle } from "./ModeToggle";
 ---
 
 <!-- This is an invisible div with relative position so that it takes up the height of the menu (because menu is absolute/fixed) -->
@@ -64,6 +65,7 @@ import Logo from "../components/logo.astro";
           menus.map(menu => {
             return (
               <a
+                data-target={menu.url}
                 href={menu.url}
                 class="relative flex items-center justify-center w-full px-3 py-2 font-medium tracking-wide text-center duration-200 ease-out sm:py-0 sm:mb-0 md:w-auto hover:text-slate-900 dark:hover:text-white"
               >
@@ -122,4 +124,31 @@ import Logo from "../components/logo.astro";
 
   document.addEventListener("astro:after-swap", applyTheme);
   applyTheme();
+</script>
+
+<script is:inline>
+  document.querySelectorAll("a").forEach(anchor => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      /* document
+        .querySelectorAll("a")
+        .forEach(item => item.classList.remove("active"));
+      anchor.classList.add("active"); */
+      const targetId = anchor.getAttribute("data-target");
+      if (targetId === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        history.pushState(null, "", "/");
+      } else if (targetId) {
+        const targetElement = document.querySelector(targetId);
+
+        history.pushState(null, "", targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+    });
+  });
 </script>

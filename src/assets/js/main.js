@@ -20,7 +20,7 @@ document.addEventListener("astro:page-load", () => {
 
   stickyHeaderFuncionality();
   evaluateHeaderPosition();
-  mobileMenuFunctionality();
+  //obileMenuFunctionality();
 });
 
 document.addEventListener("astro:page-load", () => {
@@ -139,7 +139,7 @@ window.evaluateHeaderPosition = () => {
 
 /* Mobile view */
 
-function mobileMenuFunctionality() {
+/* function mobileMenuFunctionality() {
   document.getElementById("openMenu").addEventListener("click", () => {
     openMobileMenu();
   });
@@ -147,7 +147,7 @@ function mobileMenuFunctionality() {
   document.getElementById("closeMenu").addEventListener("click", () => {
     closeMobileMenu();
   });
-}
+} */
 
 window.openMobileMenu = () => {
   document.getElementById("openMenu").classList.add("hidden");

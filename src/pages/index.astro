@@ -1,18 +1,16 @@
 ---
 import Layout from "../layouts/main.astro";
-import Home from "./home.astro";
-import Projects from "./projects.astro";
+import Home from "../components/home/home.astro";
+import Projects from "../components/projects/projects.astro";
 import Separator from "../components/home/separator.astro";
-import Contact from "./contact.astro";
+import Contact from "../components/contact/contact.astro";
 import { ExperiencesTimeLine } from "../components/home/experiences";
-import Experience from "./experience.astro";
+import Experience from "../components/experience/experience.astro";
 //import experiences from "../collections/experiences.json";
 ---
 
 <Layout title="Home">
   <Home />
-  <!-- <Separator text="Check out my experiences" />
-  <ExperiencesTimeLine client:visible /> -->
   <Separator text="Work experience" />
   <Experience />
   <Separator text="Check out my projects" />

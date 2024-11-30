@@ -1,14 +1,15 @@
 ---
 //import Button from "../components/button.astro";
 import { Button } from "@/components/ui/button";
+import { Image } from "astro:assets";
 import { Download } from "lucide-react";
 ---
 
 <div
-  class="relative z-20 w-full max-w-5xl mx-auto mt-16 md:mt-24 lg:mt-20 xl:px-0 transition-all duration-1000"
+  class="relative z-20 w-full max-w-6xl mx-auto mt-16 md:mt-24 lg:mt-20 xl:px-0 transition-all duration-1000"
 >
   <div
-    class="flex flex-col-reverse gap-8 md:gap-0 items-center md:flex-row justify-between"
+    class="flex flex-col-reverse gap-8 items-center md:flex-row justify-between"
   >
     <div
       class="flex flex-col flex-1 elementAnimate justify-center items-center md:justify-start md:items-start"
@@ -38,12 +39,6 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           </p>
         </p>
       </div>
-      <!-- 
-      <a href="/Resume.pdf" class="pt-4" download="Resume.pdf">
-        <Button className="rounded-full">
-          <Download size={24} /> Download resume
-        </Button>
-      </a> -->
 
       <div class="relative group sm:w-60 mt-8">
         <div
@@ -52,10 +47,23 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
         </div>
         <a
           download="Resume.pdf"
-          href="/"
+          href="/public/Resume.pdf"
           title="Get quote now"
           class="relative inline-flex items-center justify-center px-6 text-sm sm:text-base sm:py-3 py-2 sm:font-bold transition-all duration-200 dark:bg-background bg-background rounded-xl focus:outline-none text-slate-700 dark:text-slate-200"
           role="button"
+          onclick="event.preventDefault();
+          fetch(this.href)
+          .then(response => response.blob())
+          .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'ResumeEl.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+      });"
         >
           <Download
             size="18"
@@ -83,7 +91,11 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           </span>
         </div>
         <div class="relative z-30 px-2">
-          <img
+          <Image
+            width={60}
+            height={60}
+            quality={"high"}
+            alt="Hero image"
             src="/assets/images/AvatarMe.webp"
             loading="eager"
             decoding="auto"

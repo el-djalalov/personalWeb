@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+//import project1 from
 const { name, description, url, image } = Astro.props;
 ---
 
@@ -17,7 +19,10 @@ const { name, description, url, image } = Astro.props;
     class="relative z-30 block duration-300 ease-out group-hover:-translate-x-1 group-hover:-translate-y-1"
   >
     <span class="block w-full">
-      <img
+      <Image
+        width={60}
+        height={60}
+        quality={"high"}
         alt={`Project image ${name}`}
         src={image}
         class="w-full h-auto rounded-lg aspect-[16/9]"

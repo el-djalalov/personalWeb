@@ -10,14 +10,6 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
-  site: "https://elyor.dev",
+  site: "https://www.elyor.dev",
   output: "static",
-
-  /* base: '/',
-  build: {
-    format: 'directory'
-  },
-  server: {
-    host: true
-  } */
 });

@@ -4,7 +4,7 @@ import TypeIt from "typeit";
 window.darkMode = false;
 
 const stickyClasses = ["fixed", "h-14"];
-const unstickyClasses = ["absolute", "h-20"];
+const unstickyClasses = ["absolute"];
 const stickyClassesContainer = [
   "border-slate-300/50",
   "bg-white/80",
@@ -20,9 +20,32 @@ document.addEventListener("astro:page-load", () => {
 
   stickyHeaderFuncionality();
   evaluateHeaderPosition();
-  //obileMenuFunctionality();
 });
 
+window.stickyHeaderFuncionality = () => {
+  window.addEventListener("scroll", () => {
+    evaluateHeaderPosition();
+  });
+};
+
+window.evaluateHeaderPosition = () => {
+  if (window.scrollY > 16) {
+    headerElement.firstElementChild.classList.add(...stickyClassesContainer);
+    headerElement.firstElementChild.classList.remove(
+      ...unstickyClassesContainer,
+    );
+    headerElement.classList.add(...stickyClasses);
+    headerElement.classList.remove(...unstickyClasses);
+  } else {
+    headerElement.firstElementChild.classList.remove(...stickyClassesContainer);
+    headerElement.firstElementChild.classList.add(...unstickyClassesContainer);
+    headerElement.classList.add(...unstickyClasses);
+    headerElement.classList.remove(...stickyClasses);
+  }
+};
+
+//--------------------------------------------------------
+// Theme toggle logic
 document.addEventListener("astro:page-load", () => {
   function showDay(animate) {
     document.getElementById("sun")?.classList.remove("setting");
@@ -111,30 +134,8 @@ document.addEventListener("astro:page-load", () => {
   }
 });
 
-window.stickyHeaderFuncionality = () => {
-  window.addEventListener("scroll", () => {
-    evaluateHeaderPosition();
-  });
-};
-
-window.evaluateHeaderPosition = () => {
-  if (window.scrollY > 16) {
-    headerElement.firstElementChild.classList.add(...stickyClassesContainer);
-    headerElement.firstElementChild.classList.remove(
-      ...unstickyClassesContainer,
-    );
-    headerElement.classList.add(...stickyClasses);
-    headerElement.classList.remove(...unstickyClasses);
-  } else {
-    headerElement.firstElementChild.classList.remove(...stickyClassesContainer);
-    headerElement.firstElementChild.classList.add(...unstickyClassesContainer);
-    headerElement.classList.add(...unstickyClasses);
-    headerElement.classList.remove(...stickyClasses);
-  }
-};
-
-/* Mobile view */
-
+//--------------------------------------------------------
+// Typings
 document.addEventListener("astro:page-load", function () {
   new TypeIt("#typingElements", {
     loop: true,
@@ -162,7 +163,8 @@ document.addEventListener("astro:page-load", function () {
   }).go();
 });
 
-// Animate on scroll
+//--------------------------------------------------------
+// Animate on scroll fade in
 document.addEventListener("astro:page-load", () => {
   const scrollElements = document.querySelectorAll(".elementAnimate");
 
@@ -182,7 +184,7 @@ document.addEventListener("astro:page-load", () => {
       });
     },
     {
-      threshold: 0.5, // Trigger animation when 50% of the card is in the viewport
+      threshold: 0.3, // Trigger animation when 50% of the card is in the viewport
     },
   );
 
@@ -193,6 +195,7 @@ document.addEventListener("astro:page-load", () => {
   });
 });
 
+//--------------------------------------------------------
 // Active menu item
 document.addEventListener("astro:page-load", () => {
   document.querySelectorAll("a").forEach((anchor) => {

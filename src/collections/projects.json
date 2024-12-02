@@ -14,7 +14,7 @@
   {
     "name": "UzVideo",
     "description": "Simple video app with full of features offering the latest trailers of top movies.",
-    "image": "/assets/images/projects/uzVideo.png",
+    "image": "/assets/images/projects/uzVideo.webp",
     "url": "https://uz-video.vercel.app/?genre=fetchTrending"
   }
 ]

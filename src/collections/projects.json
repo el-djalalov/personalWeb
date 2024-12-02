@@ -2,19 +2,19 @@
   {
     "name": "CIMP marketing platform",
     "description": "The cross-industrial CIMP marketing platform is designed to run and manage marketing programs of various orientations - loyalty programs, camping, bonuses, customer retention programs, software and cross-mail programs, and other programs.",
-    "image": "/src/assets/images/projects/cimp.jpeg",
+    "image": "/images/projects/cimp.jpeg",
     "url": "https://www.soft-control.ru/our-solutions/cimp/"
   },
   {
     "name": "Project management system",
     "description": "Project planner app is designed for companies who are seeking to integrate into Jira and bring Jira Tickets and tasks right into the Planner app where you can efficiently divide tickets to team members.",
-    "image": "/src/assets/images/projects/planner.jpg",
+    "image": "/images/projects/planner.jpg",
     "url": "https://plasch.silberwal.ch/planner"
   },
   {
     "name": "UzVideo",
     "description": "Simple video app with full of features offering the latest trailers of top movies.",
-    "image": "/src/assets/images/projects/uzVideo.webp",
+    "image": "/images/projects/uzVideo.webp",
     "url": "https://uz-video.vercel.app/?genre=fetchTrending"
   }
 ]

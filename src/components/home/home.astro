@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { Download } from "lucide-react";
+import myImage from "@/assets/images/AvatarMe.webp";
 ---
 
 <div
@@ -68,14 +69,12 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
         </div>
         <div class="relative z-30 px-2">
           <Image
-            width={60}
-            height={60}
             quality={"high"}
             alt="Hero image"
-            src="/src/assets/images/AvatarMe.webp"
+            src={myImage}
             loading="eager"
             decoding="auto"
-            class="elementAnimate relative z-30 w-80 aspect-[790/1160] md:max-w-md mx-auto dark:-translate-y-0.5"
+            class="elementAnimate relative w-80 mx-auto"
           />
         </div>
         <div

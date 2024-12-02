@@ -4,7 +4,7 @@
     "role": "Front-end Developer",
     "company": "Soft-Control",
     "description": "Completed 2 projects: Project Management System and  CIMP ( Cross-industrial marketing platform)",
-    "logo": "/src/assets/images/experiences/SoftControl.png",
+    "logo": "/images/experiences/SoftControl.png",
     "content": null
   },
   {
@@ -12,7 +12,7 @@
     "role": "Front-end Developer",
     "company": "Intelligent learning center",
     "description": "Developed Students Management System, Internal social network and landing page",
-    "logo": "/src/assets/images/experiences/Intelligent.jpg",
+    "logo": "/images/experiences/Intelligent.jpg",
     "content": null
   },
   {
@@ -20,7 +20,7 @@
     "role": "Front-end Developer (Freelancer)",
     "company": "Home",
     "description": "I have been developing several web pages and apps for different businesses for the past 6+ years",
-    "logo": "/src/assets/images/experiences/home.png",
+    "logo": "/images/experiences/home.png",
     "content": null
   }
 ]

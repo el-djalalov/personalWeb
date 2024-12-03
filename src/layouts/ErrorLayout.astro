@@ -1,14 +1,9 @@
 ---
+import ErrorPage from "@/components/ErrorPage.astro";
 import Footer from "../components/footer/footer.astro";
 import Header from "../components/home/header.astro";
 import SquareLines from "../components/home/square-lines.astro";
 import { ViewTransitions, fade } from "astro:transitions";
-import SpeedInsights from "@vercel/speed-insights/astro";
-
-import Contact from "../components/contact/contact.astro";
-import Experience from "../components/experience/experience.astro";
-import "../styles/globals.css";
-import Separator from "@/components/separator.astro";
 ---
 
 <html lang="en">
@@ -23,18 +18,9 @@ import Separator from "@/components/separator.astro";
     <ViewTransitions fallback="swap" />
   </head>
 
-  <body class="antialiased bg-white dark:bg-slate-950 w-screen">
+  <body class="antialiased bg-white dark:bg-slate-950 w-screen h-full">
     <SquareLines />
-    <Header />
     <slot />
-    <Separator text="Work experience" />
-    <slot name="experience" />
-    <Separator text="Apps I build" />
-    <slot name="projects" />
-    <Separator text="Contact" />
-    <slot name="contacts" />
-    <Footer />
-    <script src="../assets/js/main.js"></script>
-    <SpeedInsights />
+    <ErrorPage />
   </body>
 </html>

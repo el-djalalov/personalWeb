@@ -2,12 +2,15 @@
 interface Props {
   error: unknown;
 }
-import Button from "../components/button.astro";
-import Layout from "../layouts/main.astro";
+
+import ErrorLayout from "../layouts/ErrorLayout.astro";
+
+const cookie = Astro.url;
+console.log(cookie);
+Astro.redirect("/");
 ---
 
-<!--    -->
-<Layout title="My Projects">
+<ErrorLayout>
   <section class="relative z-20 max-w-2xl mx-auto my-12 px-7 lg:px-0">
     <div
       class="container flex flex-col items-center justify-center px-5 mx-auto my-8"
@@ -25,8 +28,7 @@ import Layout from "../layouts/main.astro";
         <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
           But dont worry, you can find plenty of other things on our homepage.
         </p>
-        <Button text="Go back" link="/" />
       </div>
     </div>
   </section>
-</Layout>
+</ErrorLayout>

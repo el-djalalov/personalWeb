@@ -18,11 +18,17 @@ const { logo, dates, role, company, description } = Astro.props;
     />
   </div>
 
-  <span class="text-xs uppercase dark:text-muted-foreground trackign-widest">
+  <span
+    class="text-xs uppercase dark:text-muted-foreground trackign-widest text-slate-700 dark:text-slate-400"
+  >
     {dates}
   </span>
-  <h1 class="my-1 text-lg font-bold dark:text-slate-100">{role}</h1>
-  <h2 class="mb-1 text-sm font-medium dark:text-slate-300">{company}</h2>
+  <h1 class="my-1 text-lg font-bold text-slate-700 dark:text-slate-200">
+    {role}
+  </h1>
+  <h2 class="mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">
+    {company}
+  </h2>
   <h3 class="text-sm font-light text-muted-foreground">
     {description}
   </h3>

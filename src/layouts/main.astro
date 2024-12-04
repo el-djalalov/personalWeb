@@ -1,13 +1,8 @@
 ---
-import Footer from "../components/footer/footer.astro";
 import Header from "../components/home/header.astro";
 import SquareLines from "../components/home/square-lines.astro";
 import { ViewTransitions, fade } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
-
-import Contact from "../components/contact/contact.astro";
-import Experience from "../components/experience/experience.astro";
-import "../styles/globals.css";
 import Separator from "@/components/separator.astro";
 ---
 
@@ -33,7 +28,7 @@ import Separator from "@/components/separator.astro";
     <slot name="projects" />
     <Separator text="Contact" />
     <slot name="contacts" />
-    <Footer />
+    <slot name="footer" />
     <script src="../assets/js/main.js"></script>
     <SpeedInsights />
   </body>

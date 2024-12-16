@@ -12,8 +12,8 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           My Projects
         </h1>
         <p className="mb-6 text-base dark:text-muted-foreground">
-          Here are some of my recent projects. I'm always working on something
-          new, so check back often!
+          Here are <u>some</u> of my recent projects. I'm always working on
+          something new, so check back often!
         </p>
       </div>
 

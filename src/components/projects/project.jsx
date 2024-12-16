@@ -3,7 +3,6 @@ export const Project = (props) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(e, "test");
 
     // Programmatically trigger download
     const link = document.createElement("a");

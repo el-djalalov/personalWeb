@@ -3,7 +3,6 @@ import { Download } from "lucide-react";
 export default function DownloadButton() {
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(e, "test");
 
     // Programmatically trigger download
     const link = document.createElement("a");

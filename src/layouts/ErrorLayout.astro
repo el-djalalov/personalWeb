@@ -1,9 +1,7 @@
 ---
 import ErrorPage from "@/components/ErrorPage.astro";
-import Footer from "../components/footer/footer.astro";
-import Header from "../components/home/header.astro";
 import SquareLines from "../components/home/square-lines.astro";
-import { ViewTransitions, fade } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 ---
 
 <html lang="en">
@@ -15,7 +13,7 @@ import { ViewTransitions, fade } from "astro:transitions";
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script src="../styles/globals.css"></script>
     <slot name="head" />
-    <ViewTransitions fallback="swap" />
+    <ClientRouter fallback="animate" />
   </head>
 
   <body class="antialiased bg-white dark:bg-slate-950 w-screen h-full">

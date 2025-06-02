@@ -1,12 +1,12 @@
 ---
 import Header from "../components/home/header.astro";
 import SquareLines from "../components/home/square-lines.astro";
-import { ViewTransitions, fade } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Separator from "@/components/separator.astro";
 ---
 
-<html lang="en">
+<html lang="en" transition:name="root" transition:animate="none">
   <head>
     <title>Elyor Djalalov</title>
     <meta charset="UTF-8" />
@@ -15,7 +15,7 @@ import Separator from "@/components/separator.astro";
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script src="../styles/globals.css"></script>
     <slot name="head" />
-    <ViewTransitions fallback="swap" />
+    <ClientRouter fallback="animate" />
   </head>
 
   <body class="antialiased bg-white dark:bg-slate-950 w-screen">

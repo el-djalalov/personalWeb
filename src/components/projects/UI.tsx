@@ -34,7 +34,7 @@ const Projects = () => {
     <section className="relative max-w-5xl mx-auto" id="projects">
       <div className="flex flex-col">
         <h1
-          className="flex flex-row mb-5 text-6xl font-bold leading-tight md:text-5xl lg:text-[50px]
+          className="flex flex-row mb-5 font-bold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl
                     bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
         >
           My Projects

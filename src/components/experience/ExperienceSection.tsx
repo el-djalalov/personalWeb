@@ -7,7 +7,7 @@ export default function ExperienceSection() {
       className="relative z-20 max-w-5xl mx-auto my-12 px-4 lg:px-0"
       id="experience"
     >
-      <h1 className="flex flex-row mb-5 font-bold leading-tight lg:text-[50px] text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out">
+      <h1 className="flex flex-row mb-5 font-bold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out">
         Experience
       </h1>
 

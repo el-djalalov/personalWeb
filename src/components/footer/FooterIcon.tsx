@@ -1,10 +1,10 @@
 import React from "react";
 import type { SocialMediaData } from "./data";
+
 function FooterIcon({ link: url, title, svg }: SocialMediaData) {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    // Programmatically trigger download
     const link = document.createElement("a");
     link.href = url;
     link.rel = "noopener noreferrer";

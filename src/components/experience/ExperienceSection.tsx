@@ -13,7 +13,7 @@ export default function ExperienceSection() {
 
       <div className="px-6 py-10 card">
         {experiences.map((exp, idx) =>
-          idx === 0 || idx === 1 ? (
+          idx !== experiences.length - 1 ? (
             <div
               key={exp.company}
               className="pb-10 border-l border-slate-300 dark:border-slate-500"

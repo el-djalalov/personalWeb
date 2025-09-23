@@ -17,9 +17,18 @@
     "website": "https://www.soft-control.ru/",
     "content": null
   },
+  {
+    "dates": "July 2021 - May 2022",
+    "role": "Front-end Developer",
+    "company": "Intelligent Learning Centre",
+    "description": "Completed 2 projects: Student Management System and landing page for online courses",
+    "logo": "/images/experiences/Intelligent.webp",
+    "website": "https://intelligent-lc.uz/",
+    "content": null
+  },
 
   {
-    "dates": "Oct 2018 - June, 2022",
+    "dates": "Oct 2018 - June 2021",
     "role": "Front-end Developer (Freelancer)",
     "company": "Home",
     "description": "Project description: Management system for construction company (front-end part) and landing pages for different businesses",

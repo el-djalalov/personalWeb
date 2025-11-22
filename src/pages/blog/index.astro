@@ -1,0 +1,154 @@
+---
+import { getCollection } from "astro:content";
+import { SITE } from "@/config";
+import { useTranslations } from "@/i18n/ui";
+import getSortedPosts from "@/utils/getSortedPosts";
+import getUniqueTags from "@/utils/getUniqueTags";
+import BlogCard from "@/components/blog/BlogCard.astro";
+import BlogHeader from "@/components/blog/BlogHeader.astro";
+import "@/styles/globals.css";
+
+const t = useTranslations("en");
+
+const allPosts = await getCollection("blog");
+const sortedPosts = getSortedPosts(allPosts);
+const featuredPosts = sortedPosts.filter(post => post.data.featured);
+const recentPosts = sortedPosts.slice(0, SITE.postPerIndex);
+const tags = getUniqueTags(allPosts);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>Blog | {SITE.title}</title>
+    <meta name="title" content={`Blog | ${SITE.title}`} />
+    <meta name="description" content="Articles about web development, frontend technologies, React, Astro, and modern software engineering." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL("/blog", Astro.site)} />
+    <meta property="og:title" content={`Blog | ${SITE.title}`} />
+    <meta property="og:description" content="Articles about web development, frontend technologies, React, Astro, and modern software engineering." />
+    <meta property="og:image" content={`${SITE.website}${SITE.ogImage}`} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={new URL("/blog", Astro.site)} />
+    <meta property="twitter:title" content={`Blog | ${SITE.title}`} />
+    <meta property="twitter:description" content="Articles about web development, frontend technologies, React, Astro, and modern software engineering." />
+    <meta property="twitter:image" content={`${SITE.website}${SITE.ogImage}`} />
+
+    <link rel="canonical" href={new URL("/blog", Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href={new URL("rss.xml", Astro.site)} />
+  </head>
+  <body class="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <!-- Blog Header with Theme Toggle -->
+    <BlogHeader backLink="/" backText="Back to Home" />
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <header class="mb-12">
+        <h1 class="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 dark:from-cyan-400 dark:via-fuchsia-400 dark:to-blue-400 bg-clip-text text-transparent mb-4">
+          Blog
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl">
+          Articles about web development, frontend technologies, React, Astro, and modern software engineering.
+        </p>
+
+        <!-- Tags -->
+        <div class="mt-6 flex flex-wrap gap-2">
+          <a
+            href="/blog"
+            class="px-4 py-2 text-sm bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+          >
+            All Posts ({sortedPosts.length})
+          </a>
+          {tags.slice(0, 8).map(({ tag, tagName }) => (
+            <a
+              href={`/blog/tags/${tag}`}
+              class="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors"
+            >
+              {tagName}
+            </a>
+          ))}
+          {tags.length > 8 && (
+            <a
+              href="/blog/tags"
+              class="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors"
+            >
+              View all tags →
+            </a>
+          )}
+        </div>
+      </header>
+
+      <!-- Featured Posts -->
+      {featuredPosts.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold mb-6">Featured Posts</h2>
+          <div class="grid grid-cols-1 gap-6">
+            {featuredPosts.map(post => (
+              <BlogCard post={post} featured={true} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Recent Posts -->
+      <section class="mb-16">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold">Recent Posts</h2>
+          {sortedPosts.length > SITE.postPerIndex && (
+            <a
+              href="/blog/posts/1"
+              class="text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              View all →
+            </a>
+          )}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recentPosts.map(post => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      </section>
+
+      <!-- Newsletter CTA (Optional) -->
+      <section class="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl p-8 md:p-12 text-white">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+          <p class="text-lg mb-6 opacity-90">
+            Get notified when I publish new articles about web development and modern technologies.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a
+              href="/rss.xml"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z" />
+                <path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5 1 1 0 01-1-1zM3 15a2 2 0 114 0 2 2 0 01-4 0z" />
+              </svg>
+              Subscribe via RSS
+            </a>
+            <a
+              href="https://t.me/yourchannel"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-lg font-medium hover:bg-white/30 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.14.121.098.155.23.171.324.016.093.036.306.02.472z"/>
+              </svg>
+              Follow on Telegram
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -14,7 +14,11 @@
     "url": "#projects",
     "id": "projects"
   },
-
+  {
+    "name": "Blog",
+    "url": "/blog",
+    "id": "blog"
+  },
   {
     "name": "Contact",
     "url": "#contact",

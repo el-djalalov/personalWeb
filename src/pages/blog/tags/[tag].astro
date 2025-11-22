@@ -1,0 +1,138 @@
+---
+import { getCollection } from "astro:content";
+import { SITE } from "@/config";
+import getSortedPosts from "@/utils/getSortedPosts";
+import getUniqueTags from "@/utils/getUniqueTags";
+import BlogCard from "@/components/blog/BlogCard.astro";
+import BlogHeader from "@/components/blog/BlogHeader.astro";
+import "@/styles/globals.css";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const tags = getUniqueTags(posts);
+
+  return tags.map(({ tag, tagName }) => ({
+    params: { tag },
+    props: { tag, tagName, posts },
+  }));
+}
+
+const { tag, tagName, posts } = Astro.props;
+const sortedPosts = getSortedPosts(posts);
+const taggedPosts = sortedPosts.filter(post =>
+  post.data.tags.some(t => t.toLowerCase() === tag.toLowerCase())
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>Posts tagged {tagName}</title><meta
+      name="title"
+      content={`Posts tagged "${tagName}" | ${SITE.title}`}
+    /><meta
+      name="description"
+      content={`All blog posts tagged with "${tagName}"`}
+    /><link
+      rel="canonical"
+      href={new URL(`/blog/tags/${tag}`, Astro.site)}
+    /><link rel="icon" type="image/svg+xml" href="/favicon.svg" /></head
+  >
+
+  <body
+    class="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+  >
+    <!-- Blog Header with Theme Toggle -->
+    <BlogHeader backLink="/blog" backText="Back to Blog" />
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <header class="mb-12">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+            <svg
+              class="w-8 h-8 text-blue-600 dark:text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              ></path>
+            </svg>
+          </div>
+          <div>
+            <h1
+              class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 dark:from-cyan-400 dark:via-fuchsia-400 dark:to-blue-400 bg-clip-text text-transparent"
+            >
+              #{tagName}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">
+              {taggedPosts.length}
+              {taggedPosts.length === 1 ? "post" : "posts"}
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Posts -->
+      {
+        taggedPosts.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {taggedPosts.map(post => (
+              <BlogCard post={post} />
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-16">
+            <svg
+              class="w-16 h-16 mx-auto text-gray-400 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+              No posts found
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">
+              There are no posts tagged with "{tagName}" yet.
+            </p>
+            <a
+              href="/blog"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span>Browse all posts</span>
+            </a>
+          </div>
+        )
+      }
+    </main>
+  </body>
+</html>

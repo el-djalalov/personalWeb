@@ -169,26 +169,47 @@ document.addEventListener("astro:page-load", () => {
 document.addEventListener("astro:page-load", () => {
   document.querySelectorAll("a").forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      document
-        .querySelectorAll("a")
-        .forEach((item) => item.classList.remove("active"));
-      anchor.classList.add("active");
       const targetId = anchor.getAttribute("data-target");
-      if (targetId === "/") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        history.pushState(null, "", "/");
-      } else if (targetId) {
-        const targetElement = document.querySelector(targetId);
+      const href = anchor.getAttribute("href");
 
-        history.pushState(null, "", targetId);
+      // Only prevent default for hash links or data-target links
+      // Allow normal navigation for page links like /blog
+      if (targetId && (targetId.startsWith("#") || targetId === "/")) {
+        e.preventDefault();
+
+        document
+          .querySelectorAll("a")
+          .forEach((item) => item.classList.remove("active"));
+        anchor.classList.add("active");
+
+        if (targetId === "/") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          history.pushState(null, "", "/");
+        } else {
+          const targetElement = document.querySelector(targetId);
+
+          history.pushState(null, "", targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        }
+      }
+      // If href starts with # but no data-target, handle as hash link
+      else if (href && href.startsWith("#")) {
+        e.preventDefault();
+        const targetElement = document.querySelector(href);
         if (targetElement) {
           targetElement.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
+          history.pushState(null, "", href);
         }
       }
+      // Otherwise, let the browser handle normal navigation (like /blog)
     });
   });
 });

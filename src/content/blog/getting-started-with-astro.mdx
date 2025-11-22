@@ -1,0 +1,76 @@
+---
+title: "Getting Started with Astro: The Modern Web Framework"
+description: "Learn why Astro is revolutionizing web development and how to build blazing-fast websites with it."
+pubDatetime: 2025-01-15T10:00:00Z
+author: "Elyor Djalalov"
+featured: true
+draft: false
+tags: ["astro", "web-development", "javascript", "frontend"]
+lang: "en"
+---
+
+Astro has quickly become one of the most exciting frameworks in modern web development. In this post, I'll share why I love it and how you can get started.
+
+## Why Astro?
+
+Astro brings several game-changing features to the table:
+
+1. **Zero JS by Default** - Ship only the JavaScript you need
+2. **Islands Architecture** - Mix and match your favorite frameworks
+3. **Content-First** - Perfect for blogs, documentation, and marketing sites
+4. **Fast Builds** - Lightning-fast development experience
+
+## Key Features
+
+### Component Islands
+
+One of Astro's most powerful features is its island architecture. You can use React, Vue, Svelte, or any other framework - or mix them all together:
+
+```jsx
+---
+import ReactCounter from './ReactCounter.jsx';
+import VueWidget from './VueWidget.vue';
+---
+
+<div>
+  <h1>My Astro Page</h1>
+  <ReactCounter client:load />
+  <VueWidget client:visible />
+</div>
+```
+
+### Content Collections
+
+Astro's content collections make managing your blog posts incredibly easy:
+
+```typescript
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) =>
+  b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+);
+```
+
+## Performance Benefits
+
+Astro's approach results in websites that are:
+
+- ⚡ **Faster** - Less JavaScript means faster load times
+- 🎯 **SEO-Friendly** - Static HTML is perfect for search engines
+- ♿ **Accessible** - Works without JavaScript
+- 🌍 **Better UX** - Instant page loads with view transitions
+
+## Getting Started
+
+```bash
+npm create astro@latest my-astro-site
+cd my-astro-site
+npm run dev
+```
+
+That's it! You now have a fully functional Astro site running locally.
+
+## Conclusion
+
+Astro represents a paradigm shift in how we think about web development. By defaulting to zero JavaScript and allowing you to add interactivity only where needed, it delivers the performance users deserve while maintaining the developer experience we love.
+
+Give it a try - you won't be disappointed!

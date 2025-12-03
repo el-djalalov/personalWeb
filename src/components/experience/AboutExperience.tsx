@@ -34,9 +34,9 @@ export default function AboutExperience({
         {dates}
       </span>
 
-      <h1 className="my-1 text-lg font-bold text-slate-700 dark:text-slate-200">
+      <h3 className="my-1 text-lg font-bold text-slate-700 dark:text-slate-200">
         {role}
-      </h1>
+      </h3>
 
       {website ? (
         <InteractiveLink website={website} company={company} />
@@ -46,9 +46,9 @@ export default function AboutExperience({
         </span>
       )}
 
-      <h3 className="text-sm font-light text-muted-foreground">
+      <p className="text-sm font-light text-muted-foreground">
         {description}
-      </h3>
+      </p>
     </div>
   );
 }

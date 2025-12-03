@@ -2,7 +2,7 @@ export const projects = [
   {
     description: "Control system for public transport",
     title: "Tallinja Public Transport Control System",
-    src: "/images/projects/tallinja.png",
+    src: "/images/projects/tallinja.webp",
     ctaText: "Visit",
     ctaLink: "https://lemon-ocean-07a841803.4.azurestaticapps.net/auth/login",
     content: () => {
@@ -21,7 +21,7 @@ export const projects = [
   {
     description: "AgronetZero is a platform for farmers...",
     title: "AgronetZero Bio Sync 365",
-    src: "/images/projects/agroNetZeroLanding.png",
+    src: "/images/projects/agroNetZeroLanding.webp",
     ctaText: "Visit",
     ctaLink: "https://soilsync.bio",
     content: () => {

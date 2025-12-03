@@ -33,12 +33,12 @@ const Projects = () => {
   return (
     <section className="relative max-w-5xl mx-auto" id="projects">
       <div className="flex flex-col">
-        <h1
+        <h2
           className="flex flex-row mb-5 font-bold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl
                     bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
         >
           My Projects
-        </h1>
+        </h2>
         <p className="mb-6 text-base dark:text-muted-foreground">
           Here are <u>some</u> of my recent projects. I'm always working on
           something new, so check back often!
@@ -67,6 +67,7 @@ const Projects = () => {
               className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
             ></motion.button>
             <motion.div
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
               className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-slate-50 dark:bg-slate-900 sm:rounded-3xl overflow-hidden"
@@ -127,11 +128,12 @@ const Projects = () => {
       </AnimatePresence>
       <ul className="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4">
         {projects.map((card) => (
-          <motion.div
+          <motion.li
+            whileHover={{ y: -5 }}
             layoutId={`card-${card.title}-${id}`}
             key={card.title}
             onClick={() => setActive(card)}
-            className=" flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer"
+            className="flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer"
           >
             <div className="flex gap-4 flex-col w-full">
               <motion.div layoutId={`image-${card.title}-${id}`}>
@@ -159,7 +161,7 @@ const Projects = () => {
                 </motion.p>
               </div>
             </div>
-          </motion.div>
+          </motion.li>
         ))}
       </ul>
     </section>

@@ -4,8 +4,12 @@ import Logo from "@/components/logo.astro";
 ---
 
 <!-- This is an invisible div with relative position so that it takes up the height of the menu (because menu is absolute/fixed) -->
-<div class="relative h-14 opacity-0 pointer-events-none"></div>
-<header id="header" class="absolute top-0 z-50 h-14 w-screen">
+<div class="relative h-14 opacity-0 pointer-events-none" aria-hidden="true">
+</div>
+<header
+  id="header"
+  class="fixed top-0 z-50 h-14 w-screen transition-all duration-300"
+>
   <div
     class="flex items-center justify-between h-14 px-4 lg:max-w-7xl md:mx-auto border-b border-l-0 border-r-0 border-transparent select-none lg:border-r lg:border-l lg:rounded-b-xl gap-2"
   >
@@ -19,7 +23,7 @@ import Logo from "@/components/logo.astro";
         class="ease-out duration-300 items-center justify-center relative flex w-auto"
       >
         {
-          menus.map(menu => {
+          menus.map((menu) => {
             return (
               <a
                 data-target={menu.url}
@@ -34,9 +38,10 @@ import Logo from "@/components/logo.astro";
       </div>
     </nav>
 
-    <div
+    <button
       id="themeToggle"
-      class="pl-6 relative flex items-center font-medium tracking-wide cursor-pointer text-slate-800 group dark:text-muted-foreground"
+      aria-label="Toggle theme"
+      class="pl-6 relative flex items-center font-medium tracking-wide cursor-pointer text-slate-800 group dark:text-muted-foreground bg-transparent border-none"
     >
       <div
         class="absolute left-0 flex items-center justify-center w-6 h-6 overflow-hidden border-b border-transparent horizon text-slate-700
@@ -69,7 +74,7 @@ import Logo from "@/components/logo.astro";
           ></path></svg
         >
       </div>
-    </div>
+    </button>
   </div>
 </header>
 
@@ -83,4 +88,18 @@ import Logo from "@/components/logo.astro";
 
   document.addEventListener("astro:after-swap", applyTheme);
   applyTheme();
+
+  const handleScroll = () => {
+    const header = document.getElementById("header");
+    if (window.scrollY > 10) {
+      header?.classList.add("glass");
+    } else {
+      header?.classList.remove("glass");
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  document.addEventListener("astro:after-swap", () => {
+    window.addEventListener("scroll", handleScroll);
+  });
 </script>

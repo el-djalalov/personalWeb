@@ -1,4 +1,5 @@
 import { Download } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function DownloadButton() {
   const handleClick = (e) => {
@@ -15,11 +16,12 @@ export default function DownloadButton() {
   return (
     <div className="bg-background flex justify-center items-center">
       <div className="relative inline-flex group">
-        <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-cyan-700 via-fuchsia-700 to-blue-700 rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
-        <button
-          download
-          href="/ResumeElyorDjalalov.pdf"
+        <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-cyan-700 via-fuchsia-700 to-blue-700 rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           title="Download resume"
+          aria-label="Download Resume"
           className="relative inline-flex items-center justify-center px-4 py-4 text-lg font-bold text-white transition-all duration-200 bg-background font-pj rounded-xl"
           onClick={handleClick}
         >
@@ -30,7 +32,7 @@ export default function DownloadButton() {
           <span className="text-slate-700 dark:text-slate-200 text-sm">
             Download Resume
           </span>
-        </button>
+        </motion.button>
       </div>
     </div>
   );

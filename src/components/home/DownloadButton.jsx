@@ -6,12 +6,12 @@ export default function DownloadButton() {
     e.preventDefault();
 
     // Programmatically trigger download
-    const link = document.createElement("a");
+    /* const link = document.createElement("a");
     link.href = "/ResumeElyorDjalalov.pdf";
     link.download = "ResumeElyorDjalalov.pdf";
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document.body.removeChild(link); */
   };
   return (
     <div className="bg-background flex justify-center items-center">

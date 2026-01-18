@@ -2,6 +2,18 @@ import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 
+// Supported languages for blog posts
+export const SUPPORTED_LANGUAGES = ["en", "uz", "ru"] as const;
+export const DEFAULT_LANGUAGE = "en";
+export type Language = (typeof SUPPORTED_LANGUAGES)[number];
+
+// Language display names
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  en: "English",
+  uz: "O'zbekcha",
+  ru: "Русский",
+};
+
 const blog = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: ({ image }) =>
@@ -17,7 +29,11 @@ const blog = defineCollection({
       // Social sharing
       ogImage: z.string().optional(),
       canonicalUrl: z.string().optional(),
-      // Reading time will be calculated at build time
+      // Multi-language support
+      // Language of this post (en, uz, ru)
+      lang: z.enum(SUPPORTED_LANGUAGES).default("en"),
+      // Slug to group translations together (e.g., "engineering-behind-simple")
+      translationKey: z.string().optional(),
     }),
 });
 

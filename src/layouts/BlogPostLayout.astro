@@ -3,16 +3,21 @@ import BaseLayout from "./BaseLayout.astro";
 import SocialShare from "@/components/blog/SocialShare.astro";
 import TableOfContents from "@/components/blog/TableOfContents.astro";
 import ReadingProgress from "@/components/blog/ReadingProgress";
+import LanguageSwitcher from "@/components/blog/LanguageSwitcher.astro";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
 
 interface Props {
   post: CollectionEntry<"blog">;
   readingTime: string;
   headings: { depth: number; slug: string; text: string }[];
+  availableLanguages?: Language[];
+  currentLang?: Language;
+  baseSlug?: string;
 }
 
-const { post, readingTime, headings } = Astro.props;
+const { post, readingTime, headings, availableLanguages = [], currentLang = DEFAULT_LANGUAGE, baseSlug = post.id } = Astro.props;
 const { title, description, pubDate, updatedDate, author, heroImage, tags, ogImage } = post.data;
 
 const formattedDate = pubDate.toLocaleDateString("en-US", {
@@ -57,19 +62,28 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
     <article class="blog-post">
       <!-- Header -->
       <header class="mb-8">
-        <!-- Tags -->
-        {tags.length > 0 && (
-          <div class="flex flex-wrap gap-2 mb-4">
-            {tags.map((tag) => (
-              <a
-                href={`/blog/tag/${tag.toLowerCase()}`}
-                class="px-3 py-1 text-xs font-medium rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-colors"
-              >
-                #{tag}
-              </a>
-            ))}
-          </div>
-        )}
+        <!-- Tags and Language Switcher -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          {tags.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <a
+                  href={`/blog/tag/${tag.toLowerCase()}`}
+                  class="px-3 py-1 text-xs font-medium rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-colors"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )}
+          {availableLanguages.length > 1 && (
+            <LanguageSwitcher
+              currentLang={currentLang}
+              availableLanguages={availableLanguages}
+              baseSlug={baseSlug}
+            />
+          )}
+        </div>
 
         <h1
           class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4"

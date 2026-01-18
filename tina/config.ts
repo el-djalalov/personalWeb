@@ -110,6 +110,25 @@ export default defineConfig({
             label: "Canonical URL",
           },
           {
+            type: "string",
+            name: "lang",
+            label: "Language",
+            options: [
+              { value: "en", label: "English" },
+              { value: "uz", label: "O'zbekcha" },
+              { value: "ru", label: "Русский" },
+            ],
+            ui: {
+              defaultValue: "en",
+            },
+          },
+          {
+            type: "string",
+            name: "translationKey",
+            label: "Translation Key",
+            description: "Use the same key for all language versions of a post (e.g., 'my-post-slug')",
+          },
+          {
             type: "rich-text",
             name: "body",
             label: "Content",

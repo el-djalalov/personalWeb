@@ -6,7 +6,7 @@ import readingTime from "reading-time";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
-  const allTags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].filter((tag) => tag && tag.trim() !== "");
 
   return allTags.map((tag) => ({
     params: { tag: tag.toLowerCase() },
@@ -23,7 +23,7 @@ const { tag, posts } = Astro.props;
 
 // Get all unique tags for filter
 const allPosts = await getCollection("blog");
-const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))].sort();
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))].filter((tag) => tag && tag.trim() !== "").sort();
 
 function getReadingTime(body: string): string {
   const stats = readingTime(body);

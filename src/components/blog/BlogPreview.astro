@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
 import readingTime from "reading-time";
 
 // Get latest 3 blog posts
@@ -36,12 +35,10 @@ function getReadingTime(body: string): string {
             <!-- Image -->
             <a href={`/blog/${post.id}`} class="relative aspect-video overflow-hidden">
               {heroImage ? (
-                <Image
+                <img
                   src={heroImage}
                   alt={title}
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  widths={[400, 600]}
-                  sizes="(max-width: 768px) 100vw, 400px"
                 />
               ) : (
                 <div class="w-full h-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">

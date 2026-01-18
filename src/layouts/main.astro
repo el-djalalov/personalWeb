@@ -4,6 +4,7 @@ import SquareLines from "../components/home/square-lines.astro";
 import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Separator from "@/components/separator.astro";
+import "../styles/globals.css";
 ---
 
 <html lang="en" transition:name="root" transition:animate="none">
@@ -47,7 +48,6 @@ import Separator from "@/components/separator.astro";
     />
     <meta property="twitter:image" content="/og-image.png" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <script src="../styles/globals.css"></script>
     <slot name="head" />
     <ClientRouter fallback="animate" />
   </head>
@@ -60,6 +60,8 @@ import Separator from "@/components/separator.astro";
     <slot name="experience" />
     <Separator text="Apps I build" />
     <slot name="projects" />
+    <Separator text="Latest from blog" />
+    <slot name="blog" />
     <Separator text="Contact" />
     <slot name="contacts" />
     <slot name="footer" />

@@ -167,19 +167,35 @@ document.addEventListener("astro:page-load", () => {
 //--------------------------------------------------------
 // Active menu item
 document.addEventListener("astro:page-load", () => {
-  document.querySelectorAll("a").forEach((anchor) => {
+  // Only target nav links with data-target attribute (hash links for scrolling)
+  document.querySelectorAll("nav a[data-target]").forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
+      const targetId = anchor.getAttribute("data-target");
+
+      // Only prevent default for hash links or home link when on homepage
+      // Let regular page links (like /blog) navigate normally
+      if (!targetId || (!targetId.startsWith("#") && !targetId.startsWith("/#") && targetId !== "/")) {
+        return; // Let the browser handle normal navigation
+      }
+
+      // If it's a hash link but we're not on the homepage, let it navigate
+      if ((targetId.startsWith("#") || targetId.startsWith("/#")) && window.location.pathname !== "/") {
+        return; // Let browser navigate to homepage with hash
+      }
+
       e.preventDefault();
       document
-        .querySelectorAll("a")
+        .querySelectorAll("nav a")
         .forEach((item) => item.classList.remove("active"));
       anchor.classList.add("active");
-      const targetId = anchor.getAttribute("data-target");
+
       if (targetId === "/") {
         window.scrollTo({ top: 0, behavior: "smooth" });
         history.pushState(null, "", "/");
-      } else if (targetId) {
-        const targetElement = document.querySelector(targetId);
+      } else {
+        // Handle both #section and /#section formats
+        const sectionId = targetId.replace("/#", "#");
+        const targetElement = document.querySelector(sectionId);
 
         history.pushState(null, "", targetId);
         if (targetElement) {

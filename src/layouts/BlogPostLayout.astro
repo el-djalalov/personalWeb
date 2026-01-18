@@ -1,0 +1,194 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SocialShare from "@/components/blog/SocialShare.astro";
+import TableOfContents from "@/components/blog/TableOfContents.astro";
+import ReadingProgress from "@/components/blog/ReadingProgress";
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  readingTime: string;
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { post, readingTime, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, author, heroImage, tags, ogImage } = post.data;
+
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const formattedUpdatedDate = updatedDate?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const postUrl = `https://www.elyor.dev/blog/${post.id}`;
+---
+
+<BaseLayout
+  title={`${title} | Elyor's Blog`}
+  description={description}
+  image={ogImage || heroImage?.src || "/og-image.png"}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+  author={author}
+  tags={tags}
+>
+  <ReadingProgress client:load />
+
+  <main class="max-w-4xl mx-auto px-4 py-8 pt-20">
+    <!-- Back to blog -->
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors mb-8 group"
+    >
+      <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Blog
+    </a>
+
+    <article class="blog-post">
+      <!-- Header -->
+      <header class="mb-8">
+        <!-- Tags -->
+        {tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-4">
+            {tags.map((tag) => (
+              <a
+                href={`/blog/tag/${tag.toLowerCase()}`}
+                class="px-3 py-1 text-xs font-medium rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-colors"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        )}
+
+        <h1
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4"
+          transition:name={`blog-title-${post.id}`}
+        >
+          {title}
+        </h1>
+
+        <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">
+          {description}
+        </p>
+
+        <!-- Meta info -->
+        <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-500 pb-6 border-b border-slate-200 dark:border-slate-800">
+          <div class="flex items-center gap-2">
+            <img
+              src="/images/avatar.jpg"
+              alt={author}
+              class="w-8 h-8 rounded-full object-cover"
+              onerror="this.style.display='none'"
+            />
+            <span class="font-medium text-slate-700 dark:text-slate-300">{author}</span>
+          </div>
+
+          <time datetime={pubDate.toISOString()} class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {formattedDate}
+          </time>
+
+          {updatedDate && (
+            <span class="flex items-center gap-1 text-violet-600 dark:text-violet-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Updated {formattedUpdatedDate}
+            </span>
+          )}
+
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {readingTime}
+          </span>
+        </div>
+      </header>
+
+      <!-- Hero Image -->
+      {heroImage && (
+        <div class="relative aspect-video mb-8 rounded-xl overflow-hidden">
+          <Image
+            src={heroImage}
+            alt={title}
+            class="w-full h-full object-cover"
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 768px) 100vw, 800px"
+            transition:name={`blog-hero-${post.id}`}
+          />
+        </div>
+      )}
+
+      <!-- Content area with TOC -->
+      <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-16">
+        <!-- Main content -->
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none
+          prose-headings:scroll-mt-20 prose-headings:font-bold
+          prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+          prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+          prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed
+          prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-a:no-underline hover:prose-a:underline
+          prose-code:font-mono
+          prose-pre:my-6
+          prose-blockquote:border-violet-500 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:rounded-r-lg prose-blockquote:py-1
+          prose-img:rounded-xl prose-img:shadow-lg
+          prose-li:marker:text-violet-500
+        ">
+          <slot />
+        </div>
+
+        <!-- Table of Contents (desktop) -->
+        {headings.length > 0 && (
+          <aside class="hidden lg:block">
+            <div class="sticky top-24">
+              <TableOfContents headings={headings} />
+            </div>
+          </aside>
+        )}
+      </div>
+
+      <!-- Social Share -->
+      <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+        <SocialShare title={title} url={postUrl} description={description} tags={tags} />
+      </div>
+
+      <!-- Author bio -->
+      <div class="mt-8 p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+        <div class="flex items-start gap-4">
+          <img
+            src="/images/avatar.jpg"
+            alt={author}
+            class="w-16 h-16 rounded-full object-cover flex-shrink-0"
+            onerror="this.style.display='none'"
+          />
+          <div>
+            <h3 class="font-semibold text-slate-900 dark:text-white">{author}</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Team Lead & Sr. Front-end Developer. Writing about web development, software architecture, and engineering best practices.
+            </p>
+            <a
+              href="/"
+              class="inline-flex items-center gap-1 text-sm text-violet-600 dark:text-violet-400 hover:underline mt-2"
+            >
+              View all posts →
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</BaseLayout>

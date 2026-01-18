@@ -1,0 +1,120 @@
+---
+title: "The Engineering Behind 'Simple'"
+description: "A deep dive into Uber's distributed systems architecture - from real-time data syncing with gRPC over QUIC, to spatial matching with H3 hexagonal indexing, to smooth map animations using Kalman filters."
+pubDate: 2025-01-18
+author: "Elyor Djalalov"
+tags: ["System Design", "Distributed Systems", "gRPC", "QUIC", "H3", "Software Engineering"]
+heroImage: "../../assets/images/blog/uber-engineering.jpeg"
+draft: false
+---
+
+When you open Uber, you see a map with moving cars. Simple, right?
+
+That "simple" interface is actually one of the most complex distributed systems ever built. What fascinates me isn't the final architecture—it's **how they got there**. Every breakthrough came from hitting a wall that couldn't be patched around.
+
+## The Evolution of Real-Time Data Syncing
+
+Take data syncing. Early on, apps polled the server every few seconds asking "anything new?" At scale, millions of apps doing this becomes a **self-inflicted DDoS attack**.
+
+So they flipped it—**Server-Sent Events** let the server push updates instead. Better. But SSE is one-way. The server couldn't know if critical driver offers actually arrived.
+
+The real fix? **gRPC over QUIC/HTTP3**—true bidirectional streaming where both sides talk simultaneously. The result: **45% faster connections**.
+
+```
+Traditional Polling    →    SSE (Push)    →    gRPC/QUIC (Bidirectional)
+     ↓                        ↓                        ↓
+   O(N×M)               One-way only           True two-way streaming
+   queries              No delivery            With acknowledgments
+                        confirmation           45% faster
+```
+
+## The Spatial Matching Problem
+
+Consider the matching problem. N riders, M drivers—calculating every possible distance is **O(N×M)**. Impossible at scale.
+
+The trick is **spatial partitioning**: divide the world into cells, only check nearby ones.
+
+![H3 hexagonal grid spatial partitioning](/images/blog/h3-hexagonal-grid.jpeg)
+
+But here's the insight that surprised me—**why hexagons instead of squares?**
+
+Because square corners are **41% farther from center than edges** (Corner Bias). Hexagons have uniform neighbor distances. Every neighbor cell is equidistant from the center.
+
+Uber's **H3 index** now powers:
+- Dynamic pricing across different locations
+- ETA calculations
+- Driver positioning and dispatch optimization
+
+### The Math Behind Hexagons
+
+```
+Square Grid:
+┌───┬───┬───┐
+│   │ d │   │    d = distance to edge neighbor
+├───┼───┼───┤    d√2 = distance to corner neighbor (41% farther!)
+│ d │ X │ d │
+├───┼───┼───┤
+│   │ d │   │
+└───┴───┴───┘
+
+Hexagonal Grid:
+    ╱╲   ╱╲
+   ╱  ╲d╱  ╲     All 6 neighbors are equidistant
+  ╱ d  ╲╱ d  ╲   No corner bias
+  ╲    ╱X╲    ╱   Uniform spatial queries
+   ╲  ╱  ╲  ╱
+    ╲╱ d  ╲╱
+```
+
+## The Smoothness Illusion
+
+Then there's the **smoothness illusion**. GPS updates every ~4 seconds. Networks drop packets. Raw data would make cars teleport around the map.
+
+The solution combines two techniques:
+
+1. **Dead Reckoning** - Predicting position from speed and heading between GPS updates
+2. **Kalman Filters** - Blending prediction and measurement, trusting GPS when strong, prediction when weak
+
+```typescript
+// Simplified Kalman filter concept
+interface State {
+  position: [number, number];
+  velocity: [number, number];
+  uncertainty: number;
+}
+
+function update(state: State, gpsReading: Reading): State {
+  // Calculate Kalman gain based on GPS signal strength
+  const gain = state.uncertainty / (state.uncertainty + gpsReading.uncertainty);
+
+  // Blend prediction with measurement
+  const newPosition = [
+    state.position[0] + gain * (gpsReading.position[0] - state.position[0]),
+    state.position[1] + gain * (gpsReading.position[1] - state.position[1])
+  ];
+
+  return {
+    position: newPosition,
+    velocity: estimateVelocity(state, gpsReading),
+    uncertainty: (1 - gain) * state.uncertainty
+  };
+}
+```
+
+The Kalman filter essentially asks: "How much should I trust this new GPS reading vs. my prediction?" When GPS signal is strong (low uncertainty), trust the reading. When it's weak (high uncertainty), trust the prediction.
+
+## The Pattern
+
+The pattern repeats across every major system at Uber:
+
+1. **Start simple** - Polling, square grids, raw GPS
+2. **Hit a fundamental limit** - DDoS, O(N×M), teleporting cars
+3. **Rethink entirely** - gRPC/QUIC, H3 hexagons, Kalman filters
+
+That's real engineering. Not adding more servers to a broken architecture, but recognizing when the approach itself is the problem.
+
+---
+
+*The next time you open a "simple" app, remember: years of distributed systems research might be hiding behind that smooth interface.*
+
+*Have thoughts on distributed systems or want to discuss engineering patterns? [Let's connect](/#contact)!*

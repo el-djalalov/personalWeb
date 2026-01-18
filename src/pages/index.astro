@@ -10,6 +10,7 @@ import ExperienceSection from "@/components/experience/ExperienceSection";
 import ParticleBackground from "@/components/home/ParticleBackground";
 import ScrollProgress from "@/components/home/ScrollProgress";
 import CursorGlow from "@/components/home/CursorGlow";
+import BlogPreview from "@/components/blog/BlogPreview.astro";
 ---
 
 <Layout>
@@ -79,6 +80,7 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
   </div>
   <ExperienceSection slot="experience" client:visible />
   <Projects slot="projects" client:visible />
+  <BlogPreview slot="blog" />
   <Contact slot="contacts" />
   <Footer slot="footer" client:visible />
 </Layout>

@@ -1,0 +1,200 @@
+---
+title: "React Server Components: A Deep Dive"
+description: "Understanding the revolutionary React Server Components pattern, how it differs from traditional SSR, and when to use them in your applications."
+pubDate: 2025-01-15
+author: "Elyor Djalalov"
+tags: ["React", "JavaScript", "Performance", "Architecture"]
+heroImage: "../../assets/images/blog/react-components.jpg"
+draft: false
+---
+
+React Server Components (RSC) represent one of the most significant architectural shifts in React's history. Let's explore what they are, how they work, and why they matter.
+
+## The Problem RSC Solves
+
+Traditional React applications face a fundamental tension: we want rich, interactive UIs, but shipping large JavaScript bundles hurts performance. Server-Side Rendering (SSR) helps with initial load, but we still end up sending all that JavaScript for hydration.
+
+React Server Components take a different approach: **some components never need to reach the client at all**.
+
+## Server Components vs Client Components
+
+Understanding the distinction is crucial:
+
+### Server Components (Default)
+
+```tsx
+// This runs ONLY on the server
+async function BlogPost({ slug }) {
+  // Direct database access - no API needed!
+  const post = await db.posts.findUnique({
+    where: { slug },
+    include: { author: true }
+  });
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>By {post.author.name}</p>
+      <div>{post.content}</div>
+    </article>
+  );
+}
+```
+
+Server Components can:
+- Access databases directly
+- Read from the filesystem
+- Use server-only secrets
+- Fetch data without waterfalls
+
+But they **cannot**:
+- Use hooks (`useState`, `useEffect`)
+- Add event listeners
+- Use browser APIs
+
+### Client Components
+
+```tsx
+'use client';
+
+import { useState } from 'react';
+
+function LikeButton({ postId, initialCount }) {
+  const [likes, setLikes] = useState(initialCount);
+
+  const handleLike = async () => {
+    setLikes(prev => prev + 1);
+    await fetch(`/api/posts/${postId}/like`, { method: 'POST' });
+  };
+
+  return (
+    <button onClick={handleLike}>
+      ❤️ {likes} likes
+    </button>
+  );
+}
+```
+
+Client Components are the React you already know - they run in the browser and can be interactive.
+
+## The Composition Pattern
+
+The real power emerges when you compose them together:
+
+```tsx
+// Server Component
+async function PostPage({ params }) {
+  const post = await getPost(params.slug);
+  const comments = await getComments(params.slug);
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <PostContent content={post.content} />
+
+      {/* Client Component for interactivity */}
+      <LikeButton postId={post.id} initialCount={post.likes} />
+
+      {/* Server-rendered comments list */}
+      <CommentsList comments={comments} />
+
+      {/* Client Component for new comment form */}
+      <NewCommentForm postId={post.id} />
+    </article>
+  );
+}
+```
+
+## Data Fetching Revolution
+
+With RSC, data fetching becomes dramatically simpler:
+
+### Before: API Route + useEffect
+
+```tsx
+// Client Component (old way)
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      });
+  }, [userId]);
+
+  if (loading) return <Skeleton />;
+  return <Profile user={user} />;
+}
+```
+
+### After: Direct Database Access
+
+```tsx
+// Server Component (new way)
+async function UserProfile({ userId }) {
+  const user = await db.users.findUnique({
+    where: { id: userId }
+  });
+
+  return <Profile user={user} />;
+}
+```
+
+No loading states. No API routes. No client-side data fetching. The data is fetched on the server and the fully rendered HTML is sent to the client.
+
+## Bundle Size Impact
+
+Server Components allow you to use heavy libraries without sending them to the client. Libraries like markdown parsers, syntax highlighters, and HTML sanitizers can run entirely on the server - potentially saving hundreds of kilobytes from your client bundle.
+
+For example, a typical markdown processing pipeline might include:
+- Markdown parser: ~50KB
+- Syntax highlighter: ~180KB
+- HTML sanitizer: ~30KB
+
+With Server Components, all 260KB stays on the server and never ships to the browser.
+
+## When to Use Each Type
+
+| Use Server Components When | Use Client Components When |
+|---------------------------|---------------------------|
+| Fetching data | Using React hooks |
+| Accessing backend resources | Handling user events |
+| Heavy library processing | Using browser APIs |
+| Keeping secrets secure | Managing local state |
+
+## Framework Support
+
+RSC is currently available in:
+
+- **Next.js 13+** (App Router)
+- **Gatsby 5** (experimental)
+- **Remix** (planned support)
+
+## Practical Tips
+
+1. **Start with Server Components** - Make everything a Server Component by default, add `'use client'` only when needed.
+
+2. **Push Client Components down** - Keep interactive parts as leaf nodes in your component tree.
+
+3. **Use Suspense wisely** - Wrap async Server Components in Suspense for better loading states.
+
+4. **Think in boundaries** - The `'use client'` directive creates a boundary - everything below it is also a Client Component.
+
+## Conclusion
+
+React Server Components aren't just a performance optimization - they fundamentally change how we architect React applications. By moving rendering to the server by default, we get:
+
+- Smaller bundles
+- Faster initial loads
+- Direct backend access
+- Better security
+
+The learning curve is worth it. This is where React is heading, and early adoption will pay dividends.
+
+---
+
+*Want to discuss RSC patterns or share your migration experience? [Let's connect](/#contact)!*

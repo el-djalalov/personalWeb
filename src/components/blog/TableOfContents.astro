@@ -1,0 +1,102 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+// Filter to only include h2 and h3
+const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{filteredHeadings.length > 0 && (
+  <nav class="toc" aria-label="Table of contents">
+    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500 mb-4">
+      On this page
+    </h4>
+    <ul class="space-y-2 text-sm">
+      {filteredHeadings.map((heading) => (
+        <li
+          class:list={[
+            "toc-item",
+            heading.depth === 3 && "ml-4",
+          ]}
+        >
+          <a
+            href={`#${heading.slug}`}
+            class="toc-link block py-1 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors border-l-2 border-transparent hover:border-violet-500 pl-3 -ml-px"
+            data-heading={heading.slug}
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<script>
+  function initTOC() {
+    const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
+    const headings = document.querySelectorAll("h2[id], h3[id]");
+
+    if (tocLinks.length === 0 || headings.length === 0) return;
+
+    const observerOptions = {
+      rootMargin: "-80px 0px -70% 0px",
+      threshold: 0,
+    };
+
+    let activeId: string | null = null;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          updateActiveLink(activeId);
+        }
+      });
+    }, observerOptions);
+
+    headings.forEach((heading) => observer.observe(heading));
+
+    function updateActiveLink(id: string | null) {
+      tocLinks.forEach((link) => {
+        const isActive = link.dataset.heading === id;
+        link.classList.toggle("text-violet-600", isActive);
+        link.classList.toggle("dark:text-violet-400", isActive);
+        link.classList.toggle("border-violet-500", isActive);
+        link.classList.toggle("font-medium", isActive);
+        link.classList.toggle("text-slate-600", !isActive);
+        link.classList.toggle("dark:text-slate-400", !isActive);
+        link.classList.toggle("border-transparent", !isActive);
+      });
+    }
+
+    // Smooth scroll on click
+    tocLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute("href")?.slice(1);
+        if (targetId) {
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            // Update URL without triggering scroll
+            history.pushState(null, "", `#${targetId}`);
+          }
+        }
+      });
+    });
+  }
+
+  // Run on initial load and after Astro page transitions
+  initTOC();
+  document.addEventListener("astro:after-swap", initTOC);
+</script>

@@ -33,12 +33,16 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString("en-US", {
 });
 
 const postUrl = `https://www.elyor.dev/blog/${post.id}`;
+
+// Handle both string URLs (from Tina) and image objects (from local assets)
+const heroImageSrc = typeof heroImage === 'string' ? heroImage : heroImage;
+const isStringImage = typeof heroImage === 'string';
 ---
 
 <BaseLayout
   title={`${title} | Elyor's Blog`}
   description={description}
-  image={ogImage || heroImage?.src || "/og-image.png"}
+  image={ogImage || (isStringImage ? heroImage : heroImage?.src) || "/og-image.png"}
   type="article"
   publishedTime={pubDate}
   modifiedTime={updatedDate}
@@ -136,14 +140,23 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
       <!-- Hero Image -->
       {heroImage && (
         <div class="relative aspect-video mb-8 rounded-xl overflow-hidden">
-          <Image
-            src={heroImage}
-            alt={title}
-            class="w-full h-full object-cover"
-            widths={[400, 800, 1200]}
-            sizes="(max-width: 768px) 100vw, 800px"
-            transition:name={`blog-hero-${post.id}`}
-          />
+          {isStringImage ? (
+            <img
+              src={heroImage}
+              alt={title}
+              class="w-full h-full object-cover"
+              transition:name={`blog-hero-${post.id}`}
+            />
+          ) : (
+            <Image
+              src={heroImage}
+              alt={title}
+              class="w-full h-full object-cover"
+              widths={[400, 800, 1200]}
+              sizes="(max-width: 768px) 100vw, 800px"
+              transition:name={`blog-hero-${post.id}`}
+            />
+          )}
         </div>
       )}
 

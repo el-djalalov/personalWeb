@@ -1,0 +1,88 @@
+For developers, the command line is more than a tool—it's home. Now, that home gets a whole lot smarter with **Gemini CLI**, Google's new open-source AI agent that brings the power of Gemini 2.5 Pro directly to your terminal!
+
+Gemini CLI provides lightweight access to Gemini, offering a versatile, local utility for everything from code understanding and file manipulation to dynamic troubleshooting and task automation.
+
+## What Makes Gemini CLI a Game-Changer?
+
+### Unmatched Usage Limits
+
+Get started **FREE** with a personal Google account and enjoy:
+
+- 60 requests per minute
+- 1,000 requests per day
+
+That's an incredibly generous free tier for an AI tool of this caliber!
+
+### Seamless Integration
+
+Built-in integration with Google's AI coding assistant, **Gemini Code Assist**, provides a smooth transition between your terminal and VS Code. Switch effortlessly between environments while maintaining context and productivity.
+
+### Open and Extensible
+
+Gemini CLI is fully **open-source** under the Apache 2.0 license. It supports the **Model Context Protocol (MCP)**, allowing for:
+
+- Deep customization
+- Community contributions
+- Integration with your existing workflows
+
+### Google Search Integration
+
+Ground your prompts with real-time, external context directly from **Google Search**. This means your AI assistant can access up-to-date information while helping you code.
+
+## Who Is Gemini CLI For?
+
+Gemini CLI empowers developers, builders, and creators to harness the power of AI in their daily workflows:
+
+- **Students** learning to code and wanting AI-assisted guidance
+- **Hobbyists** building side projects and experimenting with new technologies
+- **Professional developers** looking to boost productivity and automate repetitive tasks
+
+Whether you're debugging a complex issue, generating boilerplate code, or exploring a new codebase, Gemini CLI offers a fundamental upgrade to your command line experience.
+
+## Key Features at a Glance
+
+| Feature | Description |
+|---------|-------------|
+| **Free Tier** | 1,000 requests/day with Google account |
+| **Model** | Gemini 2.5 Pro |
+| **License** | Apache 2.0 (Open Source) |
+| **IDE Integration** | VS Code via Gemini Code Assist |
+| **Search** | Built-in Google Search grounding |
+| **Protocol** | Model Context Protocol (MCP) support |
+
+## Getting Started
+
+Ready to upgrade your terminal? Here's how to get started:
+
+```bash
+# Install Gemini CLI
+npm install -g @google/gemini-cli
+
+# Or using Homebrew on macOS
+brew install gemini-cli
+
+# Start using it
+gemini "Explain this error message"
+```
+
+## Why This Matters
+
+The terminal has always been the power user's domain. With Gemini CLI, Google is democratizing access to powerful AI capabilities right where developers spend most of their time. No need to switch contexts, open a browser, or leave your workflow—the AI comes to you.
+
+This is particularly exciting because:
+
+1. It's **free** with generous limits
+2. It's **open-source**, so the community can contribute and extend it
+3. It integrates with the tools we already use
+
+## Conclusion
+
+Gemini CLI represents a significant step forward in making AI accessible to developers in their native environment. Whether you're a seasoned developer or just starting out, having an AI assistant in your terminal can dramatically improve your productivity and learning.
+
+Give it a try and let me know what you think!
+
+---
+
+**Resources:**
+- [Gemini CLI GitHub Repository](https://github.com/google-gemini/gemini-cli)
+- [Google AI Documentation](https://ai.google.dev/)

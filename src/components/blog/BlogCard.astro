@@ -15,20 +15,31 @@ const formattedDate = pubDate.toLocaleDateString("en-US", {
   month: "short",
   day: "numeric",
 });
+
+const isStringImage = typeof heroImage === 'string';
 ---
 
 <article class="group relative flex flex-col h-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/5 hover:border-violet-300 dark:hover:border-violet-700">
   <!-- Image -->
   <a href={`/blog/${post.id}`} class="relative aspect-video overflow-hidden">
     {heroImage ? (
-      <Image
-        src={heroImage}
-        alt={title}
-        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        widths={[400, 600]}
-        sizes="(max-width: 768px) 100vw, 400px"
-        transition:name={`blog-hero-${post.id}`}
-      />
+      isStringImage ? (
+        <img
+          src={heroImage}
+          alt={title}
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          transition:name={`blog-hero-${post.id}`}
+        />
+      ) : (
+        <Image
+          src={heroImage}
+          alt={title}
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          widths={[400, 600]}
+          sizes="(max-width: 768px) 100vw, 400px"
+          transition:name={`blog-hero-${post.id}`}
+        />
+      )
     ) : (
       <div
         class="w-full h-full bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 flex items-center justify-center"

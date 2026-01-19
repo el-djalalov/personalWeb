@@ -1,0 +1,115 @@
+---
+import { getCollection, render } from "astro:content";
+import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
+import readingTime from "reading-time";
+import { DEFAULT_LANGUAGE, type Language, SUPPORTED_LANGUAGES } from "@/content.config";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const nonDraftPosts = posts.filter((post) => !post.data.draft);
+
+  // Group posts by translationKey
+  const postsByTranslationKey = new Map<string, typeof nonDraftPosts>();
+
+  for (const post of nonDraftPosts) {
+    // Use translationKey if provided, otherwise use the post id without extension (for backwards compatibility)
+    const postId = post.id.replace(/\.(md|mdx)$/, '');
+    const key = post.data.translationKey || postId;
+    if (!postsByTranslationKey.has(key)) {
+      postsByTranslationKey.set(key, []);
+    }
+    postsByTranslationKey.get(key)!.push(post);
+  }
+
+  // Create paths for each unique translation group
+  const paths: {
+    params: { slug: string };
+    props: {
+      translations: typeof nonDraftPosts;
+      defaultPost: (typeof nonDraftPosts)[0];
+    };
+  }[] = [];
+
+  for (const [translationKey, translations] of postsByTranslationKey) {
+    // Find the English version or the first available as default
+    const defaultPost =
+      translations.find((p) => p.data.lang === "en") || translations[0];
+
+    // Use translationKey as the URL slug
+    paths.push({
+      params: { slug: translationKey },
+      props: { translations, defaultPost },
+    });
+  }
+
+  return paths;
+}
+
+let { translations, defaultPost } = Astro.props;
+
+// In SSR mode, we need to fetch data if props are not available
+if (!translations || !defaultPost) {
+  const posts = await getCollection("blog");
+  const nonDraftPosts = posts.filter((post) => !post.data.draft);
+
+  // Get the slug from URL
+  const slug = Astro.params.slug;
+
+  // Group posts by translationKey
+  const postsByTranslationKey = new Map<string, typeof nonDraftPosts>();
+
+  for (const post of nonDraftPosts) {
+    const postId = post.id.replace(/\.(md|mdx)$/, '');
+    const key = post.data.translationKey || postId;
+    if (!postsByTranslationKey.has(key)) {
+      postsByTranslationKey.set(key, []);
+    }
+    postsByTranslationKey.get(key)!.push(post);
+  }
+
+  // Find the matching translation group
+  translations = postsByTranslationKey.get(slug || '') || [];
+
+  if (translations.length === 0) {
+    return Astro.redirect("/blog");
+  }
+
+  defaultPost = translations.find((p) => p.data.lang === "en") || translations[0];
+}
+
+// Get requested language from query param
+const url = new URL(Astro.request.url);
+const requestedLang = url.searchParams.get("lang") as Language | null;
+
+// Find the post for the requested language, fall back to default
+const currentLang =
+  requestedLang && SUPPORTED_LANGUAGES.includes(requestedLang)
+    ? requestedLang
+    : DEFAULT_LANGUAGE;
+
+const post =
+  translations.find((p) => p.data.lang === currentLang) ||
+  defaultPost;
+
+const { Content, headings } = await render(post);
+
+// Calculate reading time
+const stats = readingTime(post.body || "");
+
+// Get available languages for this post
+const availableLanguages = translations.map((p) => p.data.lang);
+
+// Base slug for language switcher
+const baseSlug = post.data.translationKey || post.id.replace(/\.(md|mdx)$/, '');
+---
+
+<BlogPostLayout
+  post={post}
+  readingTime={stats.text}
+  headings={headings}
+  availableLanguages={availableLanguages}
+  currentLang={currentLang}
+  baseSlug={baseSlug}
+>
+  <Content />
+</BlogPostLayout>

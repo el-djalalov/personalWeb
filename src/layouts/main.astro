@@ -4,17 +4,20 @@ import SquareLines from "../components/home/square-lines.astro";
 import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Separator from "@/components/separator.astro";
+import { getLangFromUrl, t } from "@/i18n";
 import "../styles/globals.css";
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
-<html lang="en" transition:name="root" transition:animate="none">
+<html lang={lang} transition:name="root" transition:animate="none">
   <head>
-    <title>Elyor Djalalov</title>
+    <title>{t("meta.title", lang)}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Elyor Djalalov - Team Lead & Sr. Front-end Developer. Portfolio showcasing web development projects and skills."
+      content={t("meta.description", lang)}
     />
     <meta name="author" content="Elyor Djalalov" />
     <meta
@@ -52,17 +55,17 @@ import "../styles/globals.css";
     <ClientRouter fallback="animate" />
   </head>
 
-  <body class="antialiased bg-white dark:bg-slate-950 w-screen">
+  <body class="antialiased bg-white dark:bg-slate-950 w-full overflow-x-hidden">
     <SquareLines />
     <Header />
     <slot />
-    <Separator text="Work experience" />
+    <Separator text={t("section.experience", lang)} />
     <slot name="experience" />
-    <Separator text="Apps I build" />
+    <Separator text={t("section.projects", lang)} />
     <slot name="projects" />
-    <Separator text="Latest from blog" />
+    <Separator text={t("section.blog", lang)} />
     <slot name="blog" />
-    <Separator text="Contact" />
+    <Separator text={t("section.contact", lang)} />
     <slot name="contacts" />
     <slot name="footer" />
     <script src="../assets/js/main.js"></script>

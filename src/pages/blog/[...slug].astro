@@ -12,8 +12,9 @@ export async function getStaticPaths() {
   const postsByTranslationKey = new Map<string, typeof nonDraftPosts>();
 
   for (const post of nonDraftPosts) {
-    // Use translationKey if provided, otherwise use the post id (for backwards compatibility)
-    const key = post.data.translationKey || post.id;
+    // Use translationKey if provided, otherwise use the post id without extension (for backwards compatibility)
+    const postId = post.id.replace(/\.(md|mdx)$/, '');
+    const key = post.data.translationKey || postId;
     if (!postsByTranslationKey.has(key)) {
       postsByTranslationKey.set(key, []);
     }
@@ -44,7 +45,37 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { translations, defaultPost } = Astro.props;
+let { translations, defaultPost } = Astro.props;
+
+// In SSR mode, we need to fetch data if props are not available
+if (!translations || !defaultPost) {
+  const posts = await getCollection("blog");
+  const nonDraftPosts = posts.filter((post) => !post.data.draft);
+
+  // Get the slug from URL
+  const slug = Astro.params.slug;
+
+  // Group posts by translationKey
+  const postsByTranslationKey = new Map<string, typeof nonDraftPosts>();
+
+  for (const post of nonDraftPosts) {
+    const postId = post.id.replace(/\.(md|mdx)$/, '');
+    const key = post.data.translationKey || postId;
+    if (!postsByTranslationKey.has(key)) {
+      postsByTranslationKey.set(key, []);
+    }
+    postsByTranslationKey.get(key)!.push(post);
+  }
+
+  // Find the matching translation group
+  translations = postsByTranslationKey.get(slug || '') || [];
+
+  if (translations.length === 0) {
+    return Astro.redirect("/blog");
+  }
+
+  defaultPost = translations.find((p) => p.data.lang === "en") || translations[0];
+}
 
 // Get requested language from query param
 const url = new URL(Astro.request.url);
@@ -69,7 +100,7 @@ const stats = readingTime(post.body || "");
 const availableLanguages = translations.map((p) => p.data.lang);
 
 // Base slug for language switcher
-const baseSlug = post.data.translationKey || post.id;
+const baseSlug = post.data.translationKey || post.id.replace(/\.(md|mdx)$/, '');
 ---
 
 <BlogPostLayout

@@ -1,23 +1,36 @@
 ---
-import menus from "@/collections/menu.json";
 import Logo from "@/components/logo.astro";
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import { getLangFromUrl, t } from "@/i18n";
+
+const lang = getLangFromUrl(Astro.url);
+
+// Menu items with translations and icons
+const menus = [
+  { name: t("nav.about", lang), url: "/", id: "home" },
+  { name: t("nav.work", lang), url: "/#experience", id: "work" },
+  { name: t("nav.projects", lang), url: "/#projects", id: "projects" },
+  { name: t("nav.blog", lang), url: "/#blog", id: "blog" },
+  { name: t("nav.contact", lang), url: "/#contact", id: "contact" },
+];
 ---
 
 <!-- This is an invisible div with relative position so that it takes up the height of the menu (because menu is absolute/fixed) -->
-<div class="relative h-14 opacity-0 pointer-events-none" aria-hidden="true">
+<div class="relative h-16 md:h-20 opacity-0 pointer-events-none" aria-hidden="true">
 </div>
 <header
   id="header"
-  class="fixed top-0 left-0 right-0 z-50 h-14 w-screen transition-all duration-300"
+  class="fixed top-0 left-0 right-0 z-50 h-14 md:top-3 w-full transition-all duration-300 pointer-events-none"
 >
   <div
-    class="flex items-center justify-between h-14 px-4 lg:max-w-7xl md:mx-auto border-b border-l-0 border-r-0 border-transparent select-none lg:border-r lg:border-l lg:rounded-b-xl gap-2"
+    class="flex items-center justify-between h-14 px-4 lg:max-w-7xl md:mx-auto border border-transparent select-none lg:rounded-xl gap-4 md:gap-2 pointer-events-auto"
   >
-    <Logo />
+<Logo />
 
+    <!-- Desktop Navigation -->
     <nav
       transition:persist
-      class="relative z-30 flex w-screen text-sm justify-center md:justify-end text-slate-500"
+      class="hidden md:flex relative z-30 text-sm justify-end text-slate-500"
     >
       <div
         class="ease-out duration-300 items-center justify-center relative flex w-auto"
@@ -38,14 +51,16 @@ import Logo from "@/components/logo.astro";
       </div>
     </nav>
 
-    <button
-      id="themeToggle"
-      aria-label="Toggle theme"
-      class="pl-6 relative flex items-center font-medium tracking-wide cursor-pointer text-slate-800 group dark:text-muted-foreground bg-transparent border-none"
-    >
+    <div class="flex items-center gap-3 md:gap-2">
+      <LanguageSwitcher />
+
+      <button
+        id="themeToggle"
+        aria-label="Toggle theme"
+        class="flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:pl-4 rounded-full backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-700/50 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 cursor-pointer text-slate-700 dark:text-slate-400"
+      >
       <div
-        class="absolute left-0 flex items-center justify-center w-6 h-6 overflow-hidden border-b border-transparent horizon text-slate-700
-        dark:text-slate-400"
+        class="relative flex items-center justify-center w-5 h-5 md:w-6 md:h-6 overflow-hidden"
       >
         <svg
           class="absolute w-6 h-6 transition duration-500 transform ease"
@@ -74,9 +89,81 @@ import Logo from "@/components/logo.astro";
           ></path></svg
         >
       </div>
-    </button>
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- Mobile Bottom Navigation Bar -->
+<nav
+  id="bottomNav"
+  class="md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-t border-slate-200/50 dark:border-slate-800/50 safe-area-bottom"
+>
+  <div class="flex items-center justify-around h-16 px-2">
+    <!-- Home -->
+    <a
+      href="/"
+      data-nav="home"
+      class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      <span class="text-[10px] font-medium">{t("nav.about", lang)}</span>
+    </a>
+
+    <!-- Work/Experience -->
+    <a
+      href="/#experience"
+      data-nav="work"
+      class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      <span class="text-[10px] font-medium">{t("nav.work", lang)}</span>
+    </a>
+
+    <!-- Projects -->
+    <a
+      href="/#projects"
+      data-nav="projects"
+      class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+      </svg>
+      <span class="text-[10px] font-medium">{t("nav.projects", lang)}</span>
+    </a>
+
+    <!-- Blog -->
+    <a
+      href="/#blog"
+      data-nav="blog"
+      class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+      </svg>
+      <span class="text-[10px] font-medium">{t("nav.blog", lang)}</span>
+    </a>
+
+    <!-- Contact -->
+    <a
+      href="/#contact"
+      data-nav="contact"
+      class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      <span class="text-[10px] font-medium">{t("nav.contact", lang)}</span>
+    </a>
+  </div>
+</nav>
+
+<!-- Spacer for bottom nav on mobile -->
+<div class="md:hidden h-16" aria-hidden="true"></div>
 
 <!-- This script for blocking flash on refresh page in dark mode -->
 <script is:inline>
@@ -89,17 +176,56 @@ import Logo from "@/components/logo.astro";
   document.addEventListener("astro:after-swap", applyTheme);
   applyTheme();
 
-  const handleScroll = () => {
-    const header = document.getElementById("header");
-    if (window.scrollY > 10) {
-      header?.classList.add("glass");
-    } else {
-      header?.classList.remove("glass");
-    }
-  };
+  // Scroll handling for header is done in main.js
 
-  window.addEventListener("scroll", handleScroll);
-  document.addEventListener("astro:after-swap", () => {
-    window.addEventListener("scroll", handleScroll);
-  });
+  // Bottom nav active state based on scroll position
+  function initBottomNav() {
+    const sections = ['home', 'experience', 'projects', 'blog', 'contact'];
+    const navLinks = document.querySelectorAll('.bottom-nav-link');
+
+    function updateActiveLink() {
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      // Check if at top of page
+      if (window.scrollY < 100) {
+        setActiveLink('home');
+        return;
+      }
+
+      // Find current section
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveLink(sections[i]);
+          return;
+        }
+      }
+    }
+
+    function setActiveLink(activeId) {
+      navLinks.forEach(link => {
+        const navId = link.getAttribute('data-nav');
+        if (navId === activeId || (activeId === 'experience' && navId === 'work')) {
+          link.classList.add('text-violet-600', 'dark:text-violet-400', 'bg-violet-50', 'dark:bg-violet-900/20');
+          link.classList.remove('text-slate-500', 'dark:text-slate-400');
+        } else {
+          link.classList.remove('text-violet-600', 'dark:text-violet-400', 'bg-violet-50', 'dark:bg-violet-900/20');
+          link.classList.add('text-slate-500', 'dark:text-slate-400');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink(); // Initial check
+  }
+
+  initBottomNav();
+  document.addEventListener("astro:after-swap", initBottomNav);
 </script>
+
+<style>
+  /* Safe area for devices with home indicator (iPhone X+) */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+</style>

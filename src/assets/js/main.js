@@ -2,14 +2,10 @@
 
 window.darkMode = false;
 
-const stickyClasses = ["fixed", "h-14"];
-const unstickyClasses = ["absolute"];
+const stickyClasses = ["fixed", "h-14", "!top-0"];
+const unstickyClasses = ["absolute", "!top-3"];
 const stickyClassesContainer = [
-  "border-slate-300/50",
-  "bg-white/80",
-  "dark:border-slate-600/40",
-  "dark:bg-slate-900/60",
-  "backdrop-blur-xl",
+  "navbar-glass",
 ];
 const unstickyClassesContainer = ["border-transparent"];
 let headerElement = null;
@@ -27,18 +23,27 @@ window.stickyHeaderFuncionality = () => {
 };
 
 window.evaluateHeaderPosition = () => {
-  if (window.scrollY > 16) {
-    headerElement.firstElementChild.classList.add(...stickyClassesContainer);
-    headerElement.firstElementChild.classList.remove(
-      ...unstickyClassesContainer,
-    );
-    headerElement.classList.add(...stickyClasses);
-    headerElement.classList.remove(...unstickyClasses);
+  if (!headerElement) return;
+
+  const isDesktop = window.innerWidth >= 768;
+
+  if (isDesktop) {
+    // Desktop behavior: apply blur background on scroll
+    if (window.scrollY > 16) {
+      headerElement.firstElementChild.classList.add(...stickyClassesContainer);
+      headerElement.firstElementChild.classList.remove(...unstickyClassesContainer);
+      headerElement.classList.add(...stickyClasses);
+      headerElement.classList.remove(...unstickyClasses);
+    } else {
+      headerElement.firstElementChild.classList.remove(...stickyClassesContainer);
+      headerElement.firstElementChild.classList.add(...unstickyClassesContainer);
+      headerElement.classList.add(...unstickyClasses);
+      headerElement.classList.remove(...stickyClasses);
+    }
   } else {
+    // Mobile behavior: no blur background, keep fixed position
     headerElement.firstElementChild.classList.remove(...stickyClassesContainer);
     headerElement.firstElementChild.classList.add(...unstickyClassesContainer);
-    headerElement.classList.add(...unstickyClasses);
-    headerElement.classList.remove(...stickyClasses);
   }
 };
 

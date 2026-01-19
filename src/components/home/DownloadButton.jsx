@@ -1,7 +1,13 @@
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function DownloadButton() {
+const translations = {
+  en: "Download Resume",
+  uz: "Rezyumeni yuklash",
+  ru: "Скачать резюме",
+};
+
+export default function DownloadButton({ lang = "en" }) {
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -13,6 +19,9 @@ export default function DownloadButton() {
     link.click();
     document.body.removeChild(link); */
   };
+
+  const buttonText = translations[lang] || translations.en;
+
   return (
     <div className="bg-background flex justify-center items-center">
       <div className="relative inline-flex group">
@@ -20,8 +29,8 @@ export default function DownloadButton() {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          title="Download resume"
-          aria-label="Download Resume"
+          title={buttonText}
+          aria-label={buttonText}
           className="relative inline-flex items-center justify-center px-4 py-4 text-lg font-bold text-white transition-all duration-200 bg-background font-pj rounded-xl"
           onClick={handleClick}
         >
@@ -30,7 +39,7 @@ export default function DownloadButton() {
             className="mr-4 text-slate-700 dark:text-slate-200"
           />
           <span className="text-slate-700 dark:text-slate-200 text-sm">
-            Download Resume
+            {buttonText}
           </span>
         </motion.button>
       </div>

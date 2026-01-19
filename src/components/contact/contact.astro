@@ -1,29 +1,41 @@
+---
+import { getLangFromUrl, t } from "@/i18n";
+import type { Language } from "@/content.config";
+
+interface Props {
+  lang?: Language;
+}
+
+const { lang: propLang } = Astro.props;
+const lang = propLang || getLangFromUrl(Astro.url);
+---
+
 <section
-  class="relative max-full mx-auto h-[150px] sm:h-[220px] md:h-[180px] card px-4"
+  class="relative max-w-5xl mx-auto py-8 px-4 lg:px-0"
   id="contact"
 >
-  <div class="max-w-5xl mx-auto z-50">
+  <div class="z-50">
     <h2
       class="flex flex-row mb-5 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight
 bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
     >
-      Let's Connect
+      {t("contact.title", lang)}
     </h2>
 
     <p
       class="text-sm leading-6 text-slate-700 dark:text-slate-400 sm:text-base lg:text-base"
     >
-      If you want to stay up to date with my work be sure to join my channel on <a
+      {t("contact.description", lang)} <a
         href="https://www.t.me/elDevBlog"
         target="_blank"
         class="text-cyan-600 underline hover:text-violet-900 dark:hover:text-white"
       >
-        Telegram</a
-      >, or you can send me an <a
+        {t("contact.telegram", lang)}</a
+      >{t("contact.orEmail", lang)} <a
         href="mailto:info@elyor.dev"
         class="text-cyan-600 underline hover:text-violet-900 dark:hover:text-white"
-        >email</a
-      > and I'll be sure to get back to you.
+        >{t("contact.email", lang)}</a
+      > {t("contact.willReply", lang)}
     </p>
   </div>
 </section>

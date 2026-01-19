@@ -1,9 +1,8 @@
 ---
-interface Props {
-  error: unknown;
-}
-
 import ErrorLayout from "../layouts/ErrorLayout.astro";
+import { getLangFromUrl, t } from "@/i18n";
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <ErrorLayout>
@@ -15,14 +14,14 @@ import ErrorLayout from "../layouts/ErrorLayout.astro";
         <h2 class="mb-8 font-bold text-9xl">
           <span class="sr-only">Error</span>
           <span class="text-primary text-slate-900 dark:text-slate-100"
-            >404</span
+            >{t("error.404", lang)}</span
           >
         </h2>
         <p class="text-3xl font-semibold md:text-3xl dark:text-slate-400">
-          Sorry, we couldn't find this page.
+          {t("error.notFound", lang)}
         </p>
         <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          But dont worry, you can find plenty of other things on our homepage.
+          {t("error.goHome", lang)}
         </p>
       </div>
     </div>

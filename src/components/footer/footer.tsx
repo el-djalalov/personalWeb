@@ -1,9 +1,22 @@
 import { Data } from "./data.tsx";
 import FooterIcon from "./FooterIcon.tsx";
+import type { Language } from "@/content.config";
 
-export default function Footer() {
+const translations = {
+  en: "Elyor Djalalov",
+  uz: "Elyor Djalalov",
+  ru: "Элёр Джалалов",
+};
+
+interface Props {
+  lang?: Language;
+}
+
+export default function Footer({ lang = "en" }: Props) {
+  const copyrightName = translations[lang] || translations.en;
+
   return (
-    <footer className="bg-white border-t mt-10 dark:bg-background border-slate-200 dark:border-slate-800">
+    <footer className="bg-white border-t mt-20 dark:bg-background border-slate-200 dark:border-slate-800">
       <div className="container flex items-center py-8 mx-auto px-4 md:px-7 w-full md:max-w-7xl justify-between">
         <div className="flex gap-4 justify-center items-center">
           <a
@@ -21,7 +34,7 @@ export default function Footer() {
           </a>
 
           <p className="text-sm  text-slate-700 dark:text-slate-400 dark:text-muted-foreground sm:ml-4 sm:pl-4 sm:border-l sm:border-slate-300 dark:sm:border-slate-700 sm:mt-0">
-            © {new Date().getFullYear()} Elyor Djalalov
+            © {new Date().getFullYear()} {copyrightName}
           </p>
         </div>
 

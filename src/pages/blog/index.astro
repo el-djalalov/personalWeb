@@ -3,6 +3,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
+import { getLangFromUrl, t } from "@/i18n";
+
+const lang = getLangFromUrl(Astro.url);
 
 // Get all blog posts, filter out drafts, sort by date
 const posts = (await getCollection("blog"))
@@ -20,28 +23,28 @@ function getReadingTime(body: string): string {
 ---
 
 <BaseLayout
-  title="Blog | Elyor Djalalov"
-  description="Articles about web development, software architecture, React, TypeScript, and engineering best practices by Elyor Djalalov."
+  title={`${t("blog.title", lang)} | ${t("meta.title", lang)}`}
+  description={t("blog.description", lang)}
 >
   <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
     <!-- Back button -->
     <a
-      href="/"
+      href={lang === "en" ? "/" : `/?lang=${lang}`}
       class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors mb-8"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
-      Back to Home
+      {t("blog.backToHome", lang)}
     </a>
 
     <!-- Header -->
     <header class="mb-12 text-center">
       <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-        Blog
+        {t("blog.title", lang)}
       </h1>
       <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-        Thoughts on web development, software architecture, and engineering best practices.
+        {t("blog.description", lang)}
       </p>
     </header>
 
@@ -50,14 +53,14 @@ function getReadingTime(body: string): string {
       <div class="mb-8">
         <div class="flex flex-wrap justify-center gap-2">
           <a
-            href="/blog"
+            href={lang === "en" ? "/blog" : `/blog?lang=${lang}`}
             class="px-4 py-2 text-sm font-medium rounded-full bg-violet-600 text-white transition-colors"
           >
-            All Posts
+            {t("blog.allPosts", lang)}
           </a>
           {allTags.map((tag) => (
             <a
-              href={`/blog/tag/${tag.toLowerCase()}`}
+              href={lang === "en" ? `/blog/tag/${tag.toLowerCase()}` : `/blog/tag/${tag.toLowerCase()}?lang=${lang}`}
               class="px-4 py-2 text-sm font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-violet-100 dark:hover:bg-violet-900/30 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
             >
               #{tag}
@@ -82,10 +85,10 @@ function getReadingTime(body: string): string {
           </svg>
         </div>
         <h2 class="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
-          No posts yet
+          {t("blog.noPosts", lang)}
         </h2>
         <p class="text-slate-500 dark:text-slate-400">
-          Check back soon for new content!
+          {t("blog.checkBack", lang)}
         </p>
       </div>
     )}
@@ -99,7 +102,7 @@ function getReadingTime(body: string): string {
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
           <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/>
         </svg>
-        Subscribe via RSS
+        {t("blog.subscribeRss", lang)}
       </a>
     </div>
   </main>

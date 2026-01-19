@@ -7,6 +7,7 @@ import LanguageSwitcher from "@/components/blog/LanguageSwitcher.astro";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
+import { t } from "@/i18n";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -20,13 +21,20 @@ interface Props {
 const { post, readingTime, headings, availableLanguages = [], currentLang = DEFAULT_LANGUAGE, baseSlug = post.id } = Astro.props;
 const { title, description, pubDate, updatedDate, author, heroImage, tags, ogImage } = post.data;
 
-const formattedDate = pubDate.toLocaleDateString("en-US", {
+// Date formatting based on language
+const dateLocales = {
+  en: "en-US",
+  uz: "uz-UZ",
+  ru: "ru-RU",
+};
+
+const formattedDate = pubDate.toLocaleDateString(dateLocales[currentLang] || "en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 });
 
-const formattedUpdatedDate = updatedDate?.toLocaleDateString("en-US", {
+const formattedUpdatedDate = updatedDate?.toLocaleDateString(dateLocales[currentLang] || "en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -51,13 +59,13 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
   <main class="max-w-4xl mx-auto px-4 py-8 pt-20">
     <!-- Back to blog -->
     <a
-      href="/blog"
+      href={currentLang === "en" ? "/blog" : `/blog?lang=${currentLang}`}
       class="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors mb-8 group"
     >
       <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
-      Back to Blog
+      {t("blogPost.backToBlog", currentLang)}
     </a>
 
     <article class="blog-post">
@@ -121,7 +129,7 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Updated {formattedUpdatedDate}
+              {t("blogPost.updated", currentLang)} {formattedUpdatedDate}
             </span>
           )}
 
@@ -191,13 +199,13 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
           <div>
             <h3 class="font-semibold text-slate-900 dark:text-white">{author}</h3>
             <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              Team Lead & Sr. Front-end Developer. Writing about web development, software architecture, and engineering best practices.
+              {t("blogPost.authorBio", currentLang)}
             </p>
             <a
-              href="/"
+              href={currentLang === "en" ? "/blog" : `/blog?lang=${currentLang}`}
               class="inline-flex items-center gap-1 text-sm text-violet-600 dark:text-violet-400 hover:underline mt-2"
             >
-              View all posts →
+              {t("blogPost.viewAllPosts", currentLang)}
             </a>
           </div>
         </div>

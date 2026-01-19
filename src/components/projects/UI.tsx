@@ -1,14 +1,39 @@
 import { useEffect, useId, useRef, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/lib/use-outside-click";
-import { projects } from "./data";
+import { getProjects, type Project } from "@/i18n/projects";
+import type { Language } from "@/content.config";
 
-const ProjectContent = ({ content }: { content: () => React.ReactNode }) => {
-  return typeof content === "function" ? content() : content;
+const translations = {
+  en: {
+    title: "My Projects",
+    descriptionPrefix: "Here are ",
+    descriptionHighlight: "some",
+    descriptionSuffix: " of my recent projects. I'm always working on something new, so check back often!",
+  },
+  uz: {
+    title: "Loyihalarim",
+    descriptionPrefix: "Mana so'nggi loyihalarimdan ",
+    descriptionHighlight: "ba'zilari",
+    descriptionSuffix: ". Doimo yangi narsalar ustida ishlayapman, shuning uchun tez-tez qaytib keling!",
+  },
+  ru: {
+    title: "Мои проекты",
+    descriptionPrefix: "Вот ",
+    descriptionHighlight: "некоторые",
+    descriptionSuffix: " из моих последних проектов. Я всегда работаю над чем-то новым, так что заходите почаще!",
+  },
 };
 
-const Projects = () => {
-  const [active, setActive] = useState<(typeof projects)[number] | null>(null);
+interface Props {
+  lang?: Language;
+}
+
+const Projects = ({ lang = "en" }: Props) => {
+  const projects = getProjects(lang);
+  const t = translations[lang] || translations.en;
+
+  const [active, setActive] = useState<Project | null>(null);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -31,17 +56,16 @@ const Projects = () => {
   useOutsideClick(ref, () => setActive(null));
 
   return (
-    <section className="relative max-w-5xl mx-auto" id="projects">
+    <section className="relative max-w-5xl mx-auto py-8 px-4 lg:px-0" id="projects">
       <div className="flex flex-col">
         <h2
           className="flex flex-row mb-5 font-bold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl
                     bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
         >
-          My Projects
+          {t.title}
         </h2>
         <p className="mb-6 text-base dark:text-muted-foreground">
-          Here are <u>some</u> of my recent projects. I'm always working on
-          something new, so check back often!
+          {t.descriptionPrefix}<u>{t.descriptionHighlight}</u>{t.descriptionSuffix}
         </p>
       </div>
 
@@ -118,7 +142,7 @@ const Projects = () => {
                     exit={{ opacity: 0 }}
                     className="text-slate-500 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-slate-300 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
-                    <ProjectContent content={active.content} />
+                    <p>{active.content}</p>
                   </motion.div>
                 </div>
               </div>

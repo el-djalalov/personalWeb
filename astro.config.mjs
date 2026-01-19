@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
+import vercel from "@astrojs/vercel";
 
 export default defineConfig({
   integrations: [
@@ -18,7 +19,8 @@ export default defineConfig({
     }),
   ],
   site: "https://www.elyor.dev",
-  output: "static",
+  output: "server",
+  adapter: vercel(),
   base: "/",
   assets: true,
 });

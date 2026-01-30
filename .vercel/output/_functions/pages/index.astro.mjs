@@ -1,6 +1,6 @@
 import { f as createAstro, c as createComponent, m as maybeRenderHead, a as renderTemplate, g as addAttribute, d as renderSlot, r as renderComponent, e as renderHead, b as renderScript, h as renderTransition } from '../chunks/astro/server_BrJBC0vc.mjs';
 import 'piccolore';
-import { $ as $$Header, a as $$Index$1 } from '../chunks/index_C3Bumi94.mjs';
+import { $ as $$Header, a as $$Index$1 } from '../chunks/index_DcCMCcZ4.mjs';
 import { g as getLangFromUrl, t, $ as $$ClientRouter, a as $$SquareLines } from '../chunks/translations_rIz2cuYn.mjs';
 import 'clsx';
 /* empty css                                  */
@@ -10,7 +10,7 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 import { Download } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue } from 'framer-motion';
 import { useEffect, useState, useId, useRef, useCallback } from 'react';
-import { g as getCollection } from '../chunks/_astro_content_Vv25P74v.mjs';
+import { g as getCollection } from '../chunks/_astro_content_C0Q9j6eF.mjs';
 import readingTime from 'reading-time';
 export { renderers } from '../renderers.mjs';
 

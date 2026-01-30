@@ -12,7 +12,7 @@ import * as z from 'zod';
 import { z as z$1 } from 'zod';
 import { s as slash } from './path_tbLlI_c1.mjs';
 import 'common-ancestor-path';
-import { C as CONTENT_LAYER_TYPE, L as LIVE_CONTENT_TYPE, d as defineCollection } from './_astro_content_Vv25P74v.mjs';
+import { C as CONTENT_LAYER_TYPE, L as LIVE_CONTENT_TYPE, d as defineCollection } from './_astro_content_C0Q9j6eF.mjs';
 import './index_MaT6fT73.mjs';
 import { existsSync, promises } from 'node:fs';
 import pLimit from 'p-limit';

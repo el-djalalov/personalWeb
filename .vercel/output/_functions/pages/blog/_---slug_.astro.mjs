@@ -1,11 +1,11 @@
 import { f as createAstro, c as createComponent, m as maybeRenderHead, g as addAttribute, b as renderScript, a as renderTemplate, r as renderComponent, d as renderSlot, h as renderTransition } from '../../chunks/astro/server_BrJBC0vc.mjs';
 import 'piccolore';
-import { g as getCollection, r as renderEntry } from '../../chunks/_astro_content_Vv25P74v.mjs';
-import { $ as $$BaseLayout } from '../../chunks/BaseLayout_BJgiR7pp.mjs';
+import { g as getCollection, r as renderEntry } from '../../chunks/_astro_content_C0Q9j6eF.mjs';
+import { $ as $$BaseLayout } from '../../chunks/BaseLayout_kndP0h5-.mjs';
 import 'clsx';
 import { jsx } from 'react/jsx-runtime';
 import { useState, useEffect } from 'react';
-import { S as SUPPORTED_LANGUAGES, L as LANGUAGE_NAMES, D as DEFAULT_LANGUAGE } from '../../chunks/index_C3Bumi94.mjs';
+import { S as SUPPORTED_LANGUAGES, L as LANGUAGE_NAMES, D as DEFAULT_LANGUAGE } from '../../chunks/index_DcCMCcZ4.mjs';
 import { t } from '../../chunks/translations_rIz2cuYn.mjs';
 /* empty css                                    */
 import readingTime from 'reading-time';

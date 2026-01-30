@@ -1,6 +1,6 @@
 import { f as createAstro, c as createComponent, g as addAttribute, d as renderSlot, r as renderComponent, e as renderHead, b as renderScript, h as renderTransition, a as renderTemplate, F as Fragment } from './astro/server_BrJBC0vc.mjs';
 import 'piccolore';
-import { $ as $$Header, a as $$Index } from './index_C3Bumi94.mjs';
+import { $ as $$Header, a as $$Index } from './index_DcCMCcZ4.mjs';
 import { $ as $$ClientRouter, a as $$SquareLines } from './translations_rIz2cuYn.mjs';
 /* empty css                          */
 /* empty css                         */

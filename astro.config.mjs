@@ -20,7 +20,9 @@ export default defineConfig({
   ],
   site: "https://www.elyor.dev",
   output: "server",
-  adapter: vercel(),
+  adapter: vercel( {
+    
+  }),
   base: "/",
   assets: true,
 });

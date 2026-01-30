@@ -24,5 +24,4 @@ export default defineConfig({
     webAnalytics: { enabled: true }
   }),
   base: "/",
-  assets: true,
 });

@@ -1,0 +1,29 @@
+---
+import ErrorLayout from "../layouts/ErrorLayout.astro";
+import { getLangFromUrl, t } from "@/i18n";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<ErrorLayout>
+  <section class="relative z-20 max-w-2xl mx-auto my-12 px-7 lg:px-0">
+    <div
+      class="container flex flex-col items-center justify-center px-5 mx-auto my-8"
+    >
+      <div class="max-w-md text-center">
+        <h2 class="mb-8 font-bold text-9xl">
+          <span class="sr-only">Error</span>
+          <span class="text-primary text-slate-900 dark:text-slate-100"
+            >{t("error.404", lang)}</span
+          >
+        </h2>
+        <p class="text-3xl font-semibold md:text-3xl dark:text-slate-400">
+          {t("error.notFound", lang)}
+        </p>
+        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
+          {t("error.goHome", lang)}
+        </p>
+      </div>
+    </div>
+  </section>
+</ErrorLayout>

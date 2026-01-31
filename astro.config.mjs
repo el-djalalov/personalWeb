@@ -19,8 +19,8 @@ export default defineConfig({
     }),
   ],
   site: "https://www.elyor.dev",
-  output: "server",
-  adapter: vercel( {
+  output: "static",
+  adapter: vercel({
     webAnalytics: { enabled: true }
   }),
   base: "/",

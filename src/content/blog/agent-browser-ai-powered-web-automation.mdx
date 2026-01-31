@@ -175,6 +175,64 @@ agent-browser close
 
 That's a complete automation script in a few commands.
 
+## Using with Claude Code
+
+Agent-browser becomes even more powerful when combined with Claude Code. Instead of manually writing commands, you can describe what you want to do and let Claude figure out the automation.
+
+### In Terminal
+
+```bash
+# In your project directory
+claude
+
+# Then give natural language instructions:
+"Use agent-browser to open github.com and take a snapshot"
+"Navigate to example.com and fill out the contact form"
+"Open twitter.com, find the login button, and take a screenshot"
+```
+
+Claude Code will execute the agent-browser commands for you and show you the results.
+
+### In VS Code
+
+1. Open VS Code integrated terminal (Ctrl+` or Cmd+`)
+2. Run `claude`
+3. Describe your automation task
+
+Example prompts that work well:
+
+- "Use agent-browser to test the login flow on my local app"
+- "Open agent-browser session, navigate to the pricing page, and capture all button elements"
+- "Automate filling out the signup form with test data"
+- "Check if the 'Submit' button exists on contact page"
+
+### Why This Combination Works
+
+Claude Code understands the context of your instructions and:
+- Chooses the right agent-browser commands
+- Handles session management automatically
+- Interprets the snapshot output
+- Can make decisions based on what elements are found
+- Chains multiple commands into workflows
+
+For example, you can say:
+```
+"Open github.com, search for 'agent-browser',
+find the first repository link, and click it"
+```
+
+Claude Code will break this down into the appropriate agent-browser commands:
+```bash
+agent-browser open "https://github.com"
+agent-browser snapshot --interactive-only
+agent-browser fill @e[search-input] "agent-browser"
+agent-browser click @e[search-button]
+agent-browser snapshot
+agent-browser click @e[first-repo-link]
+```
+
+This makes browser automation feel conversational rather than procedural.
+
 ## Final Thoughts
 
 Agent-browser isn't trying to replace existing automation tools. It's solving a specific problem: making browser automation work better with AI by using semantic, stable references instead of fragile selectors.

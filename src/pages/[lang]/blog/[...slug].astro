@@ -1,0 +1,80 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import { getCollection, render } from "astro:content";
+import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
+import readingTime from "reading-time";
+import type { Language } from "@/content.config";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog");
+  const nonDraftPosts = posts.filter(post => !post.data.draft);
+
+  // Group posts by translationKey
+  const postsByTranslationKey = new Map<string, typeof nonDraftPosts>();
+
+  for (const post of nonDraftPosts) {
+    const postId = post.id.replace(/\.(md|mdx)$/, "");
+    const key = post.data.translationKey || postId;
+    if (!postsByTranslationKey.has(key)) {
+      postsByTranslationKey.set(key, []);
+    }
+    postsByTranslationKey.get(key)!.push(post);
+  }
+
+  // Create paths for each language and translation group
+  const paths: {
+    params: { lang: string; slug: string };
+    props: {
+      translations: typeof nonDraftPosts;
+      defaultPost: (typeof nonDraftPosts)[0];
+    };
+  }[] = [];
+
+  const languages: Language[] = ["uz", "ru"];
+
+  for (const [translationKey, translations] of postsByTranslationKey) {
+    for (const lang of languages) {
+      // Find the post for this language or fall back to English
+      const langPost = translations.find(p => p.data.lang === lang);
+      const defaultPost = translations.find(p => p.data.lang === "en") || translations[0];
+      const post = langPost || defaultPost;
+
+      paths.push({
+        params: { lang, slug: translationKey },
+        props: { translations, defaultPost: post },
+      });
+    }
+  }
+
+  return paths;
+}) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as { lang: Language };
+const { translations, defaultPost } = Astro.props;
+
+// Find the post for the requested language
+const post = translations.find(p => p.data.lang === lang) || defaultPost;
+
+const { Content, headings } = await render(post);
+
+// Calculate reading time
+const stats = readingTime(post.body || "");
+
+// Get available languages for this post
+const availableLanguages = translations.map(p => p.data.lang);
+
+// Base slug for language switcher
+const baseSlug = post.data.translationKey || post.id.replace(/\.(md|mdx)$/, "");
+---
+
+<BlogPostLayout
+  post={post}
+  readingTime={stats.text}
+  headings={headings}
+  availableLanguages={availableLanguages}
+  currentLang={lang}
+  baseSlug={baseSlug}
+>
+  <Content />
+</BlogPostLayout>

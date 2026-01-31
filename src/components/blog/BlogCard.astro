@@ -1,12 +1,16 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { buildLangUrl, getLangFromUrl } from "@/i18n";
+import type { Language } from "@/content.config";
 
 interface Props {
   post: CollectionEntry<"blog">;
   readingTime: string;
+  lang?: Language;
 }
 
-const { post, readingTime } = Astro.props;
+const { post, readingTime, lang: propLang } = Astro.props;
+const lang = propLang || getLangFromUrl(Astro.url);
 const { title, description, pubDate, heroImage, tags, translationKey } = post.data;
 
 // Use translationKey if available, otherwise fall back to post.id (without extension)
@@ -23,7 +27,7 @@ const formattedDate = pubDate.toLocaleDateString("en-US", {
 
 <article class="group relative flex flex-col h-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/5 hover:border-violet-300 dark:hover:border-violet-700">
   <!-- Image -->
-  <a href={`/blog/${postSlug}`} class="relative aspect-video overflow-hidden">
+  <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="relative aspect-video overflow-hidden">
     {heroImage ? (
       <img
         src={heroImage}
@@ -69,7 +73,7 @@ const formattedDate = pubDate.toLocaleDateString("en-US", {
       class="text-lg font-semibold text-slate-900 dark:text-white mb-2 line-clamp-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors"
       transition:name={`blog-title-${post.id}`}
     >
-      <a href={`/blog/${postSlug}`} class="before:absolute before:inset-0">
+      <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="before:absolute before:inset-0">
         {title}
       </a>
     </h2>

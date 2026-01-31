@@ -24,4 +24,11 @@ export default defineConfig({
     webAnalytics: { enabled: true }
   }),
   base: "/",
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "uz", "ru"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 });

@@ -4,6 +4,17 @@ import { getLangFromUrl } from "@/i18n";
 
 const currentLang = getLangFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
+
+// Remove language prefix from current path to get the base path
+function getBasePath(pathname: string, lang: Language): string {
+  if (lang === "en") {
+    return pathname;
+  }
+  // Remove /uz or /ru prefix
+  return pathname.replace(new RegExp(`^/${lang}`), "") || "/";
+}
+
+const basePath = getBasePath(currentPath, currentLang);
 ---
 
 <div class="relative" id="lang-switcher-container">
@@ -29,10 +40,10 @@ const currentPath = Astro.url.pathname;
   >
     {SUPPORTED_LANGUAGES.map((lang) => {
       const isActive = lang === currentLang;
-      // Build URL with language parameter
+      // Build URL with language prefix
       const langUrl = lang === "en"
-        ? currentPath
-        : `${currentPath}${currentPath.includes("?") ? "&" : "?"}lang=${lang}`;
+        ? basePath
+        : `/${lang}${basePath}`;
 
       return (
         <a

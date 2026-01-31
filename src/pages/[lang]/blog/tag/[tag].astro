@@ -1,53 +1,51 @@
 ---
 export const prerender = true;
+import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
-import { getLangFromUrl, buildLangUrl, t } from "@/i18n";
+import { buildLangUrl } from "@/i18n";
+import type { Language } from "@/content.config";
 
-export async function getStaticPaths() {
+export const getStaticPaths = (async () => {
   const posts = await getCollection("blog");
   const allTags = [...new Set(posts.flatMap(post => post.data.tags))].filter(
     tag => tag && tag.trim() !== "",
   );
 
-  return allTags.map(tag => ({
-    params: { tag: tag.toLowerCase() },
-    props: {
-      tag,
-      posts: posts
-        .filter(
-          post =>
-            !post.data.draft &&
-            post.data.tags
-              .map(t => t.toLowerCase())
-              .includes(tag.toLowerCase()),
-        )
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-    },
-  }));
-}
+  const languages: Language[] = ["uz", "ru"];
+  const paths: { params: { lang: string; tag: string }; props: any }[] = [];
 
-const { tag, posts: allPostsForTag } = Astro.props;
+  for (const lang of languages) {
+    for (const tag of allTags) {
+      paths.push({
+        params: { lang, tag: tag.toLowerCase() },
+        props: {
+          tag,
+          posts: posts
+            .filter(
+              post =>
+                !post.data.draft &&
+                post.data.tags
+                  .map(t => t.toLowerCase())
+                  .includes(tag.toLowerCase()),
+            )
+            .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+        },
+      });
+    }
+  }
 
-// Handle case where props might be undefined (SSR mode)
-if (!tag || !allPostsForTag) {
-  return Astro.redirect("/blog");
-}
+  return paths;
+}) satisfies GetStaticPaths;
 
-const lang = getLangFromUrl(Astro.url);
+const { lang } = Astro.params as { lang: Language };
+const { tag, posts } = Astro.props;
 
-// Filter posts by current language
-const posts = allPostsForTag.filter(post => post.data.lang === lang);
-
-// Get all unique tags for filter (only from posts in current language)
+// Get all unique tags for filter
 const allPosts = await getCollection("blog");
-const allTags = [...new Set(
-  allPosts
-    .filter(post => !post.data.draft && post.data.lang === lang)
-    .flatMap(post => post.data.tags)
-)]
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))]
   .filter(tag => tag && tag.trim() !== "")
   .sort();
 
@@ -58,8 +56,8 @@ function getReadingTime(body: string): string {
 ---
 
 <BaseLayout
-  title={`${tag} - ${t("blog.title", lang)} | ${t("meta.title", lang)}`}
-  description={`${t("blog.description", lang)} - ${tag}`}
+  title={`${tag} - Blog | Elyor Djalalov`}
+  description={`Articles tagged with ${tag} by Elyor Djalalov.`}
 >
   <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
     <!-- Header -->
@@ -89,7 +87,7 @@ function getReadingTime(body: string): string {
       </h1>
       <p class="text-lg text-slate-600 dark:text-slate-400">
         {posts.length}
-        {posts.length === 1 ? t("blog.post", lang) : t("blog.posts", lang)} {t("blog.taggedWith", lang)} <span
+        {posts.length === 1 ? "post" : "posts"} tagged with <span
           class="font-medium">{tag}</span
         >
       </p>
@@ -102,7 +100,7 @@ function getReadingTime(body: string): string {
           href={buildLangUrl("/blog", lang)}
           class="px-4 py-2 text-sm font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-violet-100 dark:hover:bg-violet-900/30 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
         >
-          {t("blog.allPosts", lang)}
+          All Posts
         </a>
         {
           allTags.map(t => (
@@ -137,7 +135,7 @@ function getReadingTime(body: string): string {
       ) : (
         <div class="text-center py-20">
           <p class="text-slate-500 dark:text-slate-400">
-            {t("blog.noPosts", lang)}
+            No posts found with this tag.
           </p>
         </div>
       )

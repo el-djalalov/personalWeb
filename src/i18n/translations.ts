@@ -12,7 +12,7 @@ export const translations = {
 
     // Hero section
     "hero.greeting": "Hi, I'm Elyor",
-    "hero.title": "Team Lead / Sr. Front-end developer",
+    "hero.title": "Sr. Software Engineer",
     "hero.downloadResume": "Download Resume",
 
     // Section headers
@@ -53,13 +53,16 @@ export const translations = {
     "blog.noPosts": "No posts yet",
     "blog.checkBack": "Check back soon for new content!",
     "blog.subscribeRss": "Subscribe via RSS",
+    "blog.post": "post",
+    "blog.posts": "posts",
+    "blog.taggedWith": "tagged with",
 
     // Blog post layout
     "blogPost.backToBlog": "Back to Blog",
     "blogPost.viewAllPosts": "View all posts →",
     "blogPost.updated": "Updated",
     "blogPost.authorBio":
-      "Team Lead & Sr. Front-end Developer. Writing about web development, software architecture, and engineering best practices.",
+      "Sr. Software Engineer. Writing about web development, software architecture, and engineering best practices.",
 
     // 404 page
     "error.404": "404",
@@ -73,7 +76,7 @@ export const translations = {
     // Meta
     "meta.title": "Elyor Djalalov",
     "meta.description":
-      "Elyor Djalalov - Team Lead & Sr. Front-end Developer. Portfolio showcasing web development projects and skills.",
+      "Elyor Djalalov - Sr. Software Engineer. Portfolio showcasing web development projects and skills.",
   },
   uz: {
     // Navigation
@@ -85,7 +88,7 @@ export const translations = {
 
     // Hero section
     "hero.greeting": "Salom, men Elyor",
-    "hero.title": "Jamoa rahbari / Katta Front-end dasturchi",
+    "hero.title": "Katta dastur muhandisi",
     "hero.downloadResume": "Rezyumeni yuklash",
 
     // Section headers
@@ -126,13 +129,16 @@ export const translations = {
     "blog.noPosts": "Hali maqolalar yo'q",
     "blog.checkBack": "Tez orada yangi kontent uchun qaytib keling!",
     "blog.subscribeRss": "RSS orqali obuna bo'ling",
+    "blog.post": "maqola",
+    "blog.posts": "maqola",
+    "blog.taggedWith": "bu tegda",
 
     // Blog post layout
     "blogPost.backToBlog": "Blogga qaytish",
     "blogPost.viewAllPosts": "Barcha maqolalar →",
     "blogPost.updated": "Yangilangan",
     "blogPost.authorBio":
-      "Jamoa rahbari va Katta Front-end dasturchi. Veb-dasturlash, dasturiy ta'minot arxitekturasi va muhandislik haqida yozaman.",
+      "Katta dastur muhandisi. Veb-dasturlash, dasturiy ta'minot arxitekturasi va muhandislik haqida yozaman.",
 
     // 404 page
     "error.404": "404",
@@ -146,7 +152,7 @@ export const translations = {
     // Meta
     "meta.title": "Elyor Djalalov",
     "meta.description":
-      "Elyor Djalalov - Jamoa rahbari va Katta Front-end dasturchi. Veb-dasturlash loyihalari va ko'nikmalari.",
+      "Elyor Djalalov - Katta dastur muhandisi. Veb-dasturlash loyihalari va ko'nikmalari.",
   },
   ru: {
     // Navigation
@@ -158,7 +164,7 @@ export const translations = {
 
     // Hero section
     "hero.greeting": "Привет, я Элёр",
-    "hero.title": "Тимлид / Старший Front-end разработчик",
+    "hero.title": "Старший инженер-программист",
     "hero.downloadResume": "Скачать резюме",
 
     // Section headers
@@ -199,13 +205,16 @@ export const translations = {
     "blog.noPosts": "Пока нет статей",
     "blog.checkBack": "Скоро появится новый контент!",
     "blog.subscribeRss": "Подписаться на RSS",
+    "blog.post": "статья",
+    "blog.posts": "статей",
+    "blog.taggedWith": "с тегом",
 
     // Blog post layout
     "blogPost.backToBlog": "Назад в блог",
     "blogPost.viewAllPosts": "Все статьи →",
     "blogPost.updated": "Обновлено",
     "blogPost.authorBio":
-      "Тимлид и Старший Front-end разработчик. Пишу о веб-разработке, архитектуре ПО и лучших практиках инженерии.",
+      "Старший инженер-программист. Пишу о веб-разработке, архитектуре ПО и лучших практиках инженерии.",
 
     // 404 page
     "error.404": "404",
@@ -219,7 +228,7 @@ export const translations = {
     // Meta
     "meta.title": "Элёр Джалалов",
     "meta.description":
-      "Элёр Джалалов - Тимлид и Старший Front-end разработчик. Портфолио с проектами и навыками веб-разработки.",
+      "Элёр Джалалов - Старший инженер-программист. Портфолио с проектами и навыками веб-разработки.",
   },
 } as const;
 
@@ -235,20 +244,37 @@ export function getTranslations(lang: Language) {
   return translations[lang] || translations.en;
 }
 
-// Helper to get language from URL or default
+// Helper to get language from URL path or query parameter
 export function getLangFromUrl(url: URL): Language {
-  const langParam = url.searchParams.get("lang");
-  if (langParam && ["en", "uz", "ru"].includes(langParam)) {
-    return langParam as Language;
+  const pathname = url.pathname;
+
+  // Check if path starts with /uz/ or /ru/
+  if (pathname.startsWith("/uz/") || pathname === "/uz") {
+    return "uz";
   }
+  if (pathname.startsWith("/ru/") || pathname === "/ru") {
+    return "ru";
+  }
+
+  // Fallback: check query parameter for backwards compatibility
+  const langParam = url.searchParams.get("lang");
+  if (langParam === "uz" || langParam === "ru") {
+    return langParam;
+  }
+
   return "en";
 }
 
-// Helper to build URL with language parameter
+// Helper to build URL with language prefix
 export function buildLangUrl(path: string, lang: Language): string {
+  // Remove leading slash if present
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+
+  // For English (default locale), don't add prefix
   if (lang === "en") {
-    return path;
+    return `/${cleanPath}`;
   }
-  const separator = path.includes("?") ? "&" : "?";
-  return `${path}${separator}lang=${lang}`;
+
+  // For other languages, add language prefix
+  return `/${lang}/${cleanPath}`;
 }

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
-import { getLangFromUrl, t } from "@/i18n";
+import { getLangFromUrl, t, buildLangUrl } from "@/i18n";
 import type { Language } from "@/content.config";
 
 interface Props {
@@ -11,9 +11,9 @@ interface Props {
 const { lang: propLang } = Astro.props;
 const lang = propLang || getLangFromUrl(Astro.url);
 
-// Get latest 3 blog posts
+// Get latest 3 blog posts for current language
 const posts = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
+  .filter((post) => !post.data.draft && post.data.lang === lang)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
@@ -51,7 +51,7 @@ const dateLocales = {
         return (
           <article class="group relative flex flex-col h-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/10 hover:border-violet-300 dark:hover:border-violet-700 card">
             <!-- Image -->
-            <a href={`/blog/${postSlug}`} class="relative aspect-video overflow-hidden">
+            <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="relative aspect-video overflow-hidden">
               {heroImage ? (
                 <img
                   src={heroImage}
@@ -83,7 +83,7 @@ const dateLocales = {
 
               <!-- Title -->
               <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2 line-clamp-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-                <a href={`/blog/${postSlug}`} class="before:absolute before:inset-0">
+                <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="before:absolute before:inset-0">
                   {title}
                 </a>
               </h3>
@@ -124,7 +124,7 @@ const dateLocales = {
   <!-- More Posts Button -->
   <div class="flex justify-center">
     <a
-      href={lang === "en" ? "/blog" : `/blog?lang=${lang}`}
+      href={buildLangUrl("/blog", lang)}
       class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-violet-600 text-white hover:bg-violet-700 transition-all duration-200 hover:shadow-lg hover:shadow-violet-500/25 group"
     >
       {t("blogPreview.morePosts", lang)}

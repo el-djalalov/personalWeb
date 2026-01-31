@@ -1,15 +1,24 @@
 ---
+import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
-import { getLangFromUrl, t, buildLangUrl } from "@/i18n";
+import { t, buildLangUrl } from "@/i18n";
+import type { Language } from "@/content.config";
 
-const lang = getLangFromUrl(Astro.url);
+export const getStaticPaths = (async () => {
+  return [
+    { params: { lang: "uz" } },
+    { params: { lang: "ru" } },
+  ];
+}) satisfies GetStaticPaths;
 
-// Get all blog posts, filter out drafts and by language, sort by date
+const { lang } = Astro.params as { lang: Language };
+
+// Get all blog posts, filter out drafts, sort by date
 const posts = (await getCollection("blog"))
-  .filter((post) => !post.data.draft && post.data.lang === lang)
+  .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Get all unique tags

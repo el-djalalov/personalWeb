@@ -1,17 +1,17 @@
 ---
 import Logo from "@/components/logo.astro";
 import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
-import { getLangFromUrl, t } from "@/i18n";
+import { getLangFromUrl, t, buildLangUrl } from "@/i18n";
 
 const lang = getLangFromUrl(Astro.url);
 
 // Menu items with translations and icons
 const menus = [
-  { name: t("nav.about", lang), url: "/", id: "home" },
-  { name: t("nav.work", lang), url: "/#experience", id: "work" },
-  { name: t("nav.projects", lang), url: "/#projects", id: "projects" },
-  { name: t("nav.blog", lang), url: "/#blog", id: "blog" },
-  { name: t("nav.contact", lang), url: "/#contact", id: "contact" },
+  { name: t("nav.about", lang), url: buildLangUrl("/", lang), id: "home" },
+  { name: t("nav.work", lang), url: buildLangUrl("/#experience", lang), id: "work" },
+  { name: t("nav.projects", lang), url: buildLangUrl("/#projects", lang), id: "projects" },
+  { name: t("nav.blog", lang), url: buildLangUrl("/#blog", lang), id: "blog" },
+  { name: t("nav.contact", lang), url: buildLangUrl("/#contact", lang), id: "contact" },
 ];
 ---
 
@@ -29,7 +29,6 @@ const menus = [
 
     <!-- Desktop Navigation -->
     <nav
-      transition:persist
       class="hidden md:flex relative z-30 text-sm justify-end text-slate-500"
     >
       <div
@@ -102,7 +101,7 @@ const menus = [
   <div class="flex items-center justify-around h-16 px-2">
     <!-- Home -->
     <a
-      href="/"
+      href={buildLangUrl("/", lang)}
       data-nav="home"
       class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
     >
@@ -114,7 +113,7 @@ const menus = [
 
     <!-- Work/Experience -->
     <a
-      href="/#experience"
+      href={buildLangUrl("/#experience", lang)}
       data-nav="work"
       class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
     >
@@ -126,7 +125,7 @@ const menus = [
 
     <!-- Projects -->
     <a
-      href="/#projects"
+      href={buildLangUrl("/#projects", lang)}
       data-nav="projects"
       class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
     >
@@ -138,7 +137,7 @@ const menus = [
 
     <!-- Blog -->
     <a
-      href="/#blog"
+      href={buildLangUrl("/#blog", lang)}
       data-nav="blog"
       class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
     >
@@ -150,7 +149,7 @@ const menus = [
 
     <!-- Contact -->
     <a
-      href="/#contact"
+      href={buildLangUrl("/#contact", lang)}
       data-nav="contact"
       class="bottom-nav-link flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20"
     >

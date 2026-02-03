@@ -60,6 +60,11 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
         },
+        'tilt': {
+          '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(1deg)' },
+          '75%': { transform: 'rotate(-1deg)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -67,6 +72,7 @@ export default {
         'fade-in-scale': 'fade-in-scale 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         'slide-in-right': 'slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'tilt': 'tilt 10s ease-in-out infinite',
       },
       borderRadius: {
         lg: "var(--radius)",

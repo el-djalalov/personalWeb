@@ -24,3 +24,12 @@ pnpm-debug.log*
 .idea/
 
 node_modules.vercel
+
+# AI agent skills and configurations
+.agent/
+.agents/
+.claude/skills/
+.cursor/
+.gemini/
+.github/skills/
+.opencode/

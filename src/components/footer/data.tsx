@@ -62,7 +62,7 @@ export const Data: SocialMediaData[] = [
     ),
   },
   {
-    title: "LindkedIn",
+    title: "LinkedIn",
     link: "https://www.linkedin.com/in/eldjalalov",
     svg: (
       <svg

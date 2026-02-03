@@ -4,6 +4,10 @@ const ParticleBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
+        // Respect user's motion preferences
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
         const canvas = canvasRef.current;
         if (!canvas) return;
 

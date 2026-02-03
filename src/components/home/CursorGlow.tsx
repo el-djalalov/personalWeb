@@ -11,8 +11,9 @@ const CursorGlow = () => {
     const cursorYSpring = useSpring(cursorY, springConfig);
 
     useEffect(() => {
-        // Only enable on desktop
+        // Only enable on desktop and respect motion preferences
         if (window.matchMedia("(pointer: coarse)").matches) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
         setIsVisible(true);
 

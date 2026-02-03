@@ -1,14 +1,19 @@
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
+import type { Language } from "@/content.config";
 
-const translations = {
+const translations: Record<Language, string> = {
   en: "Download Resume",
   uz: "Rezyumeni yuklash",
   ru: "Скачать резюме",
 };
 
-export default function DownloadButton({ lang = "en" }) {
-  const handleClick = (e) => {
+interface Props {
+  lang?: Language;
+}
+
+export default function DownloadButton({ lang = "en" }: Props) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     // Programmatically trigger download
@@ -37,6 +42,7 @@ export default function DownloadButton({ lang = "en" }) {
           <Download
             size="18"
             className="mr-4 text-slate-700 dark:text-slate-200"
+            aria-hidden="true"
           />
           <span className="text-slate-700 dark:text-slate-200 text-sm">
             {buttonText}

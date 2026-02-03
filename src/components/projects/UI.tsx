@@ -88,8 +88,13 @@ const Projects = ({ lang = "en" }: Props) => {
               layout
               onClick={() => setActive(null)}
               aria-label="Close project detail"
-              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
-            ></motion.button>
+              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white dark:bg-slate-800 rounded-full h-6 w-6 text-slate-600 dark:text-slate-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </motion.button>
             <motion.div
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               layoutId={`card-${active.title}-${id}`}
@@ -98,7 +103,7 @@ const Projects = ({ lang = "en" }: Props) => {
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
-                  loading="lazy"
+                  loading="eager"
                   width={200}
                   height={200}
                   src={active.src}
@@ -129,6 +134,7 @@ const Projects = ({ lang = "en" }: Props) => {
                     exit={{ opacity: 0 }}
                     href={active.ctaLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-slate-900"
                   >
                     {active.ctaText}
@@ -156,8 +162,16 @@ const Projects = ({ lang = "en" }: Props) => {
             whileHover={{ y: -5 }}
             layoutId={`card-${card.title}-${id}`}
             key={card.title}
+            role="button"
+            tabIndex={0}
             onClick={() => setActive(card)}
-            className="flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setActive(card);
+              }
+            }}
+            className="flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
           >
             <div className="flex gap-4 flex-col w-full">
               <motion.div layoutId={`image-${card.title}-${id}`}>

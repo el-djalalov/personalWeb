@@ -1,18 +1,18 @@
 [
-   {
+  {
     "dates": "Nov. 2025 - Present",
     "role": "Sr. Software Engineer",
     "company": "Vention",
-    "description": "Working on a platform for automating manufacturing equipment. Building new features and improving existing ones.",
+    "description": "Leading the PDW phase and application building for a car dealership Repair Order dispatching platform powered by AI and Google OR-Tools.",
     "logo": "/images/experiences/vention_logo.jpeg",
     "website": "https://ventionteams.com/",
     "content": null
   },
   {
-    "dates": "Dec. 2024 - App. 2025",
+    "dates": "Dec. 2024 - Apr. 2025",
     "role": "Sr. Front-end Developer / TL",
     "company": "Valletta Software Development",
-    "description": "Building complex systems, working on a large-scale projects for major clients in  Transport and Agro sectors.",
+    "description": "Built complex systems and worked on large-scale projects for major clients in Transport and Agro sectors.",
     "logo": "/images/experiences/valletta.jpeg",
     "website": "https://www.vallettasoftware.com/",
     "content": null
@@ -21,7 +21,7 @@
     "dates": "Sep. 2022 - Nov. 2024",
     "role": "Sr. Front-end Developer",
     "company": "Soft-Control",
-    "description": "Completed 2 projects: Project Management System and  CIMP ( Cross-industrial marketing platform)",
+    "description": "Completed 2 projects: a Project Management System and CIMP (Cross-Industrial Marketing Platform).",
     "logo": "/images/experiences/SoftControl.png",
     "website": "https://www.soft-control.ru/",
     "content": null
@@ -30,17 +30,16 @@
     "dates": "July 2021 - May 2022",
     "role": "Front-end Developer",
     "company": "Intelligent Learning Centre",
-    "description": "Completed 2 projects: Student Management System and landing page for online courses",
+    "description": "Completed 2 projects: a Student Management System and a landing page for online courses.",
     "logo": "/images/experiences/Intelligent.webp",
     "website": "https://intelligent-lc.uz/",
     "content": null
   },
-
   {
-    "dates": "Oct 2018 - June 2021",
+    "dates": "Oct. 2018 - June 2021",
     "role": "Front-end Developer (Freelancer)",
     "company": "Home",
-    "description": "Project description: Management system for construction company (front-end part) and landing pages for different businesses",
+    "description": "Built a management system for a construction company (frontend) and landing pages for various businesses.",
     "logo": "/images/experiences/home.png",
     "website": "https://www.elyor.dev/",
     "content": null

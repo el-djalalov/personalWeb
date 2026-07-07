@@ -1,0 +1,233 @@
+[
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "97d716ce-258a-401c-ac60-2907b4ef98b6",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sL -o /dev/null -w \"%{http_code} %{content_type}\\n\" \"https://topqir.uz/favicon.ico\" ; curl -sL \"https://topqir.uz\" | grep -oiE '(og:image[^>]*|rel=\"icon\"[^>]*|apple-touch-icon[^>]*)' | head -5",
+      "description": "Check topqir.uz for logo/favicon URLs"
+    },
+    "tool_use_id": "toolu_01ACT5ecRUQv8YoDVq4fGDg1"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "97d716ce-258a-401c-ac60-2907b4ef98b6",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sL -o \"public/images/experiences/topqir.png\" \"https://topqir.uz/icons/icon-192x192.png\" && file \"public/images/experiences/topqir.png\" 2>/dev/null || ls -la public/images/experiences/topqir.png",
+      "description": "Download Topqir icon as experience logo"
+    },
+    "tool_use_id": "toolu_016RgLguKeUJQiFLX4qM336M"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "97d716ce-258a-401c-ac60-2907b4ef98b6",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn build 2>&1 | tail -15",
+      "timeout": 300000,
+      "description": "Build site to verify changes"
+    },
+    "tool_use_id": "toolu_01QRzHP4v32ufdh9HEj4XPNQ"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "97d716ce-258a-401c-ac60-2907b4ef98b6",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn install --frozen-lockfile 2>&1 | tail -3 && yarn build 2>&1 | tail -12",
+      "timeout": 600000,
+      "description": "Install deps then build"
+    },
+    "tool_use_id": "toolu_01QVZvPehGkXHuiyJUgyjZbj"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "97d716ce-258a-401c-ac60-2907b4ef98b6",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn install 2>&1 | tail -5",
+      "timeout": 600000,
+      "description": "Install dependencies (retry with network)"
+    },
+    "tool_use_id": "toolu_01671VU3TQxRBD6Hhv1meFuR"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "b9cc1440-6676-4dea-ab70-9768dedcbd60",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn build 2>&1 | tail -12",
+      "timeout": 300000,
+      "description": "Build site to verify changes"
+    },
+    "tool_use_id": "toolu_01VjxykyCNtXUSifz1iN3q9t"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "b9cc1440-6676-4dea-ab70-9768dedcbd60",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "tail -5 \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c\\tasks\\bk9gr8a2e.output\"; ls node_modules/.bin/astro* 2>/dev/null | head -3; ls node_modules | wc -l",
+      "description": "Check install output and astro binary presence"
+    },
+    "tool_use_id": "toolu_01AD416g5TvMmr71oRPuVjY7"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "b9cc1440-6676-4dea-ab70-9768dedcbd60",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn install 2>&1 | tail -4",
+      "timeout": 600000,
+      "description": "Install dependencies without sandbox",
+      "dangerouslyDisableSandbox": true
+    },
+    "tool_use_id": "toolu_01TUXrUGpPAmLjwAbUYxuomT"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "b9cc1440-6676-4dea-ab70-9768dedcbd60",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -s -o /dev/null -w \"%{http_code}\\n\" https://registry.yarnpkg.com/ ; curl -s -o /dev/null -w \"%{http_code}\\n\" https://registry.npmjs.org/",
+      "description": "Test npm registry reachability",
+      "dangerouslyDisableSandbox": true
+    },
+    "tool_use_id": "toolu_01BQrdDdCjBUwAd8M27hMzb7"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "b9cc1440-6676-4dea-ab70-9768dedcbd60",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo \"HTTP_PROXY=$HTTP_PROXY HTTPS_PROXY=$HTTPS_PROXY\"; npm config get proxy; npm config get https-proxy; yarn config get proxy 2>/dev/null; yarn config get https-proxy 2>/dev/null",
+      "description": "Check proxy configuration for npm/yarn",
+      "dangerouslyDisableSandbox": true
+    },
+    "tool_use_id": "toolu_011YjU4SCc7bQT5PKDEnmQM3"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "bb6b66ef-820a-415d-b4ed-79684bfd066c",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "node -e \"JSON.parse(require('fs').readFileSync('src/collections/experiences.json','utf8')); console.log('JSON valid')\" && npx --yes tsc --noEmit --skipLibCheck src/i18n/experiences.ts 2>&1 | head -5",
+      "description": "Validate JSON and type-check experiences.ts"
+    },
+    "tool_use_id": "toolu_01ARVvzqbfggzmrkT873DUG3"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "bb6b66ef-820a-415d-b4ed-79684bfd066c",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "npx --yes typescript@latest --help >/dev/null 2>&1; npx --package typescript --yes tsc --noEmit --skipLibCheck --strict src/i18n/experiences.ts 2>&1 | head -10",
+      "timeout": 180000,
+      "description": "Type-check experiences.ts with tsc via npx"
+    },
+    "tool_use_id": "toolu_01DXhWdKzGZChfgujtU2fUAC"
+  },
+  {
+    "session_id": "25cfbe32-31bb-4710-a9c1-28f08052264c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\25cfbe32-31bb-4710-a9c1-28f08052264c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "bb6b66ef-820a-415d-b4ed-79684bfd066c",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "npx --package typescript --yes tsc --noEmit --skipLibCheck --ignoreConfig src/i18n/experiences.ts 2>&1 | head -10; echo \"exit: $?\"",
+      "timeout": 180000,
+      "description": "Type-check experiences.ts standalone"
+    },
+    "tool_use_id": "toolu_01MxkiAzXcufXPDLhbxDy5V8"
+  }
+]

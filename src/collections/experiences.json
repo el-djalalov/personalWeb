@@ -3,25 +3,34 @@
     "dates": "Nov. 2025 - Present",
     "role": "Sr. Software Engineer",
     "company": "Vention",
-    "description": "Leading the PDW phase and application building for a car dealership Repair Order dispatching platform powered by AI and Google OR-Tools.",
+    "description": "Pre-sale solution engineering across 10+ prospective client projects — leading client discovery, requirement gathering and effort estimation, and designing end-to-end solution architectures (backend, frontend, API contracts, AWS).",
     "logo": "/images/experiences/vention_logo.jpeg",
     "website": "https://ventionteams.com/",
     "content": null
   },
   {
-    "dates": "Dec. 2024 - Apr. 2025",
-    "role": "Sr. Front-end Developer / TL",
+    "dates": "Jan. 2026 - June 2026",
+    "role": "Full-Stack Engineer & Architect",
+    "company": "Topqir.uz",
+    "description": "Kahoot-style EdTech platform with 350K+ active users. Led the React to Next.js migration, designed real-time multiplayer gameplay with Centrifugo (WebSockets), and built a multi-model AI orchestration system for teachers.",
+    "logo": "/images/experiences/topqir.png",
+    "website": "https://topqir.uz/",
+    "content": null
+  },
+  {
+    "dates": "Dec. 2024 - Aug. 2025",
+    "role": "Software Engineer",
     "company": "Valletta Software Development",
-    "description": "Built complex systems and worked on large-scale projects for major clients in Transport and Agro sectors.",
+    "description": "Built AgroNetZero, an AI- and GIS-powered soil analytics platform (25+ pages, front-end from scratch), and the Tallinja public transport control system with 40+ REST API integrations.",
     "logo": "/images/experiences/valletta.jpeg",
     "website": "https://www.vallettasoftware.com/",
     "content": null
   },
   {
-    "dates": "Sep. 2022 - Nov. 2024",
+    "dates": "Sep. 2022 - Sep. 2024",
     "role": "Sr. Front-end Developer",
     "company": "Soft-Control",
-    "description": "Completed 2 projects: a Project Management System and CIMP (Cross-Industrial Marketing Platform).",
+    "description": "Completed 2 projects: a Jira-integrated Project Management System and CIMP (Cross-Industrial Marketing Platform) for Rostelecom with 150+ REST APIs and role-based access control.",
     "logo": "/images/experiences/SoftControl.png",
     "website": "https://www.soft-control.ru/",
     "content": null
@@ -30,7 +39,7 @@
     "dates": "July 2021 - May 2022",
     "role": "Front-end Developer",
     "company": "Intelligent Learning Centre",
-    "description": "Completed 2 projects: a Student Management System and a landing page for online courses.",
+    "description": "Reworked the online registration flow of a student management system, driving a 120%+ monthly increase in registrations.",
     "logo": "/images/experiences/Intelligent.webp",
     "website": "https://intelligent-lc.uz/",
     "content": null
@@ -39,7 +48,7 @@
     "dates": "Oct. 2018 - June 2021",
     "role": "Front-end Developer (Freelancer)",
     "company": "Home",
-    "description": "Built a management system for a construction company (frontend) and landing pages for various businesses.",
+    "description": "Built front-ends for a construction company management system and landing pages for various businesses.",
     "logo": "/images/experiences/home.png",
     "website": "https://www.elyor.dev/",
     "content": null

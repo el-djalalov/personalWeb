@@ -1,0 +1,128 @@
+---
+title: "Spec-Driven Development: How I Stopped Vibe Coding with AI"
+description: "What Spec-Driven Development (SDD) is, why it became the standard way to work with AI coding agents, and the lessons I learned running a full spec-to-ship pipeline on a real project."
+pubDate: 2026-05-14
+author: "Elyor Djalalov"
+tags: ["Spec-Driven Development", "AI", "Software Engineering", "Claude Code", "Workflow", "Best Practices"]
+heroImage: "/images/blog/sdd-workflow.jpg"
+draft: false
+---
+
+AI coding agents are great at writing code. They are terrible at guessing what you meant.
+
+That single sentence explains why **Spec-Driven Development (SDD)** went from a niche idea in 2025 to a mainstream practice today. Every major AI coding tool — GitHub Spec Kit, AWS Kiro, Claude Code, Cursor, OpenSpec — now ships its own flavor of it.
+
+I have been running a full SDD workflow on a production-grade side project for months. This post explains what SDD is, why it works, and what I learned from actually living with it — including the parts that are harder than the blog posts admit.
+
+## What Is Spec-Driven Development?
+
+In SDD, a written specification — not the code — is the primary artifact. The workflow looks like this:
+
+1. **Write a spec** describing what the system should do, its constraints, and what "done" means
+2. **Derive a plan** that breaks the spec into small, verifiable tasks
+3. **Generate code** (with AI assistance) against the spec and the tasks
+4. **Verify** the result against the spec — tests, review, acceptance criteria
+5. When requirements change, **edit the spec first**, then regenerate or update the code
+
+The spec stays alive. It is version-controlled, reviewed, and cited by the code that implements it.
+
+![SDD workflow: specify, plan, break down tasks, implement, validate, evolve — all revolving around a living specification as the single source of truth](/images/blog/sdd-workflow.jpg)
+
+## Why It Emerged
+
+SDD is a direct response to the failure mode of "vibe coding" with large language models. When you drive an agent through a long, meandering conversation, three things happen:
+
+- The agent produces **plausible code that drifts from your intent**
+- Context gets lost between sessions, so decisions get **re-made differently** each time
+- The codebase **decays** as inconsistent patterns pile up
+
+A spec fixes ambiguity **once, in writing, before generation**. Instead of correcting the agent turn by turn, you give it a fixed contract to code against. The conversation gets shorter and the output gets more consistent.
+
+## How My Pipeline Works
+
+On my project, SDD is not a document template — it is the operating model. The delivery pipeline is a chain of commands:
+
+```
+/spec → /plan → /tdd → /implement → /review → /verify → /ship
+```
+
+Each step produces a real artifact:
+
+- **`/spec`** drafts a specification from a standard template into a dated folder. It goes through an "interview" phase where the AI asks clarifying questions, and the spec moves from *Draft* to *Approved* before any code is written.
+- **`/plan`** turns the approved spec into a task list, with each task linked back to a spec section.
+- **`/tdd` and `/implement`** generate code test-first, following the RED → GREEN → REFACTOR cycle.
+- **`/review`** runs a two-stage review: spec compliance first (did it build the right thing?), then code quality (is it built well?).
+- **`/verify`** is a hard gate: lint, types, tests, and build must all be green.
+- **`/ship`** handles the commit, PR, and release checklist.
+
+Around this pipeline sit three supporting layers:
+
+### 1. A Written Knowledge Base
+
+Specs do not exist in a vacuum. They cite **Architecture Decision Records (ADRs)** and **numbered coding standards**. My project currently has 14 ADRs and around 60 indexed standards across nine domains. When a spec says *"Do NOT bypass the 3-layer pattern"* or *"Must validate stage transitions server-side"*, the agent codes against fixed rules instead of inventing its own.
+
+ADRs are immutable — a new decision supersedes an old one, it never rewrites it. That gives you a traceable history of *why* things are the way they are.
+
+### 2. Enforcement Hooks
+
+Documentation alone does not constrain an AI agent. Six automated hooks run on **every file write**:
+
+- A secret scanner blocks credentials from ever entering the codebase
+- Formatters and linters run automatically on TypeScript changes
+- Database migrations are safety-checked before they land
+- Affected tests run immediately after edits
+- Bundle size is monitored so regressions surface instantly
+
+This is the always-on guardrail layer beneath the visible workflow. The agent cannot "forget" the rules, because the rules are executable.
+
+### 3. Automated Review in CI
+
+Every pull request gets an automated AI review in CI, acting as a second reviewer. It checks spec compliance, test coverage, and project-specific concerns like tenant isolation. It is not a replacement for human review — more on that below — but it reliably catches the boring mistakes.
+
+## What Traceability Actually Buys You
+
+The underrated benefit of SDD is the chain it creates:
+
+```
+requirement → spec → ADR → standards → tasks → code → tests → docs
+```
+
+Everything lives in git. Six months later, when you wonder why a constraint exists, you follow the chain instead of reverse-engineering your own code. For AI-assisted work, this matters even more: the agent can load the same chain and make decisions consistent with everything that came before.
+
+## The Honest Lessons
+
+SDD is not free, and the hard parts are worth naming.
+
+**1. The spec is only as good as its reviewer.** Working mostly solo, I approve my own specs. An automated PR bot helps, but it is not the same as an independent human challenging your assumptions. If you adopt SDD on a team, make spec review a real gate with a real second person.
+
+**2. Verbal decisions leak.** Even with strong discipline, some decisions get made in your head or in a chat and never become an ADR or a spec. Each one is a small traceability leak. The fix is a simple rule: every load-bearing decision gets written down, no exceptions.
+
+**3. Process without measurement plateaus.** I can point at specs, ADRs, and green builds — but I do not yet measure cycle time, rework rate, or escaped defects. Without metrics, you cannot tell whether the process is actually getting better or just heavier.
+
+**4. Not every tool earns its keep.** Some parts of my harness (like a heavyweight blueprint workflow for complex features) exist but never get used. Prune what you do not use. A smaller process you actually follow beats a bigger one you route around.
+
+**5. SDD does not cover operations by itself.** Specs and hooks make *building* disciplined, but deployment, observability, and incident response are separate muscles. A perfect spec pipeline can still ship into an environment with no monitoring.
+
+## Should You Adopt It?
+
+If you use AI agents for anything beyond throwaway scripts — yes, at some scale.
+
+Start small:
+
+1. **Write a one-page spec before your next non-trivial feature.** Include explicit constraints and a definition of done.
+2. **Make the agent plan before it codes.** A task list derived from the spec is cheap and catches misunderstandings early.
+3. **Add one enforcement hook.** A secret scanner or auto-linter on every write pays for itself in a week.
+4. **Record decisions as ADRs.** One decision per record, never rewritten.
+
+You do not need a 28-command harness on day one. You need the habit of resolving ambiguity in writing before generation — everything else is tooling on top of that idea.
+
+The industry converged on SDD for a simple reason: AI made writing code cheap, which made *knowing what to build* the expensive part. Specs are how you spend that effort once, instead of on every conversation.
+
+---
+
+*Sources and further reading:*
+
+- [Spec-Driven Development (SDD): The Definitive 2026 Guide — BCMS](https://thebcms.com/blog/spec-driven-development)
+- [Spec-Driven Development in 2026: What It Is, the Tooling, and How Teams Actually Use It — DEV Community](https://dev.to/krlz/spec-driven-development-in-2026-what-it-is-the-tooling-and-how-teams-actually-use-it-2fk2)
+- [What Is Spec-Driven Development? A Complete Guide — Augment Code](https://www.augmentcode.com/guides/what-is-spec-driven-development)
+- [Spec-Driven Development in 2026: Guide + Tool Comparison — CodeMySpec](https://codemyspec.com/blog/spec-driven-development)

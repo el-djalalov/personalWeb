@@ -13,11 +13,21 @@ export interface Experience {
 export const experiences: Record<Language, Experience[]> = {
   en: [
     {
-      dates: "Nov. 2025 - Present",
-      role: "Sr. Software Engineer",
+      dates: "Apr. 2026 - Present",
+      role: "Lead Software Engineer (Solutions & AI engineering)",
       company: "Vention",
       description:
-        "Pre-sale solution engineering across 10+ prospective client projects — leading client discovery, requirement gathering and effort estimation, and designing end-to-end solution architectures (backend, frontend, API contracts, AWS).",
+        "Pre-sale solutioning and AI engineering across 10+ prospective client projects — designed end-to-end architectures (service boundaries, API contracts, data models, AWS) and drove prompt- and context-engineering standards while mentoring engineers.",
+      logo: "/images/experiences/vention_logo.jpeg",
+      website: "https://ventionteams.com/",
+      content: null,
+    },
+    {
+      dates: "Nov. 2025 - Mar. 2026",
+      role: "Full Stack Engineer",
+      company: "Vention",
+      description:
+        "Delivered a full client MVP end to end with a spec-driven, AI-assisted (SDD) workflow — Node.js/NestJS backend, Next.js marketing site, React internal app, Redis caching, and PostgreSQL.",
       logo: "/images/experiences/vention_logo.jpeg",
       website: "https://ventionteams.com/",
       content: null,
@@ -75,11 +85,21 @@ export const experiences: Record<Language, Experience[]> = {
   ],
   uz: [
     {
-      dates: "Noy. 2025 - Hozir",
-      role: "Katta Dasturchi",
+      dates: "Apr. 2026 - Hozir",
+      role: "AI Native Muhandis",
       company: "Vention",
       description:
-        "10+ potentsial mijoz loyihalari bo'yicha presale yechim muhandisligi — mijozlar bilan discovery uchrashuvlari, talablarni yig'ish va baholash, hamda to'liq yechim arxitekturalarini (backend, frontend, API, AWS) loyihalash.",
+        "10+ potentsial mijoz loyihalari bo'yicha presale yechimlar va AI muhandisligi — to'liq arxitekturalarni (servis chegaralari, API kontraktlari, ma'lumot modellari, AWS) loyihaladim hamda prompt va kontekst muhandisligi standartlarini joriy qilib, muhandislarga mentorlik qildim.",
+      logo: "/images/experiences/vention_logo.jpeg",
+      website: "https://ventionteams.com/",
+      content: null,
+    },
+    {
+      dates: "Noy. 2025 - Mart 2026",
+      role: "Full Stack Muhandis",
+      company: "Vention",
+      description:
+        "Spec-driven, AI yordamidagi (SDD) ish jarayoni bilan to'liq mijoz MVP'sini yetkazdim — Node.js/NestJS backend, Next.js marketing sayti, React ichki ilova, Redis keshlash va PostgreSQL.",
       logo: "/images/experiences/vention_logo.jpeg",
       website: "https://ventionteams.com/",
       content: null,
@@ -137,11 +157,21 @@ export const experiences: Record<Language, Experience[]> = {
   ],
   ru: [
     {
-      dates: "Ноя. 2025 - Настоящее время",
-      role: "Старший разработчик",
+      dates: "Апр. 2026 - Настоящее время",
+      role: "AI Native инженер",
       company: "Vention",
       description:
-        "Пресейл-инжиниринг решений для 10+ потенциальных клиентских проектов — проведение discovery-встреч, сбор требований и оценка трудозатрат, проектирование end-to-end архитектур (backend, frontend, API, AWS).",
+        "Пресейл-инжиниринг решений и AI-инжиниринг для 10+ потенциальных клиентских проектов — проектировал end-to-end архитектуры (границы сервисов, API-контракты, модели данных, AWS) и внедрял стандарты prompt- и context-инжиниринга, менторя инженеров.",
+      logo: "/images/experiences/vention_logo.jpeg",
+      website: "https://ventionteams.com/",
+      content: null,
+    },
+    {
+      dates: "Ноя. 2025 - Март 2026",
+      role: "Full Stack инженер",
+      company: "Vention",
+      description:
+        "Поставил полный клиентский MVP по spec-driven, AI-ассистированному (SDD) процессу — backend на Node.js/NestJS, маркетинговый сайт на Next.js, внутреннее приложение на React, кеширование Redis и PostgreSQL.",
       logo: "/images/experiences/vention_logo.jpeg",
       website: "https://ventionteams.com/",
       content: null,

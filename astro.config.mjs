@@ -5,6 +5,8 @@ import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
+  // Dev toolbar floats over the mobile bottom nav (covers the Projects tab) — keep it off
+  devToolbar: { enabled: false },
   integrations: [
     react(),
     tailwind({

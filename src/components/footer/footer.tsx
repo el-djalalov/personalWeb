@@ -16,7 +16,7 @@ export default function Footer({ lang = "en" }: Props) {
   const copyrightName = translations[lang] || translations.en;
 
   return (
-    <footer className="bg-white border-t mt-20 dark:bg-background border-slate-200 dark:border-slate-800">
+    <footer className="bg-white border-t mt-20 pb-20 md:pb-0 dark:bg-background border-slate-200 dark:border-slate-800">
       <div className="container flex items-center py-8 mx-auto px-4 md:px-7 w-full md:max-w-7xl justify-between">
         <div className="flex gap-4 justify-center items-center">
           <a

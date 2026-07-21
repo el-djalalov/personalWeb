@@ -25,6 +25,22 @@ const translations = {
   },
 };
 
+const useIsDesktop = () => {
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches,
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", onChange);
+    setIsDesktop(mql.matches);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  return isDesktop;
+};
+
 interface Props {
   lang?: Language;
 }
@@ -32,8 +48,11 @@ interface Props {
 const Projects = ({ lang = "en" }: Props) => {
   const projects = getProjects(lang);
   const t = translations[lang] || translations.en;
+  const isDesktop = useIsDesktop();
 
+  // Desktop: expanded modal card. Mobile: inline accordion.
   const [active, setActive] = useState<Project | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -53,7 +72,20 @@ const Projects = ({ lang = "en" }: Props) => {
     };
   }, [active, onKeyDown]);
 
+  // Close desktop modal if viewport shrinks to mobile
+  useEffect(() => {
+    if (!isDesktop) setActive(null);
+  }, [isDesktop]);
+
   useOutsideClick(ref, () => setActive(null));
+
+  const onCardSelect = (card: Project) => {
+    if (isDesktop) {
+      setActive(card);
+    } else {
+      setExpanded((current) => (current === card.title ? null : card.title));
+    }
+  };
 
   return (
     <section className="relative max-w-5xl mx-auto py-8 px-4 lg:px-0" id="projects">
@@ -156,51 +188,106 @@ const Projects = ({ lang = "en" }: Props) => {
           </div>
         )}
       </AnimatePresence>
+
       <ul className="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4">
-        {projects.map((card) => (
-          <motion.li
-            whileHover={{ y: -5 }}
-            layoutId={`card-${card.title}-${id}`}
-            key={card.title}
-            role="button"
-            tabIndex={0}
-            onClick={() => setActive(card)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setActive(card);
-              }
-            }}
-            className="flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
-          >
-            <div className="flex gap-4 flex-col w-full">
-              <motion.div layoutId={`image-${card.title}-${id}`}>
-                <img
-                  loading="lazy"
-                  width={200}
-                  height={200}
-                  src={card.src}
-                  alt={card.title}
-                  className="h-60 w-full rounded-t-xl object-cover object-top"
-                />
-              </motion.div>
-              <div className="flex justify-center items-start flex-col p-4">
-                <motion.h3
-                  layoutId={`title-${card.title}-${id}`}
-                  className="font-medium text-slate-800 dark:text-slate-200 text-center md:text-left text-base"
-                >
-                  {card.title}
-                </motion.h3>
-                <motion.p
-                  layoutId={`description-${card.description}-${id}`}
-                  className="text-slate-500 dark:text-slate-400 text-center md:text-left text-base"
-                >
-                  {card.description}
-                </motion.p>
+        {projects.map((card) => {
+          const isOpen = !isDesktop && expanded === card.title;
+          return (
+            <motion.li
+              whileHover={{ y: -5 }}
+              layoutId={`card-${card.title}-${id}`}
+              key={card.title}
+              role="button"
+              tabIndex={0}
+              aria-expanded={isDesktop ? undefined : isOpen}
+              onClick={() => onCardSelect(card)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onCardSelect(card);
+                }
+              }}
+              className="flex flex-col shadow-xl bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
+            >
+              <div className="flex gap-4 flex-col w-full">
+                <motion.div layoutId={`image-${card.title}-${id}`}>
+                  <img
+                    loading="lazy"
+                    width={200}
+                    height={200}
+                    src={card.src}
+                    alt={card.title}
+                    className="h-60 w-full rounded-t-xl object-cover object-top"
+                  />
+                </motion.div>
+                <div className="flex justify-between items-start gap-3 w-full p-4">
+                  <div className="flex justify-center items-start flex-col">
+                    <motion.h3
+                      layoutId={`title-${card.title}-${id}`}
+                      className="font-medium text-slate-800 dark:text-slate-200 text-left text-base"
+                    >
+                      {card.title}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`description-${card.description}-${id}`}
+                      className="text-slate-500 dark:text-slate-400 text-left text-base"
+                    >
+                      {card.description}
+                    </motion.p>
+                  </div>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-1 shrink-0 text-slate-400 dark:text-slate-500 md:hidden"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </motion.span>
+                </div>
               </div>
-            </div>
-          </motion.li>
-        ))}
+
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="content"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    className="overflow-hidden md:hidden"
+                  >
+                    <div className="px-4 pb-4 flex flex-col gap-4">
+                      <p className="text-slate-600 dark:text-slate-300 text-sm">
+                        {card.content}
+                      </p>
+                      <a
+                        href={card.ctaLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="self-start px-4 py-2 text-sm rounded-full font-bold bg-green-500 hover:bg-green-400 text-slate-900 transition-colors"
+                      >
+                        {card.ctaText} ↗
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.li>
+          );
+        })}
       </ul>
     </section>
   );

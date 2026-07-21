@@ -193,6 +193,12 @@ const menus = [
         return;
       }
 
+      // At the bottom of the page, the last section is active
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50) {
+        setActiveLink(sections[sections.length - 1]);
+        return;
+      }
+
       // Find current section
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);

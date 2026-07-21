@@ -23,7 +23,10 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-node_modules.vercel
+.vercel/
+
+# local Claude Code settings
+.claude/settings.local.json
 
 # AI agent skills and configurations
 .agent/

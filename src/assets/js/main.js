@@ -170,45 +170,48 @@ document.addEventListener("astro:page-load", () => {
 });
 
 //--------------------------------------------------------
-// Active menu item
+// Nav links: smooth-scroll for same-page section links (desktop nav + mobile bottom nav)
 document.addEventListener("astro:page-load", () => {
-  // Only target nav links with data-target attribute (hash links for scrolling)
-  document.querySelectorAll("nav a[data-target]").forEach((anchor) => {
+  const normalizePath = (path) =>
+    path.length > 1 ? path.replace(/\/+$/, "") : path;
+
+  const navAnchors = document.querySelectorAll(
+    "#header nav a, #bottomNav a",
+  );
+
+  navAnchors.forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
-      const targetId = anchor.getAttribute("data-target");
+      const href = anchor.getAttribute("href");
+      if (!href) return;
 
-      // Only prevent default for hash links or home link when on homepage
-      // Let regular page links (like /blog) navigate normally
-      if (!targetId || (!targetId.startsWith("#") && !targetId.startsWith("/#") && targetId !== "/")) {
-        return; // Let the browser handle normal navigation
-      }
+      const url = new URL(href, window.location.origin);
+      const samePage =
+        normalizePath(url.pathname) === normalizePath(window.location.pathname);
 
-      // If it's a hash link but we're not on the homepage, let it navigate
-      if ((targetId.startsWith("#") || targetId.startsWith("/#")) && window.location.pathname !== "/") {
-        return; // Let browser navigate to homepage with hash
-      }
+      // Different page (e.g. /blog, or homepage link from a blog post): let it navigate
+      if (!samePage) return;
 
       e.preventDefault();
+
+      // Desktop nav active state
       document
-        .querySelectorAll("nav a")
+        .querySelectorAll("#header nav a")
         .forEach((item) => item.classList.remove("active"));
-      anchor.classList.add("active");
+      if (anchor.closest("#header")) anchor.classList.add("active");
 
-      if (targetId === "/") {
+      if (!url.hash) {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        history.pushState(null, "", "/");
-      } else {
-        // Handle both #section and /#section formats
-        const sectionId = targetId.replace("/#", "#");
-        const targetElement = document.querySelector(sectionId);
+        history.pushState(null, "", url.pathname);
+        return;
+      }
 
-        history.pushState(null, "", targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
+      const targetElement = document.getElementById(url.hash.slice(1));
+      history.pushState(null, "", url.pathname + url.hash);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }
     });
   });

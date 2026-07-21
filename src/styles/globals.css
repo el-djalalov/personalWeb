@@ -38,6 +38,22 @@
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Anchored sections land below the fixed header */
+section[id],
+[id="experience"],
+[id="projects"],
+[id="blog"],
+[id="contact"] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* Prevent horizontal scroll/wobble on mobile — clip anything overflowing viewport width */
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 /* Add Your Custom CSS Here */
 @layer utilities {
   @keyframes scroll-fade-in {

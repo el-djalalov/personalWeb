@@ -1210,5 +1210,183 @@
       "description": "Stage all changes except local settings"
     },
     "tool_use_id": "toolu_01RfiBCGxYtDBkEHreiQPvcj"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "0f68b17b-3fdb-47ba-a03c-c1cd57b8dd57",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn build 2>&1 | tail -3 && netstat -ano | grep 432 | head -5",
+      "timeout": 300000,
+      "description": "Build site, check port 4321 usage"
+    },
+    "tool_use_id": "toolu_01G6oaGfCJVzLBge2yC8v6TY"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "0f68b17b-3fdb-47ba-a03c-c1cd57b8dd57",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "node scripts/mobile-shot.mjs http://localhost:4321/#projects \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\\projects-desktop.png\" 1280 800 1 2>&1 | tail -5",
+      "timeout": 60000,
+      "description": "Screenshot projects section at desktop width from dev server"
+    },
+    "tool_use_id": "toolu_015AS9VghuD2DfDPt8Nzaz2A"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "0f68b17b-3fdb-47ba-a03c-c1cd57b8dd57",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "cd \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\" && node -e \"\nconst sharp = require('c:/Users/Elyorbek.Djalalov/Documents/projects/personalWeb/node_modules/sharp');\nsharp('projects-desktop.png').extract({left:80,top:2180,width:1100,height:260}).toFile('crop-projects.png').then(()=>console.log('ok'));\n\"",
+      "description": "Crop My Projects heading from screenshot"
+    },
+    "tool_use_id": "toolu_01Y4HMumcAaFoT7fyerY1p2q"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "0f68b17b-3fdb-47ba-a03c-c1cd57b8dd57",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -s http://localhost:4321/ | grep -o 'class=\"flex flex-row mb-5[^\"]*' | head -2; echo ---; curl -s http://localhost:4321/ | grep -o 'astro-dev-toolbar\\|vite' | head -3; echo ---; ps -W | grep -i node | head -10",
+      "description": "Check if port 4321 serves updated classes and whether dev or preview"
+    },
+    "tool_use_id": "toolu_01Tn9uGSFRpxVyPocfXv9g9m"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "0f68b17b-3fdb-47ba-a03c-c1cd57b8dd57",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn build 2>&1 | tail -2 && node \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\\clip-probe.mjs\" http://localhost:4321/ \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\" 2>&1 | head -40",
+      "timeout": 300000,
+      "description": "Rebuild and run CDP probe on projects heading"
+    },
+    "tool_use_id": "toolu_01LSpW8CWaESN4BUeBvD2rA9"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "319079a6-4fec-44ec-94dd-88e2579e96a2",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -s http://localhost:4321/ | grep -o '!leading-tight' | head -2; echo \"--- prod:\"; curl -s https://www.elyor.dev/ | grep -o '!leading-tight\\|leading-tight' | head -3; echo \"--- port check:\"; netstat -ano | grep -E \"432[0-9].*LISTENING\"",
+      "timeout": 60000,
+      "description": "Check localhost and production for updated class, list listening ports"
+    },
+    "tool_use_id": "toolu_013RCNngGqvb6FH8VPHhaS3E"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "319079a6-4fec-44ec-94dd-88e2579e96a2",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "for p in 4322 4323; do echo \"port $p:\"; curl -s http://localhost:$p/ | grep -o '!leading-tight\\|leading-tight' | sort | uniq -c | head -2; done",
+      "timeout": 30000,
+      "description": "Check stale preview servers on 4322 and 4323"
+    },
+    "tool_use_id": "toolu_01LtfvMio9KqEGNZB6pisAiE"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "319079a6-4fec-44ec-94dd-88e2579e96a2",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "node \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\\clip-probe.mjs\" http://localhost:4321/ \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\" 2>&1 | grep -E \"lineHeight|saved: v0\"",
+      "timeout": 120000,
+      "description": "Screenshot heading from localhost 4321"
+    },
+    "tool_use_id": "toolu_01Un5z7GrYp9EAu8BpkyWXc5"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "c:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "4ff602f3-d254-4f98-b376-0c121a3cba6e",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "yarn build 2>&1 | tail -2 && node \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\\clip-probe.mjs\" http://localhost:4321/ \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\" 2>&1 | grep -E \"lineHeight|padding|\\\"bottom\\\"|saved: v0\"",
+      "timeout": 300000,
+      "description": "Rebuild and measure heading box vs text ink bounds"
+    },
+    "tool_use_id": "toolu_01LbfntvZjpkjihXGeX95Mt8"
+  },
+  {
+    "session_id": "284ccec1-7270-4afb-8abe-64f0ed9f660c",
+    "transcript_path": "C:\\Users\\Elyorbek.Djalalov\\.claude\\projects\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c.jsonl",
+    "cwd": "C:\\Users\\Elyorbek.Djalalov\\Documents\\projects\\personalWeb",
+    "prompt_id": "4ff602f3-d254-4f98-b376-0c121a3cba6e",
+    "permission_mode": "acceptEdits",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "cd \"C:\\Users\\ELYORB~1.DJA\\AppData\\Local\\Temp\\claude\\c--Users-Elyorbek-Djalalov-Documents-projects-personalWeb\\284ccec1-7270-4afb-8abe-64f0ed9f660c\\scratchpad\" && node c:/Users/Elyorbek.Djalalov/Documents/projects/personalWeb/scripts/mobile-shot.mjs http://localhost:4321/ full.png 1280 800 1 2>&1 | tail -1 && node -e \"\nconst sharp = require('c:/Users/Elyorbek.Djalalov/Documents/projects/personalWeb/node_modules/sharp');\nsharp('full.png').extract({left:80,top:2180,width:1100,height:300}).resize(2200).toFile('crop2.png').then(()=>console.log('ok'));\n\"",
+      "timeout": 120000,
+      "description": "Full page screenshot and crop heading region enlarged"
+    },
+    "tool_use_id": "toolu_01NMKiGrE5s3Bt1YPV4RgkJe"
   }
 ]

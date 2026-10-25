@@ -74,11 +74,12 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
           <div class="relative z-30 px-2">
             <Image
               quality={"high"}
-              alt="Hero image"
+              alt={t("hero.portraitAlt", lang)}
               src={myImage}
+              widths={[208, 320, 416, 640]}
+              sizes="(min-width: 768px) 320px, 208px"
               loading="eager"
               fetchpriority="high"
-              decoding="auto"
               class="elementAnimate relative w-80 mx-auto"
             />
           </div>

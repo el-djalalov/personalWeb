@@ -1,0 +1,33 @@
+---
+// Place as early as possible in <head>. Applies a stored light/dark override
+// before first paint; with no override the page follows the system setting
+// through CSS alone, so nothing depends on this script running.
+---
+
+<meta name="color-scheme" content="light dark" />
+<script is:inline>
+  (() => {
+    const apply = () => {
+      let scheme = null;
+      try {
+        scheme = localStorage.getItem("color-scheme");
+        // Older versions pinned everyone to their first-visit theme
+        localStorage.removeItem("theme");
+      } catch {}
+      if (scheme !== "light" && scheme !== "dark") scheme = null;
+
+      const root = document.documentElement;
+      root.classList.remove("light", "dark");
+      if (scheme) root.classList.add(scheme);
+      const meta = document.querySelector('meta[name="color-scheme"]');
+      if (meta) meta.content = scheme ?? "light dark";
+    };
+
+    apply();
+    if (!window.__colorSchemeSwap) {
+      window.__colorSchemeSwap = true;
+      // Client-side navigations replace <html> attributes
+      document.addEventListener("astro:after-swap", apply);
+    }
+  })();
+</script>

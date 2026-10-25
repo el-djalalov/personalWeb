@@ -1,4 +1,5 @@
 ---
+import ThemeHead from "@/components/theme/ThemeHead.astro";
 import Header from "../components/home/header.astro";
 import SquareLines from "../components/home/square-lines.astro";
 import { ClientRouter } from "astro:transitions";
@@ -20,6 +21,7 @@ const ogTitle = `${t("meta.title", lang)} - ${t("hero.title", lang)}`;
     <title>{t("meta.title", lang)}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ThemeHead />
     <meta
       name="description"
       content={t("meta.description", lang)}

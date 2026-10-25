@@ -1,7 +1,5 @@
 /* eslint-disable no-undef */
 
-window.darkMode = false;
-
 const stickyClasses = ["fixed", "h-14", "!top-0"];
 const unstickyClasses = ["absolute", "!top-3"];
 const stickyClassesContainer = [
@@ -46,96 +44,6 @@ window.evaluateHeaderPosition = () => {
     headerElement.firstElementChild.classList.add(...unstickyClassesContainer);
   }
 };
-
-//--------------------------------------------------------
-// Theme toggle logic
-document.addEventListener("astro:page-load", () => {
-  function showDay(animate) {
-    document.getElementById("sun")?.classList.remove("setting");
-    document.getElementById("moon")?.classList.remove("rising");
-
-    let timeout = 0;
-
-    if (animate) {
-      timeout = 500;
-
-      document.getElementById("moon")?.classList.add("setting");
-    }
-
-    setTimeout(() => {
-      document.getElementById("moon")?.classList.add("hidden");
-      document.getElementById("sun")?.classList.remove("hidden");
-
-      if (animate) {
-        document.documentElement.classList.remove("dark");
-        document.getElementById("sun")?.classList.add("rising");
-      }
-    }, timeout);
-  }
-
-  function showNight(animate) {
-    document.getElementById("moon")?.classList.remove("setting");
-    document.getElementById("sun")?.classList.remove("rising");
-
-    let timeout = 0;
-
-    if (animate) {
-      timeout = 500;
-
-      document.getElementById("sun")?.classList.add("setting");
-    }
-
-    setTimeout(() => {
-      document.getElementById("sun")?.classList.add("hidden");
-      document.getElementById("moon")?.classList.remove("hidden");
-
-      if (animate) {
-        document.documentElement.classList.add("dark");
-        document.getElementById("moon")?.classList.add("rising");
-      }
-    }, timeout);
-  }
-
-  const theme = (() => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
-    }
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-    return "light";
-  })();
-
-  if (theme === "light") {
-    showDay(true);
-    document.documentElement.classList.remove("dark");
-  } else {
-    showNight(true);
-    document.documentElement.classList.add("dark");
-  }
-
-  window.localStorage.setItem("theme", theme === "dark" ? "dark" : "light");
-
-  const handleToggleClick = () => {
-    document.documentElement.classList.add("duration-300");
-    const element = document.documentElement;
-
-    element.classList.toggle("dark");
-    const isDark = element.classList.contains("dark");
-    if (isDark) {
-      localStorage.setItem("theme", "dark");
-      showNight(true);
-    } else {
-      localStorage.setItem("theme", "light");
-      showDay(true);
-    }
-  };
-
-  const themeToggle = document.getElementById("themeToggle");
-  if (themeToggle) {
-    themeToggle.onclick = handleToggleClick;
-  }
-});
 
 //--------------------------------------------------------
 // Animate on scroll fade in

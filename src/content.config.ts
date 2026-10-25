@@ -21,6 +21,8 @@ const blog = defineCollection({
       description: z.string(),
       canonicalURL: z.string().optional(),
       lang: z.enum(["en", "uz"]).default("en"),
+      // Posts that share a translationKey are translations of each other
+      translationKey: z.string().optional(),
       telegramMessageId: z.number().optional(),
     }),
 });

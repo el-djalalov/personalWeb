@@ -1,9 +1,9 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { SITE } from "@/config";
 import { useTranslations } from "@/i18n/ui";
 import AITranslator from "@/components/blog/AITranslator";
-import LanguageSwitcher from "@/components/blog/LanguageSwitcher";
+import LanguageSwitcher from "@/components/blog/LanguageSwitcher.astro";
 import getReadingTime from "@/utils/getReadingTime";
 import BlogHeader from "@/components/blog/BlogHeader.astro";
 import "@/styles/globals.css";
@@ -18,6 +18,16 @@ const { data } = post;
 
 const t = useTranslations("en");
 const readingTime = getReadingTime(content);
+
+const alternates = data.translationKey
+  ? (await getCollection("blog"))
+      .filter(
+        other =>
+          other.id !== post.id &&
+          other.data.translationKey === data.translationKey,
+      )
+      .map(other => ({ lang: other.data.lang, href: `/blog/${other.id}` }))
+  : [];
 
 const formattedDate = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
@@ -72,6 +82,9 @@ const ogImageUrl = data.ogImage
 
     <!-- Canonical URL -->
     <link rel="canonical" href={data.canonicalURL || new URL(Astro.url.pathname, Astro.site)} />
+    {alternates.map(({ lang, href }) => (
+      <link rel="alternate" hreflang={lang} href={new URL(href, Astro.site)} />
+    ))}
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -89,7 +102,7 @@ const ogImageUrl = data.ogImage
             <h1 class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 dark:from-cyan-400 dark:via-fuchsia-400 dark:to-blue-400 bg-clip-text text-transparent">
               {data.title}
             </h1>
-            <LanguageSwitcher client:load currentLang={data.lang || "en"} />
+            <LanguageSwitcher currentLang={data.lang || "en"} alternates={alternates} />
           </div>
 
           <p class="text-xl text-gray-600 dark:text-gray-400 mb-4">

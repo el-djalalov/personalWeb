@@ -1,0 +1,74 @@
+---
+import { languages } from "@/i18n/ui";
+
+interface Props {
+  currentLang: string;
+  alternates: { lang: string; href: string }[];
+}
+
+const { currentLang, alternates } = Astro.props;
+const label = (code: string) =>
+  languages[code as keyof typeof languages] ?? code.toUpperCase();
+---
+
+{
+  alternates.length > 0 && (
+    <details class="language-switcher relative shrink-0">
+      <summary class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        <svg
+          class="w-5 h-5 text-gray-600 dark:text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+          />
+        </svg>
+        <span class="font-medium text-sm text-gray-700 dark:text-gray-300">
+          <span class="sr-only">Language: </span>
+          {label(currentLang)}
+        </span>
+      </summary>
+      <ul class="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg overflow-hidden z-20 min-w-[140px]">
+        {alternates.map(({ lang, href }) => (
+          <li>
+            <a
+              href={href}
+              hreflang={lang}
+              lang={lang}
+              class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              {label(lang)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
+<script>
+  // Close the menu on Escape or when focus/clicks move outside it.
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const open = document.querySelector<HTMLDetailsElement>(
+      "details.language-switcher[open]",
+    );
+    if (!open) return;
+    open.open = false;
+    open.querySelector("summary")?.focus();
+  });
+
+  document.addEventListener("click", (event) => {
+    document
+      .querySelectorAll<HTMLDetailsElement>("details.language-switcher[open]")
+      .forEach((details) => {
+        if (!details.contains(event.target as Node)) details.open = false;
+      });
+  });
+</script>

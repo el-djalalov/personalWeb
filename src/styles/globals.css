@@ -394,3 +394,15 @@ body {
     background-color: rgb(71 85 105); /* slate-600 */
   }
 }
+/* Projects detail dialog */
+.project-dialog:modal {
+  /* Keep scroll gestures from chaining to the page underneath */
+  overscroll-behavior: contain;
+}
+
+.project-dialog::backdrop {
+  background-color: rgb(0 0 0 / 0.2);
+  /* A scroll container, so overscroll-behavior applies to it */
+  overflow: hidden;
+  overscroll-behavior: contain;
+}

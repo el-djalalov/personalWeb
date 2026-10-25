@@ -44,6 +44,12 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 )}
 
 <script>
+  // Jump instead of smooth-scrolling for users who prefer reduced motion
+  const scrollBehavior = (): ScrollBehavior =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
+
   function initTOC() {
     const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
     const headings = document.querySelectorAll("h2[id], h3[id]");
@@ -93,7 +99,7 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
               // Scroll to center the active link
               tocContainer.scrollTo({
                 top: linkTop - containerHeight / 2 + linkHeight / 2,
-                behavior: "smooth"
+                behavior: scrollBehavior(),
               });
             }
           }
@@ -109,7 +115,7 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
         if (targetId) {
           const target = document.getElementById(targetId);
           if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            target.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
             // Update URL without triggering scroll
             history.pushState(null, "", `#${targetId}`);
           }

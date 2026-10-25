@@ -13,13 +13,13 @@ const { lang = "en" } = Astro.props;
 <div class="bg-background flex justify-center items-center">
   <div class="relative inline-flex group">
     <div
-      class="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-cyan-700 via-fuchsia-700 to-blue-700 rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"
+      class="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-cyan-700 via-fuchsia-700 to-blue-700 rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 motion-safe:animate-tilt"
     >
     </div>
     <a
       href="/ResumeElyorDjalalov.pdf"
       download
-      class="relative inline-flex items-center justify-center px-4 py-4 text-lg font-bold transition-transform duration-200 hover:scale-105 active:scale-95 bg-background font-pj rounded-xl"
+      class="relative inline-flex items-center justify-center px-4 py-4 text-lg font-bold transition-transform duration-200 motion-safe:hover:scale-105 motion-safe:active:scale-95 bg-background font-pj rounded-xl"
     >
       <Download size={18} className="mr-4 text-slate-700 dark:text-slate-200" aria-hidden="true" />
       <span class="text-slate-700 dark:text-slate-200 text-sm">

@@ -17,13 +17,15 @@
   to { opacity: 0; }
 }
 
-/* View Transition API - Clean fade effect */
-::view-transition-old(root) {
-  animation: fade-out 0.15s ease-out forwards;
-}
+/* View Transition API - Clean fade effect (only when motion is welcome) */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: fade-out 0.15s ease-out forwards;
+  }
 
-::view-transition-new(root) {
-  animation: fade-in 0.25s ease-out forwards;
+  ::view-transition-new(root) {
+    animation: fade-in 0.25s ease-out forwards;
+  }
 }
 
 /* Smooth morph for blog hero images */
@@ -70,13 +72,15 @@ body {
     }
   }
 
-  .elementAnimate {
-    opacity: 0;
-    /* Start with opacity 0 */
-    transform: translateY(30px);
-    /* Start from below */
-    animation: scroll-fade-in 0.6s ease-out forwards;
-    /* Animate in from below */
+  @media (prefers-reduced-motion: no-preference) {
+    .elementAnimate {
+      opacity: 0;
+      /* Start with opacity 0 */
+      transform: translateY(30px);
+      /* Start from below */
+      animation: scroll-fade-in 0.6s ease-out forwards;
+      /* Animate in from below */
+    }
   }
 }
 
@@ -95,23 +99,25 @@ body {
     }
   }
 
-  .card {
-    opacity: 0;
-    /* Start as invisible */
-    transform: translateY(30px);
-    /* Start from below */
-    transition:
-      opacity 0.5s ease-out,
-      transform 0.5s ease-out;
-    /* Smooth transition */
-  }
+  @media (prefers-reduced-motion: no-preference) {
+    .card {
+      opacity: 0;
+      /* Start as invisible */
+      transform: translateY(30px);
+      /* Start from below */
+      transition:
+        opacity 0.5s ease-out,
+        transform 0.5s ease-out;
+      /* Smooth transition */
+    }
 
-  .card.visible {
-    opacity: 1;
-    transform: translateY(0);
-    /* Final position */
-    animation: fadeInUp 0.6s ease-out forwards;
-    /* Apply fade-in-up animation */
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      /* Final position */
+      animation: fadeInUp 0.6s ease-out forwards;
+      /* Apply fade-in-up animation */
+    }
   }
 }
 
@@ -306,9 +312,11 @@ body {
 
 @layer utilities {
 
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
+  /* Smooth scrolling, unless the user prefers reduced motion */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   /* Custom Scrollbar */
@@ -356,7 +364,13 @@ body {
   /* Text Gradient Animation */
   .animate-text-gradient {
     background-size: 200% auto;
-    animation: textGradient 4s linear infinite;
+  }
+
+  /* Endless motion only for users who haven't asked to reduce it */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-text-gradient {
+      animation: textGradient 4s linear infinite;
+    }
   }
 
   @keyframes textGradient {

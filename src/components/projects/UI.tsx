@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { getProjects, type Project } from "@/i18n/projects";
 import type { Language } from "@/content.config";
 
@@ -97,6 +97,8 @@ const Projects = ({ lang = "en" }: Props) => {
   };
 
   return (
+    // reducedMotion="user": skip transform/layout animations for reduced motion
+    <MotionConfig reducedMotion="user">
     <section className="relative max-w-5xl mx-auto py-8 px-4 lg:px-0" id="projects">
       <div className="flex flex-col">
         <h2
@@ -260,6 +262,7 @@ const Projects = ({ lang = "en" }: Props) => {
         })}
       </ul>
     </section>
+    </MotionConfig>
   );
 };
 

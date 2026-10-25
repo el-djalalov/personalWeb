@@ -52,7 +52,7 @@ export const projects: Record<Language, Project[]> = {
       title: "Planner — Project Management System",
       src: "/images/projects/planner.webp",
       ctaText: "Visit",
-      ctaLink: "https://plasch.silberwal.ch/planner",
+      ctaLink: "https://silberwal.ch/en/plasch/",
       content:
         "Project management system integrated with the Atlassian/Jira ecosystem, bringing Jira tickets and tasks straight into the Planner app where teams can allocate work efficiently. I architected a scalable React 18 + TypeScript front-end with OAuth 2.0 authentication integrated with Jira, 30+ REST APIs, WebSockets and a caching layer. Improved task-discovery efficiency by 40% and built 40+ reusable components.",
     },
@@ -108,7 +108,7 @@ export const projects: Record<Language, Project[]> = {
       title: "Planner — Loyihalarni boshqarish tizimi",
       src: "/images/projects/planner.webp",
       ctaText: "Ochish",
-      ctaLink: "https://plasch.silberwal.ch/planner",
+      ctaLink: "https://silberwal.ch/en/plasch/",
       content:
         "Atlassian/Jira ekotizimi bilan integratsiyalashgan loyihalarni boshqarish tizimi — Jira chiptalari va vazifalarini to'g'ridan-to'g'ri Planner ilovasiga olib keladi va jamoalar ishni samarali taqsimlaydi. Men Jira bilan integratsiyalashgan OAuth 2.0 autentifikatsiya, 30+ REST API, WebSockets va keshlash qatlamiga ega React 18 + TypeScript front-end arxitekturasini yaratdim. Vazifa qidirish samaradorligini 40% ga oshirdim va 40+ qayta ishlatiladigan komponent qurdim.",
     },
@@ -164,7 +164,7 @@ export const projects: Record<Language, Project[]> = {
       title: "Planner — Система управления проектами",
       src: "/images/projects/planner.webp",
       ctaText: "Открыть",
-      ctaLink: "https://plasch.silberwal.ch/planner",
+      ctaLink: "https://silberwal.ch/en/plasch/",
       content:
         "Система управления проектами, интегрированная с экосистемой Atlassian/Jira: тикеты и задачи Jira попадают прямо в приложение Planner, где команды эффективно распределяют работу. Я спроектировал масштабируемый front-end на React 18 + TypeScript с OAuth 2.0-аутентификацией через Jira, 30+ REST API, WebSockets и слоем кеширования. Повысил эффективность поиска задач на 40% и создал 40+ переиспользуемых компонентов.",
     },

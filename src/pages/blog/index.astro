@@ -1,4 +1,5 @@
 ---
+import ThemeHead from "@/components/theme/ThemeHead.astro";
 import { getCollection } from "astro:content";
 import { SITE } from "@/config";
 import { useTranslations } from "@/i18n/ui";
@@ -22,6 +23,7 @@ const tags = getUniqueTags(allPosts);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ThemeHead />
     <meta name="generator" content={Astro.generator} />
 
     <title>Blog | {SITE.title}</title>

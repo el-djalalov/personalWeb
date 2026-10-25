@@ -1,0 +1,98 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  id="themeToggle"
+  aria-label="Dark theme"
+  aria-pressed="false"
+  class:list={["relative flex items-center justify-center", className]}
+>
+  <svg
+    class="w-6 h-6 dark:hidden"
+    aria-hidden="true"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    ><path
+      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+    ></path></svg
+  >
+  <svg
+    class="w-6 h-6 hidden dark:block"
+    aria-hidden="true"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    ><path
+      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+    ></path></svg
+  >
+</button>
+
+<script>
+  const KEY = "color-scheme";
+  const root = document.documentElement;
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const isDark = () =>
+    root.classList.contains("dark") ||
+    (!root.classList.contains("light") && systemDark.matches);
+
+  function syncButtons() {
+    document
+      .querySelectorAll("#themeToggle")
+      .forEach(button =>
+        button.setAttribute("aria-pressed", String(isDark())),
+      );
+  }
+
+  function apply(scheme: "light" | "dark" | null) {
+    root.classList.remove("light", "dark");
+    if (scheme) root.classList.add(scheme);
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="color-scheme"]',
+    );
+    if (meta) meta.content = scheme ?? "light dark";
+    syncButtons();
+  }
+
+  document.addEventListener("click", event => {
+    if (!(event.target as Element).closest?.("#themeToggle")) return;
+
+    const target = isDark() ? "light" : "dark";
+    const system = systemDark.matches ? "dark" : "light";
+    // Picking the system's own scheme means "follow the system" again,
+    // so clear the override instead of pinning it.
+    const override = target === system ? null : target;
+    try {
+      if (override) localStorage.setItem(KEY, override);
+      else localStorage.removeItem(KEY);
+    } catch {}
+    apply(override);
+  });
+
+  // Keep the pressed state right when the system setting changes
+  systemDark.addEventListener("change", syncButtons);
+
+  // Stay in sync with changes made in other tabs
+  window.addEventListener("storage", event => {
+    if (event.key !== KEY && event.key !== null) return;
+    const value = event.newValue;
+    apply(value === "light" || value === "dark" ? value : null);
+  });
+
+  document.addEventListener("astro:page-load", syncButtons);
+  syncButtons();
+</script>

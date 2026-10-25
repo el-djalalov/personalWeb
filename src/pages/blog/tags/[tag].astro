@@ -1,4 +1,5 @@
 ---
+import ThemeHead from "@/components/theme/ThemeHead.astro";
 import { getCollection } from "astro:content";
 import { SITE } from "@/config";
 import getSortedPosts from "@/utils/getSortedPosts";
@@ -29,6 +30,7 @@ const taggedPosts = sortedPosts.filter(post =>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ThemeHead />
     <meta name="generator" content={Astro.generator} />
 
     <title>Posts tagged {tagName}</title><meta

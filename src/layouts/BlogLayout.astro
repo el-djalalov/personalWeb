@@ -1,4 +1,5 @@
 ---
+import ThemeHead from "@/components/theme/ThemeHead.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { SITE } from "@/config";
 import { useTranslations } from "@/i18n/ui";
@@ -54,6 +55,7 @@ const ogImageUrl = data.ogImage
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ThemeHead />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Primary Meta Tags -->

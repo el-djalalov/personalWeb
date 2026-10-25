@@ -50,7 +50,13 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       ? "auto"
       : "smooth";
 
+  let observer: IntersectionObserver | null = null;
+
   function initTOC() {
+    // Drop the previous page's observer (it watches detached headings)
+    observer?.disconnect();
+    observer = null;
+
     const tocLinks = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
     const headings = document.querySelectorAll("h2[id], h3[id]");
 
@@ -63,7 +69,7 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 
     let activeId: string | null = null;
 
-    const observer = new IntersectionObserver((entries) => {
+    observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           activeId = entry.target.id;
@@ -72,7 +78,7 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       });
     }, observerOptions);
 
-    headings.forEach((heading) => observer.observe(heading));
+    headings.forEach((heading) => observer?.observe(heading));
 
     function updateActiveLink(id: string | null) {
       tocLinks.forEach((link) => {

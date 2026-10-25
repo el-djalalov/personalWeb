@@ -136,17 +136,36 @@ const menus = [
 <script is:inline>
   // Scroll handling for header is done in main.js
 
-  // Bottom nav active state based on scroll position
-  function initBottomNav() {
-    const sections = ['home', 'experience', 'projects', 'blog', 'contact'];
-    const navLinks = document.querySelectorAll('.bottom-nav-link');
+  // Bottom nav active state based on scroll position. Listeners are added once
+  // per document (this script can run again after client-side navigations).
+  (() => {
+    if (window.__bottomNav) {
+      window.__bottomNav.update();
+      return;
+    }
 
-    function updateActiveLink() {
+    const sections = ["home", "experience", "projects", "blog", "contact"];
+    const activeClasses = ["text-violet-600", "dark:text-violet-400", "bg-violet-50", "dark:bg-violet-900/20"];
+    const inactiveClasses = ["text-slate-500", "dark:text-slate-400"];
+
+    function setActiveLink(activeId) {
+      document.querySelectorAll(".bottom-nav-link").forEach((link) => {
+        const navId = link.getAttribute("data-nav");
+        const isActive = navId === activeId || (activeId === "experience" && navId === "work");
+        link.classList.add(...(isActive ? activeClasses : inactiveClasses));
+        link.classList.remove(...(isActive ? inactiveClasses : activeClasses));
+        if (isActive) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+
+    function update() {
+      if (!document.querySelector(".bottom-nav-link")) return;
       const scrollPosition = window.scrollY + window.innerHeight / 3;
 
       // Check if at top of page
       if (window.scrollY < 100) {
-        setActiveLink('home');
+        setActiveLink("home");
         return;
       }
 
@@ -166,25 +185,11 @@ const menus = [
       }
     }
 
-    function setActiveLink(activeId) {
-      navLinks.forEach(link => {
-        const navId = link.getAttribute('data-nav');
-        if (navId === activeId || (activeId === 'experience' && navId === 'work')) {
-          link.classList.add('text-violet-600', 'dark:text-violet-400', 'bg-violet-50', 'dark:bg-violet-900/20');
-          link.classList.remove('text-slate-500', 'dark:text-slate-400');
-        } else {
-          link.classList.remove('text-violet-600', 'dark:text-violet-400', 'bg-violet-50', 'dark:bg-violet-900/20');
-          link.classList.add('text-slate-500', 'dark:text-slate-400');
-        }
-      });
-    }
-
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    updateActiveLink(); // Initial check
-  }
-
-  initBottomNav();
-  document.addEventListener("astro:after-swap", initBottomNav);
+    window.addEventListener("scroll", update, { passive: true });
+    document.addEventListener("astro:after-swap", update);
+    window.__bottomNav = { update };
+    update(); // Initial check
+  })();
 </script>
 
 <style>

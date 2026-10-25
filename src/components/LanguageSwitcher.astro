@@ -65,61 +65,44 @@ const basePath = getBasePath(currentPath, currentLang);
 </div>
 
 <script is:inline>
-  function initLangSwitcher() {
-    const btn = document.getElementById("lang-switcher-btn");
-    const dropdown = document.getElementById("lang-dropdown");
-    const chevron = document.getElementById("lang-chevron");
+  // Delegated listeners, registered once per document, so client-side
+  // navigations (which swap in a new switcher) don't stack them.
+  (() => {
+    if (window.__langSwitcher) return;
+    window.__langSwitcher = true;
 
-    if (!btn || !dropdown || !chevron) return;
-
-    let isOpen = false;
-
-    function toggle() {
-      isOpen = !isOpen;
-      btn.setAttribute("aria-expanded", isOpen.toString());
-
-      if (isOpen) {
-        dropdown.classList.remove("opacity-0", "invisible");
-        dropdown.classList.add("opacity-100", "visible");
-        chevron.classList.add("rotate-180");
-      } else {
-        dropdown.classList.add("opacity-0", "invisible");
-        dropdown.classList.remove("opacity-100", "visible");
-        chevron.classList.remove("rotate-180");
-      }
-    }
-
-    function close() {
-      if (isOpen) {
-        isOpen = false;
-        btn.setAttribute("aria-expanded", "false");
-        dropdown.classList.add("opacity-0", "invisible");
-        dropdown.classList.remove("opacity-100", "visible");
-        chevron.classList.remove("rotate-180");
-      }
-    }
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggle();
+    const parts = () => ({
+      btn: document.getElementById("lang-switcher-btn"),
+      dropdown: document.getElementById("lang-dropdown"),
+      chevron: document.getElementById("lang-chevron"),
     });
 
+    function setOpen(open) {
+      const { btn, dropdown, chevron } = parts();
+      if (!btn || !dropdown || !chevron) return;
+      btn.setAttribute("aria-expanded", String(open));
+      dropdown.classList.toggle("opacity-0", !open);
+      dropdown.classList.toggle("invisible", !open);
+      dropdown.classList.toggle("opacity-100", open);
+      dropdown.classList.toggle("visible", open);
+      chevron.classList.toggle("rotate-180", open);
+    }
+
+    const isOpen = () =>
+      parts().btn?.getAttribute("aria-expanded") === "true";
+
     document.addEventListener("click", (e) => {
-      if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
-        close();
-      }
+      const { btn, dropdown } = parts();
+      if (!btn || !dropdown) return;
+      if (btn.contains(e.target)) setOpen(!isOpen());
+      else if (!dropdown.contains(e.target)) setOpen(false);
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        close();
+      if (e.key === "Escape" && isOpen()) {
+        setOpen(false);
+        parts().btn?.focus();
       }
     });
-  }
-
-  // Initialize on page load
-  initLangSwitcher();
-
-  // Re-initialize after Astro page transitions
-  document.addEventListener("astro:after-swap", initLangSwitcher);
+  })();
 </script>

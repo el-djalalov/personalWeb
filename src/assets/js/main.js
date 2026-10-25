@@ -16,15 +16,14 @@ const scrollBehavior = () =>
 
 document.addEventListener("astro:page-load", () => {
   headerElement = document.getElementById("header");
-  stickyHeaderFuncionality();
   evaluateHeaderPosition();
 });
 
-window.stickyHeaderFuncionality = () => {
-  window.addEventListener("scroll", () => {
-    evaluateHeaderPosition();
-  });
-};
+// Added once: this module runs once per full page load, while
+// astro:page-load fires again on every client-side navigation
+window.addEventListener("scroll", () => evaluateHeaderPosition(), {
+  passive: true,
+});
 
 window.evaluateHeaderPosition = () => {
   if (!headerElement) return;

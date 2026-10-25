@@ -1,0 +1,78 @@
+---
+title: "Introducing anzel: An AI Knowledge Base for Sports Organizations"
+description: "What anzel is, the problem it solves for clubs, leagues and investors, and how a shared knowledge layer plus specialized AI assistants turn scattered club data into finished work."
+pubDate: 2026-10-24
+author: "Elyor Djalalov"
+tags: ["anzel", "AI", "Sports Tech", "Knowledge Base", "Product", "AI Agents"]
+heroImage: "/images/projects/anzel.webp"
+draft: false
+---
+
+These days I am working on **[anzel](https://app.anzel.ai)**, an AI platform for the business side of sport. This post is a short introduction: what it is, who it is for, and why I think it is an interesting engineering problem.
+
+## The Problem: Club Knowledge Lives Everywhere
+
+A sports club is a business as much as a team. Behind every match there is a commercial operation: sponsorships, partner renewals, ticketing, hospitality, media rights, board reporting.
+
+The interesting thing is that most of the information needed to do this work **already exists**. It sits in:
+
+- signed partner contracts and old proposals
+- CRM exports and spreadsheets with a dozen tabs
+- season reports and activation trackers
+- audience and viewing figures
+- email threads, and the heads of a few experienced people
+
+Every season the same jobs come around again, like a sponsor renewal, a rights tender or a partner ROI report, and each one starts with hours of digging through those sources. When an experienced person leaves, a large part of that knowledge leaves with them.
+
+## What anzel Does
+
+anzel takes what a sports organization already knows and makes it **one structured, shared knowledge base**, then puts AI on top of it.
+
+### 1. A knowledge base the whole club can use
+
+Rights, sponsors, inventory, audiences, past deals, and how they relate to each other are organized into a knowledge layer built specifically for sport. Instead of knowledge living with whoever happened to work on the last deal, **every member of the club can access it**, within the permissions their role allows.
+
+### 2. AI insights and finished work
+
+On top of the knowledge layer sit specialized AI assistants (in anzel they are called *anzels*) for jobs like sponsorship, renewals, pricing and planning. You brief them like a colleague:
+
+> "Draft the renewal case for our shirt sponsor. Their contract ends next June."
+
+The assistant reads the relevant contracts, reports and activation data, then asks the clarifying questions that actually matter. It returns a **finished document** rather than a chat answer, with facts, assumptions, open questions and sources clearly separated. A person still makes every decision. anzel does the gathering and drafting.
+
+### 3. One data layer, several audiences
+
+The same knowledge serves different people in the sports ecosystem:
+
+| Audience | What they get |
+| --- | --- |
+| **Clubs** | A single source of truth for their commercial data, plus AI that turns it into renewals, pitches, pricing reviews and board papers |
+| **Club members and staff** | Access to the club's knowledge base without having to know which spreadsheet or which colleague holds the answer |
+| **Leagues** | A structured view of data across the clubs in the country, useful for rights tenders, benchmarking and planning |
+| **Investors** | Reliable, consistent data about clubs and their commercial performance to inform decisions |
+
+## Trust Is a Feature, Not a Footnote
+
+Commercial knowledge is what sets one club apart from another, so how the data is handled is a core part of the product:
+
+- **Customer data never trains a model**, neither anzel's nor anyone else's
+- **Every organization is isolated** in its own space; one customer's data never informs another's work
+- **Processing happens in the EU** under GDPR
+- **The AI does not act on its own.** It does not decide or send anything without a person in the loop
+
+From an engineering point of view, this shapes almost everything: tenant isolation, permission-aware retrieval, and auditability of every source a document cites.
+
+## Why It Is Fun to Build
+
+A few things make anzel a genuinely interesting system to work on:
+
+- **Domain modelling.** A sports ontology of rights, inventory, partners, categories, clubs and leagues has to be precise enough for an AI to reason over, and flexible enough for every sport.
+- **Model orchestration.** Different steps of a job suit different models. Routing each step to the best model for quality and cost, across providers, is an engineering problem of its own.
+- **Grounded output.** Every claim in a generated document needs to trace back to a source the user can open. "Plausible" is not good enough when a sponsor renewal is on the line.
+- **Compounding knowledge.** Each renewal, pricing review and pitch adds to the organization's knowledge layer, so the next job starts further ahead, without training a model on customer data.
+
+We build anzel spec-driven, with AI coding agents doing a large share of the implementation against written specifications. I wrote about how that works in practice in [Spec-Driven Development with AI Agents: A Real Feature, Start to Finish](/blog/spec-driven-development-real-feature-walkthrough).
+
+## Try It
+
+anzel is in early access. If you work on the commercial side of a club, league, federation or investor platform, you can find out more at [anzel.ai](https://anzel.ai) or sign in at [app.anzel.ai](https://app.anzel.ai).

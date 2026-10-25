@@ -41,12 +41,12 @@ const Projects = () => {
   return (
     <section className="relative max-w-5xl mx-auto" id="projects">
       <div className="flex flex-col">
-        <h1
+        <h2
           className="flex flex-row mb-5 font-bold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl
                     bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-transparent transition-all duration-300 ease-in-out"
         >
           My Projects
-        </h1>
+        </h2>
         <p className="mb-6 text-base dark:text-muted-foreground">
           Here are <u>some</u> of my recent projects. I'm always working on
           something new, so check back often!
@@ -72,12 +72,12 @@ const Projects = () => {
             />
             <div className="flex justify-between items-start gap-4 p-4">
               <div>
-                <h3
+                <h2
                   id={titleId}
                   className="font-medium text-slate-700 dark:text-neutral-200 text-base"
                 >
                   {active.title}
-                </h3>
+                </h2>
                 <p className="text-slate-600 dark:text-slate-400 text-base">
                   {active.description}
                 </p>

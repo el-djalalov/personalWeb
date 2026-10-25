@@ -5,9 +5,11 @@ import getReadingTime from "@/utils/getReadingTime";
 interface Props {
   post: CollectionEntry<"blog">;
   featured?: boolean;
+  headingLevel?: 2 | 3;
 }
 
-const { post, featured = false } = Astro.props;
+const { post, featured = false, headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}` as const;
 const { data } = post;
 
 const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -49,9 +51,9 @@ const readingTime = getReadingTime(post.body);
 
     <!-- Title -->
     <a href={`/blog/${post.id}`} class="group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-      <h2 class={`font-bold mb-3 ${featured ? "text-3xl" : "text-2xl"}`}>
+      <Heading class={`font-bold mb-3 ${featured ? "text-3xl" : "text-2xl"}`}>
         {data.title}
-      </h2>
+      </Heading>
     </a>
 
     <!-- Description -->

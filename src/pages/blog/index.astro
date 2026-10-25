@@ -95,7 +95,7 @@ const tags = getUniqueTags(allPosts);
           <h2 class="text-3xl font-bold mb-6">Featured Posts</h2>
           <div class="grid grid-cols-1 gap-6">
             {featuredPosts.map(post => (
-              <BlogCard post={post} featured={true} />
+              <BlogCard post={post} featured={true} headingLevel={3} />
             ))}
           </div>
         </section>
@@ -116,7 +116,7 @@ const tags = getUniqueTags(allPosts);
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recentPosts.map(post => (
-            <BlogCard post={post} />
+            <BlogCard post={post} headingLevel={3} />
           ))}
         </div>
       </section>

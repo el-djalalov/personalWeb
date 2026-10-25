@@ -14,6 +14,7 @@ export const translations = {
     "hero.greeting": "Hi, I'm Elyor",
     "hero.title": "Sr. Software Engineer",
     "hero.downloadResume": "Download Resume",
+    "hero.portraitAlt": "Portrait of Elyor Djalalov",
 
     // Section headers
     "section.experience": "Work experience",
@@ -90,6 +91,7 @@ export const translations = {
     "hero.greeting": "Salom, men Elyor",
     "hero.title": "Katta dastur muhandisi",
     "hero.downloadResume": "Rezyumeni yuklash",
+    "hero.portraitAlt": "Elyor Djalalov portreti",
 
     // Section headers
     "section.experience": "Ish tajribasi",
@@ -166,6 +168,7 @@ export const translations = {
     "hero.greeting": "Привет, я Элёр",
     "hero.title": "Старший инженер-программист",
     "hero.downloadResume": "Скачать резюме",
+    "hero.portraitAlt": "Портрет Элёра Джалалова",
 
     // Section headers
     "section.experience": "Опыт работы",

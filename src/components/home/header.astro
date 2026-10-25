@@ -1,6 +1,7 @@
 ---
 import Logo from "@/components/logo.astro";
 import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import ThemeToggle from "@/components/theme/ThemeToggle.astro";
 import { getLangFromUrl, t, buildLangUrl } from "@/i18n";
 
 const lang = getLangFromUrl(Astro.url);
@@ -53,44 +54,10 @@ const menus = [
     <div class="flex items-center gap-3 md:gap-2">
       <LanguageSwitcher />
 
-      <button
-        id="themeToggle"
-        aria-label="Toggle theme"
-        class="flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:pl-4 rounded-full backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-700/50 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 cursor-pointer text-slate-700 dark:text-slate-400"
-      >
-      <div
-        class="relative flex items-center justify-center w-5 h-5 md:w-6 md:h-6 overflow-hidden"
-      >
-        <svg
-          class="absolute w-6 h-6 transition duration-500 transform ease"
-          id="sun"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-          ><path
-            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-          ></path></svg
-        >
-        <svg
-          class="absolute hidden w-6 h-6 transition duration-500 transform ease"
-          id="moon"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-          ><path
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-          ></path></svg
-        >
-      </div>
-      </button>
+      <ThemeToggle
+        class="w-9 h-9 md:w-auto md:h-auto md:pl-4 rounded-full backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-700/50 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 cursor-pointer text-slate-700 dark:text-slate-400"
+        iconClass="w-5 h-5 md:w-6 md:h-6"
+      />
     </div>
   </div>
 </header>
@@ -166,30 +133,39 @@ const menus = [
 <!-- Spacer for bottom nav on mobile -->
 <div class="md:hidden h-16" aria-hidden="true"></div>
 
-<!-- This script for blocking flash on refresh page in dark mode -->
 <script is:inline>
-  function applyTheme() {
-    localStorage.theme === "dark"
-      ? document.documentElement.classList.add("dark")
-      : document.documentElement.classList.remove("dark");
-  }
-
-  document.addEventListener("astro:after-swap", applyTheme);
-  applyTheme();
-
   // Scroll handling for header is done in main.js
 
-  // Bottom nav active state based on scroll position
-  function initBottomNav() {
-    const sections = ['home', 'experience', 'projects', 'blog', 'contact'];
-    const navLinks = document.querySelectorAll('.bottom-nav-link');
+  // Bottom nav active state based on scroll position. Listeners are added once
+  // per document (this script can run again after client-side navigations).
+  (() => {
+    if (window.__bottomNav) {
+      window.__bottomNav.update();
+      return;
+    }
 
-    function updateActiveLink() {
+    const sections = ["home", "experience", "projects", "blog", "contact"];
+    const activeClasses = ["text-violet-600", "dark:text-violet-400", "bg-violet-50", "dark:bg-violet-900/20"];
+    const inactiveClasses = ["text-slate-500", "dark:text-slate-400"];
+
+    function setActiveLink(activeId) {
+      document.querySelectorAll(".bottom-nav-link").forEach((link) => {
+        const navId = link.getAttribute("data-nav");
+        const isActive = navId === activeId || (activeId === "experience" && navId === "work");
+        link.classList.add(...(isActive ? activeClasses : inactiveClasses));
+        link.classList.remove(...(isActive ? inactiveClasses : activeClasses));
+        if (isActive) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+
+    function update() {
+      if (!document.querySelector(".bottom-nav-link")) return;
       const scrollPosition = window.scrollY + window.innerHeight / 3;
 
       // Check if at top of page
       if (window.scrollY < 100) {
-        setActiveLink('home');
+        setActiveLink("home");
         return;
       }
 
@@ -209,25 +185,11 @@ const menus = [
       }
     }
 
-    function setActiveLink(activeId) {
-      navLinks.forEach(link => {
-        const navId = link.getAttribute('data-nav');
-        if (navId === activeId || (activeId === 'experience' && navId === 'work')) {
-          link.classList.add('text-violet-600', 'dark:text-violet-400', 'bg-violet-50', 'dark:bg-violet-900/20');
-          link.classList.remove('text-slate-500', 'dark:text-slate-400');
-        } else {
-          link.classList.remove('text-violet-600', 'dark:text-violet-400', 'bg-violet-50', 'dark:bg-violet-900/20');
-          link.classList.add('text-slate-500', 'dark:text-slate-400');
-        }
-      });
-    }
-
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
-    updateActiveLink(); // Initial check
-  }
-
-  initBottomNav();
-  document.addEventListener("astro:after-swap", initBottomNav);
+    window.addEventListener("scroll", update, { passive: true });
+    document.addEventListener("astro:after-swap", update);
+    window.__bottomNav = { update };
+    update(); // Initial check
+  })();
 </script>
 
 <style>

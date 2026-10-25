@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import readingTime from "reading-time";
 import { getLangFromUrl, t, buildLangUrl } from "@/i18n";
 import type { Language } from "@/content.config";
+import { getPublicImageSize } from "@/utils/publicImageSize";
 
 interface Props {
   lang?: Language;
@@ -16,6 +17,8 @@ const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft && post.data.lang === lang)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
+
+const heroSizes = await Promise.all(posts.map((post) => getPublicImageSize(post.data.heroImage)));
 
 function getReadingTime(body: string): string {
   const stats = readingTime(body);
@@ -37,7 +40,7 @@ const dateLocales = {
 
   {posts.length > 0 ? (
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      {posts.map((post) => {
+      {posts.map((post, index) => {
         const { title, description, pubDate, heroImage, tags, translationKey } = post.data;
         const postId = post.id.replace(/\.(md|mdx)$/, '');
         const postSlug = translationKey || postId;
@@ -51,11 +54,15 @@ const dateLocales = {
         return (
           <article class="group relative flex flex-col h-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/10 hover:border-violet-300 dark:hover:border-violet-700 card">
             <!-- Image -->
-            <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="relative aspect-video overflow-hidden">
+            <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="relative aspect-video overflow-hidden" tabindex="-1" aria-hidden="true">
               {heroImage ? (
                 <img
                   src={heroImage}
-                  alt={title}
+                  alt=""
+                  width={heroSizes[index]?.width}
+                  height={heroSizes[index]?.height}
+                  loading="lazy"
+                  decoding="async"
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               ) : (

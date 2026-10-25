@@ -45,7 +45,7 @@ yarn preview  # Preview production build
 - Use **Tailwind CSS** utility classes for all styling
 - Use the `cn()` utility from `@/lib/utils` for conditional classes
 - Follow shadcn/ui theming with CSS variables (defined in globals.css)
-- Dark mode is class-based (`darkMode: ["class"]`)
+- Dark mode follows the system `prefers-color-scheme`; `.light`/`.dark` on `<html>` is a user override (see `src/components/theme/`). Put dark colours in the CSS variables in globals.css rather than `.dark .x` selectors
 
 ### Components
 - **Astro components** (`.astro`) for static content

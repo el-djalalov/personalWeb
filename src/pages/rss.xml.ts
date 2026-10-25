@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import type { APIContext } from "astro";
+import { buildLangUrl } from "@/i18n";
 
 export async function GET(context: APIContext) {
   const posts = await getCollection("blog");
@@ -18,7 +19,12 @@ export async function GET(context: APIContext) {
       title: post.data.title,
       pubDate: post.data.pubDate,
       description: post.data.description,
-      link: `/blog/${post.id}/`,
+      // Posts are served at their translationKey (falling back to the file id),
+      // under the post's language prefix
+      link: buildLangUrl(
+        `/blog/${post.data.translationKey || post.id.replace(/\.(md|mdx)$/, "")}/`,
+        post.data.lang,
+      ),
       categories: post.data.tags,
       author: post.data.author,
     })),

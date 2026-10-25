@@ -116,30 +116,30 @@ const shareLinks = {
 </div>
 
 <script>
-  const copyBtn = document.getElementById("copy-link-btn");
-  if (copyBtn) {
-    copyBtn.addEventListener("click", async () => {
-      const url = copyBtn.dataset.url;
-      if (url) {
-        try {
-          await navigator.clipboard.writeText(url);
-          const copyIcon = copyBtn.querySelector(".copy-icon");
-          const checkIcon = copyBtn.querySelector(".check-icon");
-          const btnText = copyBtn.querySelector(".btn-text");
+  // Delegated: this module runs once, but client-side navigation swaps in a
+  // new copy button on each post
+  document.addEventListener("click", async (event) => {
+    const copyBtn = (event.target as Element).closest?.<HTMLButtonElement>("#copy-link-btn");
+    const url = copyBtn?.dataset.url;
+    if (!copyBtn || !url) return;
 
-          copyIcon?.classList.add("hidden");
-          checkIcon?.classList.remove("hidden");
-          if (btnText) btnText.textContent = "Copied!";
+    try {
+      await navigator.clipboard.writeText(url);
+      const copyIcon = copyBtn.querySelector(".copy-icon");
+      const checkIcon = copyBtn.querySelector(".check-icon");
+      const btnText = copyBtn.querySelector(".btn-text");
 
-          setTimeout(() => {
-            copyIcon?.classList.remove("hidden");
-            checkIcon?.classList.add("hidden");
-            if (btnText) btnText.textContent = "Copy";
-          }, 2000);
-        } catch (err) {
-          console.error("Failed to copy:", err);
-        }
-      }
-    });
-  }
+      copyIcon?.classList.add("hidden");
+      checkIcon?.classList.remove("hidden");
+      if (btnText) btnText.textContent = "Copied!";
+
+      setTimeout(() => {
+        copyIcon?.classList.remove("hidden");
+        checkIcon?.classList.add("hidden");
+        if (btnText) btnText.textContent = "Copy";
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  });
 </script>

@@ -17,13 +17,15 @@
   to { opacity: 0; }
 }
 
-/* View Transition API - Clean fade effect */
-::view-transition-old(root) {
-  animation: fade-out 0.15s ease-out forwards;
-}
+/* View Transition API - Clean fade effect (only when motion is welcome) */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: fade-out 0.15s ease-out forwards;
+  }
 
-::view-transition-new(root) {
-  animation: fade-in 0.25s ease-out forwards;
+  ::view-transition-new(root) {
+    animation: fade-in 0.25s ease-out forwards;
+  }
 }
 
 /* Smooth morph for blog hero images */
@@ -70,13 +72,15 @@ body {
     }
   }
 
-  .elementAnimate {
-    opacity: 0;
-    /* Start with opacity 0 */
-    transform: translateY(30px);
-    /* Start from below */
-    animation: scroll-fade-in 0.6s ease-out forwards;
-    /* Animate in from below */
+  @media (prefers-reduced-motion: no-preference) {
+    .elementAnimate {
+      opacity: 0;
+      /* Start with opacity 0 */
+      transform: translateY(30px);
+      /* Start from below */
+      animation: scroll-fade-in 0.6s ease-out forwards;
+      /* Animate in from below */
+    }
   }
 }
 
@@ -95,23 +99,18 @@ body {
     }
   }
 
-  .card {
-    opacity: 0;
-    /* Start as invisible */
-    transform: translateY(30px);
-    /* Start from below */
-    transition:
-      opacity 0.5s ease-out,
-      transform 0.5s ease-out;
-    /* Smooth transition */
-  }
-
-  .card.visible {
-    opacity: 1;
-    transform: translateY(0);
-    /* Final position */
-    animation: fadeInUp 0.6s ease-out forwards;
-    /* Apply fade-in-up animation */
+  /* Cards fade in as they scroll into view. Purely decorative: content is
+     visible by default and never waits on JavaScript; browsers without
+     scroll-driven animations just show it. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      .card {
+        animation: fadeInUp linear both;
+        /* After the shorthand, which would otherwise reset it */
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+      }
+    }
   }
 }
 
@@ -156,8 +155,8 @@ body {
 
 /* Light mode adjustments - use same dark theme for code blocks */
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  background-color: #f1f5f9;
-  color: #7c3aed;
+  background-color: var(--inline-code-bg);
+  color: var(--inline-code-fg);
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
   font-size: 0.875em;
@@ -166,50 +165,6 @@ body {
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
   content: none;
-}
-
-.dark .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  background-color: #1e293b;
-  color: #a78bfa;
-}
-
-.horizon .setting {
-  animation: 1s ease 0s 1 setting;
-}
-
-.horizon .rising {
-  animation: 1s ease 0s 1 rising;
-}
-
-@keyframes setting {
-  0% {
-    transform: translate3d(0, 10px, 0);
-  }
-
-  40% {
-    transform: translate3d(0, -2px, 0);
-  }
-
-  to {
-    transform: translate3d(0, 30px, 0);
-  }
-}
-
-@keyframes rising {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 30px, 0);
-  }
-
-  40% {
-    opacity: 1;
-    transform: translate3d(0, -2px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 10, 0);
-  }
 }
 
 @layer base {
@@ -239,9 +194,20 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --inline-code-bg: #f1f5f9;
+    --inline-code-fg: #7c3aed;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --navbar-glass-bg: rgba(255, 255, 255, 0.85);
+    --navbar-glass-border: rgba(0, 0, 0, 0.08);
+    --thin-scrollbar-thumb: rgb(203 213 225); /* slate-300 */
+    --thin-scrollbar-thumb-hover: rgb(148 163 184); /* slate-400 */
   }
 
-  .dark {
+  /* Dark tokens: forced with .dark on <html>, or from the system setting
+     unless .light forces light */
+  :root.dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -266,6 +232,64 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --inline-code-bg: #1e293b;
+    --inline-code-fg: #a78bfa;
+    --glass-bg: rgba(2, 6, 23, 0.85); /* slate-950 */
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    --navbar-glass-bg: rgba(15, 23, 42, 0.85); /* slate-900 */
+    --navbar-glass-border: rgba(255, 255, 255, 0.1);
+    --thin-scrollbar-thumb: rgb(51 65 85); /* slate-700 */
+    --thin-scrollbar-thumb-hover: rgb(71 85 105); /* slate-600 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+      --card: 222.2 84% 4.9%;
+      --card-foreground: 210 40% 98%;
+      --popover: 222.2 84% 4.9%;
+      --popover-foreground: 210 40% 98%;
+      --primary: 217.2 91.2% 59.8%;
+      --primary-foreground: 222.2 47.4% 11.2%;
+      --secondary: 217.2 32.6% 17.5%;
+      --secondary-foreground: 210 40% 98%;
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+      --accent: 217.2 32.6% 17.5%;
+      --accent-foreground: 210 40% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 217.2 32.6% 17.5%;
+      --input: 217.2 32.6% 17.5%;
+      --ring: 224.3 76.3% 48%;
+      --chart-1: 220 70% 50%;
+      --chart-2: 160 60% 45%;
+      --chart-3: 30 80% 55%;
+      --chart-4: 280 65% 60%;
+      --chart-5: 340 75% 55%;
+      --inline-code-bg: #1e293b;
+      --inline-code-fg: #a78bfa;
+      --glass-bg: rgba(2, 6, 23, 0.85); /* slate-950 */
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+      --navbar-glass-bg: rgba(15, 23, 42, 0.85); /* slate-900 */
+      --navbar-glass-border: rgba(255, 255, 255, 0.1);
+      --thin-scrollbar-thumb: rgb(51 65 85); /* slate-700 */
+      --thin-scrollbar-thumb-hover: rgb(71 85 105); /* slate-600 */
+    }
+  }
+
+  /* Native UI (scrollbars, form controls, canvas) follows the theme */
+  :root {
+    color-scheme: light dark;
+  }
+  :root.light {
+    color-scheme: light;
+  }
+  :root.dark {
+    color-scheme: dark;
   }
 }
 
@@ -281,9 +305,11 @@ body {
 
 @layer utilities {
 
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
+  /* Smooth scrolling, unless the user prefers reduced motion */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   /* Custom Scrollbar */
@@ -306,35 +332,21 @@ body {
 
   /* Glassmorphism */
   .glass {
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  }
-
-  .dark .glass {
-    background: rgba(2, 6, 23, 0.85);
-    /* slate-950 with opacity */
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
   }
 
   /* Navbar glass effect - applied to inner div */
   .navbar-glass {
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--navbar-glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--navbar-glass-border);
+    box-shadow: var(--glass-shadow);
     border-radius: 0.75rem;
-  }
-
-  .dark .navbar-glass {
-    background: rgba(15, 23, 42, 0.85);
-    /* slate-900 with opacity */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
   }
 
   /* Glass navbar specific - apply rounded corners when glass is active */
@@ -345,7 +357,13 @@ body {
   /* Text Gradient Animation */
   .animate-text-gradient {
     background-size: 200% auto;
-    animation: textGradient 4s linear infinite;
+  }
+
+  /* Endless motion only for users who haven't asked to reduce it */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-text-gradient {
+      animation: textGradient 4s linear infinite;
+    }
   }
 
   @keyframes textGradient {
@@ -378,19 +396,23 @@ body {
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgb(203 213 225); /* slate-300 */
+    background-color: var(--thin-scrollbar-thumb);
     border-radius: 3px;
   }
 
   .scrollbar-thin:hover::-webkit-scrollbar-thumb {
-    background-color: rgb(148 163 184); /* slate-400 */
+    background-color: var(--thin-scrollbar-thumb-hover);
   }
+}
+/* Projects detail dialog */
+.project-dialog:modal {
+  /* Keep scroll gestures from chaining to the page underneath */
+  overscroll-behavior: contain;
+}
 
-  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgb(51 65 85); /* slate-700 */
-  }
-
-  .dark .scrollbar-thin:hover::-webkit-scrollbar-thumb {
-    background-color: rgb(71 85 105); /* slate-600 */
-  }
+.project-dialog::backdrop {
+  background-color: rgb(0 0 0 / 0.2);
+  /* A scroll container, so overscroll-behavior applies to it */
+  overflow: hidden;
+  overscroll-behavior: contain;
 }

@@ -5,7 +5,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
-import { buildLangUrl } from "@/i18n";
+import { buildLangUrl, t } from "@/i18n";
 import type { Language } from "@/content.config";
 
 export const getStaticPaths = (async () => {
@@ -56,8 +56,9 @@ function getReadingTime(body: string): string {
 ---
 
 <BaseLayout
-  title={`${tag} - Blog | Elyor Djalalov`}
-  description={`Articles tagged with ${tag} by Elyor Djalalov.`}
+  title={`${tag} - ${t("blog.title", lang)} | ${t("meta.title", lang)}`}
+  description={`${t("blog.description", lang)} - ${tag}`}
+  lang={lang}
 >
   <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
     <!-- Header -->
@@ -78,7 +79,7 @@ function getReadingTime(body: string): string {
             stroke-width="2"
             d="M15 19l-7-7 7-7"></path>
         </svg>
-        All Posts
+        {t("blog.allPosts", lang)}
       </a>
       <h1
         class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4"
@@ -87,7 +88,7 @@ function getReadingTime(body: string): string {
       </h1>
       <p class="text-lg text-slate-600 dark:text-slate-400">
         {posts.length}
-        {posts.length === 1 ? "post" : "posts"} tagged with <span
+        {posts.length === 1 ? t("blog.post", lang) : t("blog.posts", lang)} {t("blog.taggedWith", lang)} <span
           class="font-medium">{tag}</span
         >
       </p>
@@ -100,7 +101,7 @@ function getReadingTime(body: string): string {
           href={buildLangUrl("/blog", lang)}
           class="px-4 py-2 text-sm font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-violet-100 dark:hover:bg-violet-900/30 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
         >
-          All Posts
+          {t("blog.allPosts", lang)}
         </a>
         {
           allTags.map(t => (
@@ -135,7 +136,7 @@ function getReadingTime(body: string): string {
       ) : (
         <div class="text-center py-20">
           <p class="text-slate-500 dark:text-slate-400">
-            No posts found with this tag.
+            {t("blog.noPosts", lang)}
           </p>
         </div>
       )

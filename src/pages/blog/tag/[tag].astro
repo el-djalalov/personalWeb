@@ -60,6 +60,7 @@ function getReadingTime(body: string): string {
 <BaseLayout
   title={`${tag} - ${t("blog.title", lang)} | ${t("meta.title", lang)}`}
   description={`${t("blog.description", lang)} - ${tag}`}
+  lang={lang}
 >
   <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
     <!-- Header -->
@@ -80,7 +81,7 @@ function getReadingTime(body: string): string {
             stroke-width="2"
             d="M15 19l-7-7 7-7"></path>
         </svg>
-        All Posts
+        {t("blog.allPosts", lang)}
       </a>
       <h1
         class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4"

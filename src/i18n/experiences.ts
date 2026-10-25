@@ -14,7 +14,7 @@ export const experiences: Record<Language, Experience[]> = {
   en: [
     {
       dates: "Apr. 2026 - Present",
-      role: "Lead Software Engineer (Solutions & AI engineering)",
+      role: "AI-Native Engineer",
       company: "Vention",
       description:
         "Pre-sale solutioning and AI engineering across 10+ prospective client projects — designed end-to-end architectures (service boundaries, API contracts, data models, AWS) and drove prompt- and context-engineering standards while mentoring engineers.",
@@ -86,7 +86,7 @@ export const experiences: Record<Language, Experience[]> = {
   uz: [
     {
       dates: "Apr. 2026 - Hozir",
-      role: "AI Native Muhandis",
+      role: "AI-native muhandis",
       company: "Vention",
       description:
         "10+ potentsial mijoz loyihalari bo'yicha presale yechimlar va AI muhandisligi — to'liq arxitekturalarni (servis chegaralari, API kontraktlari, ma'lumot modellari, AWS) loyihaladim hamda prompt va kontekst muhandisligi standartlarini joriy qilib, muhandislarga mentorlik qildim.",
@@ -158,7 +158,7 @@ export const experiences: Record<Language, Experience[]> = {
   ru: [
     {
       dates: "Апр. 2026 - Настоящее время",
-      role: "AI Native инженер",
+      role: "AI-native инженер",
       company: "Vention",
       description:
         "Пресейл-инжиниринг решений и AI-инжиниринг для 10+ потенциальных клиентских проектов — проектировал end-to-end архитектуры (границы сервисов, API-контракты, модели данных, AWS) и внедрял стандарты prompt- и context-инжиниринга, менторя инженеров.",

@@ -21,15 +21,14 @@ export default function Footer({ lang = "en" }: Props) {
         <div className="flex gap-4 justify-center items-center">
           <a
             href="/"
-            aria-label="Home"
             className="h-5 text-base group relative z-30 flex items-center space-x-1.5 text-black dark:text-white font-semibold"
           >
-            <span className="text-xl -translate-y-0.5 group-hover:-rotate-12 group-hover:scale-[1.2] ease-in-out duration-300 text-muted-foreground">
+            <span aria-hidden="true" className="text-xl -translate-y-0.5 group-hover:-rotate-12 group-hover:scale-[1.2] ease-in-out duration-300 text-muted-foreground">
               ✦
             </span>
 
             <span className="-translate-y-0.5 dark:text-slate-400 text-slate-700">
-              ED
+              ED<span className="sr-only">, home</span>
             </span>
           </a>
 

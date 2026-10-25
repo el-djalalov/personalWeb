@@ -127,11 +127,10 @@ const Projects = () => {
       </AnimatePresence>
       <ul className="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4">
         {projects.map((card) => (
-          <motion.div
+          <motion.li
             layoutId={`card-${card.title}-${id}`}
             key={card.title}
-            onClick={() => setActive(card)}
-            className=" flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl cursor-pointer"
+            className="relative flex flex-col shadow-xl hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-xl has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-violet-700"
           >
             <div className="flex gap-4 flex-col w-full">
               <motion.div layoutId={`image-${card.title}-${id}`}>
@@ -140,7 +139,7 @@ const Projects = () => {
                   width={200}
                   height={200}
                   src={card.src}
-                  alt={card.title}
+                  alt=""
                   className="h-60 w-full rounded-t-xl object-cover object-top"
                 />
               </motion.div>
@@ -149,7 +148,14 @@ const Projects = () => {
                   layoutId={`title-${card.title}-${id}`}
                   className="font-medium text-slate-800 dark:text-slate-200 text-center md:text-left text-base"
                 >
-                  {card.title}
+                  {/* The ::after overlay makes the whole card the click target */}
+                  <button
+                    type="button"
+                    onClick={() => setActive(card)}
+                    className="text-left outline-none after:absolute after:inset-0 after:rounded-xl after:content-['']"
+                  >
+                    {card.title}
+                  </button>
                 </motion.h3>
                 <motion.p
                   layoutId={`description-${card.description}-${id}`}
@@ -159,7 +165,7 @@ const Projects = () => {
                 </motion.p>
               </div>
             </div>
-          </motion.div>
+          </motion.li>
         ))}
       </ul>
     </section>

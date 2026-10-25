@@ -34,9 +34,11 @@ import Logo from "@/components/logo.astro";
       </div>
     </nav>
 
-    <div
+    <button
+      type="button"
       id="themeToggle"
-      class="pl-6 relative flex items-center font-medium tracking-wide cursor-pointer text-slate-800 group dark:text-muted-foreground"
+      aria-label="Toggle dark theme"
+      class="pl-6 relative flex items-center h-6 font-medium tracking-wide cursor-pointer text-slate-800 group dark:text-muted-foreground"
     >
       <div
         class="absolute left-0 flex items-center justify-center w-6 h-6 overflow-hidden border-b border-transparent horizon text-slate-700
@@ -45,6 +47,7 @@ import Logo from "@/components/logo.astro";
         <svg
           class="absolute w-6 h-6 transition duration-500 transform ease"
           id="sun"
+          aria-hidden="true"
           fill="none"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -58,6 +61,7 @@ import Logo from "@/components/logo.astro";
         <svg
           class="absolute hidden w-6 h-6 transition duration-500 transform ease"
           id="moon"
+          aria-hidden="true"
           fill="none"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -69,7 +73,7 @@ import Logo from "@/components/logo.astro";
           ></path></svg
         >
       </div>
-    </div>
+    </button>
   </div>
 </header>
 

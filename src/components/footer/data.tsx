@@ -16,6 +16,7 @@ export const Data: SocialMediaData[] = [
         viewBox="0 0 28 28"
         fill="none"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           id="telegram-1"
@@ -37,6 +38,7 @@ export const Data: SocialMediaData[] = [
         stroke="currentColor"
         strokeWidth="2"
         className="lucide lucide-facebook"
+        aria-hidden="true"
       >
         <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
       </svg>
@@ -62,7 +64,7 @@ export const Data: SocialMediaData[] = [
     ),
   },
   {
-    title: "LindkedIn",
+    title: "LinkedIn",
     link: "https://www.linkedin.com/in/eldjalalov",
     svg: (
       <svg

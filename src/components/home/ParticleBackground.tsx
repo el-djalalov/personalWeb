@@ -15,7 +15,8 @@ const ParticleBackground = () => {
         if (!ctx) return;
 
         let particles: Particle[] = [];
-        let animationFrameId: number;
+        let animationFrameId = 0;
+        let running = false;
 
         const resizeCanvas = () => {
             canvas.width = window.innerWidth;
@@ -92,13 +93,27 @@ const ParticleBackground = () => {
                 particles[i].draw();
             }
 
-            animationFrameId = requestAnimationFrame(animate);
+            if (running) animationFrameId = requestAnimationFrame(animate);
         };
 
         init();
-        animate();
+
+        // Only animate while the hero is on screen; no point burning CPU and
+        // battery on a canvas nobody can see
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting && !running) {
+                running = true;
+                animate();
+            } else if (!entry.isIntersecting && running) {
+                running = false;
+                cancelAnimationFrame(animationFrameId);
+            }
+        });
+        observer.observe(canvas);
 
         return () => {
+            observer.disconnect();
+            running = false;
             window.removeEventListener('resize', resizeCanvas);
             cancelAnimationFrame(animationFrameId);
         };
@@ -107,6 +122,7 @@ const ParticleBackground = () => {
     return (
         <canvas
             ref={canvasRef}
+            aria-hidden="true"
             className="absolute inset-0 z-0 pointer-events-none opacity-50 dark:opacity-30"
         />
     );

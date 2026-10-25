@@ -10,7 +10,7 @@ import Contact from "@/components/contact/contact.astro";
 import Footer from "@/components/footer/footer";
 import ExperienceSection from "@/components/experience/ExperienceSection";
 import ParticleBackground from "@/components/home/ParticleBackground";
-import ScrollProgress from "@/components/home/ScrollProgress";
+import ScrollProgress from "@/components/home/ScrollProgress.astro";
 import CursorGlow from "@/components/home/CursorGlow";
 import BlogPreview from "@/components/blog/BlogPreview.astro";
 import { t } from "@/i18n";
@@ -27,11 +27,11 @@ const { lang } = Astro.params as { lang: Language };
 ---
 
 <Layout>
-  <ScrollProgress client:idle />
+  <ScrollProgress />
   <CursorGlow client:idle />
 
   <div class="relative">
-    <ParticleBackground client:load />
+    <ParticleBackground client:idle />
     <div
       class="relative z-20 flex flex-col-reverse max-w-6xl md:mt-14 mx-auto gap-8 items-center md:flex-row justify-between px-4"
     >
@@ -91,9 +91,9 @@ bg-gradient-to-r from-cyan-900 via-fuchsia-800 to-blue-700 bg-clip-text text-tra
     </div>
   </div>
 
-  <ExperienceSection slot="experience" client:visible lang={lang} />
+  <ExperienceSection slot="experience" lang={lang} />
   <Projects slot="projects" client:visible lang={lang} />
   <BlogPreview slot="blog" lang={lang} />
   <Contact slot="contacts" lang={lang} />
-  <Footer slot="footer" client:visible lang={lang} />
+  <Footer slot="footer" lang={lang} />
 </Layout>

@@ -99,24 +99,17 @@ body {
     }
   }
 
+  /* Cards fade in as they scroll into view. Purely decorative: content is
+     visible by default and never waits on JavaScript; browsers without
+     scroll-driven animations just show it. */
   @media (prefers-reduced-motion: no-preference) {
-    .card {
-      opacity: 0;
-      /* Start as invisible */
-      transform: translateY(30px);
-      /* Start from below */
-      transition:
-        opacity 0.5s ease-out,
-        transform 0.5s ease-out;
-      /* Smooth transition */
-    }
-
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-      /* Final position */
-      animation: fadeInUp 0.6s ease-out forwards;
-      /* Apply fade-in-up animation */
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      .card {
+        animation: fadeInUp linear both;
+        /* After the shorthand, which would otherwise reset it */
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+      }
     }
   }
 }

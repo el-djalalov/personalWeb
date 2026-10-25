@@ -47,6 +47,45 @@ interface Props {
   lang?: Language;
 }
 
+// Whether the browser can keep a dialog visible while `display` transitions to
+// none (Firefox can't yet, even though it parses allow-discrete)
+let supportsDisplayTransition: boolean | undefined;
+function canTransitionDisplay() {
+  if (supportsDisplayTransition !== undefined) return supportsDisplayTransition;
+  if (!window.CSS?.supports?.("transition-behavior", "allow-discrete")) {
+    return (supportsDisplayTransition = false);
+  }
+  const probe = document.createElement("div");
+  probe.style.cssText = "transition: display 1s allow-discrete !important; display: block;";
+  document.body.appendChild(probe);
+  getComputedStyle(probe).display;
+  probe.style.display = "none";
+  supportsDisplayTransition = getComputedStyle(probe).display === "block";
+  probe.remove();
+  return supportsDisplayTransition;
+}
+
+// Close with the exit animation. Where the browser can't animate a dialog out
+// of the top layer natively, play the exit via [data-closing] first.
+async function closeDialog(dialog: HTMLDialogElement) {
+  if (!dialog.open || dialog.hasAttribute("data-closing")) return;
+
+  const nativeExit = window.CSS?.supports?.("overlay", "auto") && canTransitionDisplay();
+  if (!nativeExit) {
+    dialog.setAttribute("data-closing", "");
+    // The dialog and its ::backdrop share a duration, so waiting on the dialog is enough
+    const animations = dialog.getAnimations();
+    if (animations.length > 0) {
+      await Promise.race([
+        Promise.allSettled(animations.map((a) => a.finished)),
+        new Promise((resolve) => setTimeout(resolve, 1000)),
+      ]);
+    }
+    dialog.removeAttribute("data-closing");
+  }
+  dialog.close();
+}
+
 const Projects = ({ lang = "en" }: Props) => {
   const projects = getProjects(lang);
   const t = translations[lang] || translations.en;
@@ -81,7 +120,7 @@ const Projects = ({ lang = "en" }: Props) => {
         event.clientY <= rect.top + rect.height &&
         rect.left <= event.clientX &&
         event.clientX <= rect.left + rect.width;
-      if (!isDialogContent) dialog.close();
+      if (!isDialogContent) closeDialog(dialog);
     };
 
     dialog.addEventListener("click", onClick);
@@ -117,6 +156,11 @@ const Projects = ({ lang = "en" }: Props) => {
         // closedby="any": close on backdrop click as well as Esc
         {...({ closedby: "any" } as object)}
         aria-labelledby={`${id}-dialog-title`}
+        // Route Esc / light dismiss through closeDialog so they animate too
+        onCancel={(event) => {
+          event.preventDefault();
+          closeDialog(event.currentTarget);
+        }}
         onClose={() => setActive(null)}
         className="project-dialog w-full max-w-[500px] max-h-[90%] p-0 bg-slate-50 dark:bg-slate-900 rounded-3xl"
       >
@@ -157,7 +201,7 @@ const Projects = ({ lang = "en" }: Props) => {
         )}
         <button
           type="button"
-          onClick={() => dialogRef.current?.close()}
+          onClick={() => dialogRef.current && closeDialog(dialogRef.current)}
           aria-label={t.close}
           className="absolute top-3 right-3 flex items-center justify-center bg-white/90 dark:bg-slate-800/90 rounded-full h-8 w-8 text-slate-600 dark:text-slate-300 shadow"
         >

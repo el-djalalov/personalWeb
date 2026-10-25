@@ -5,6 +5,8 @@ import TableOfContents from "@/components/blog/TableOfContents.astro";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import LanguageSwitcher from "@/components/blog/LanguageSwitcher.astro";
 import { Image } from "astro:assets";
+import avatar from "@/assets/images/AvatarMe.webp";
+import { getPublicImageSize } from "@/utils/publicImageSize";
 import type { CollectionEntry } from "astro:content";
 import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
 import { t, buildLangUrl } from "@/i18n";
@@ -27,6 +29,8 @@ const dateLocales = {
   uz: "uz-UZ",
   ru: "ru-RU",
 };
+
+const heroSize = await getPublicImageSize(heroImage);
 
 const formattedDate = pubDate.toLocaleDateString(dateLocales[currentLang] || "en-US", {
   year: "numeric",
@@ -115,11 +119,13 @@ const blogUrl = buildLangUrl("/blog", currentLang);
         <!-- Meta info -->
         <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-500 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div class="flex items-center gap-2">
-            <img
-              src="/images/avatar.jpg"
-              alt={author}
-              class="w-8 h-8 rounded-full object-cover"
-              onerror="this.style.display='none'"
+            <Image
+              src={avatar}
+              alt=""
+              width={32}
+              height={32}
+              densities={[1, 2]}
+              class="w-8 h-8 rounded-full object-cover object-top"
             />
             <span class="font-medium text-slate-700 dark:text-slate-300">{author}</span>
           </div>
@@ -154,7 +160,10 @@ const blogUrl = buildLangUrl("/blog", currentLang);
         <div class="relative aspect-video mb-8 rounded-xl overflow-hidden">
           <img
             src={heroImage}
-            alt={title}
+            alt=""
+            width={heroSize?.width}
+            height={heroSize?.height}
+            fetchpriority="high"
             class="w-full h-full object-cover"
             transition:name={`blog-hero-${post.id}`}
           />
@@ -197,11 +206,14 @@ const blogUrl = buildLangUrl("/blog", currentLang);
       <!-- Author bio -->
       <div class="mt-8 p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
         <div class="flex items-start gap-4">
-          <img
-            src="/images/avatar.jpg"
-            alt={author}
-            class="w-16 h-16 rounded-full object-cover flex-shrink-0"
-            onerror="this.style.display='none'"
+          <Image
+            src={avatar}
+            alt=""
+            width={64}
+            height={64}
+            densities={[1, 2]}
+            loading="lazy"
+            class="w-16 h-16 rounded-full object-cover object-top flex-shrink-0"
           />
           <div>
             <h3 class="font-semibold text-slate-900 dark:text-white">{author}</h3>

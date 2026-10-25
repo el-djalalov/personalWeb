@@ -16,7 +16,7 @@ export const projects: Record<Language, Project[]> = {
       title: "anzel",
       src: "/images/projects/anzel.webp",
       ctaText: "Visit",
-      ctaLink: "https://app.anzel.ai",
+      ctaLink: "https://anzel.ai/",
       content:
         "AI platform for sports organizations that turns what a club already knows into a shared knowledge base and AI insights. Every member of the club gets access to the same knowledge: rights, sponsors, inventory, audiences and past deals. On top of it, specialized AI assistants produce finished work such as sponsor renewal cases, partner reports and pricing analysis, with every fact and source in view. The same data layer serves clubs and their members, leagues across the country and investors. I'm currently building it, working spec-driven with AI coding agents.",
     },
@@ -72,7 +72,7 @@ export const projects: Record<Language, Project[]> = {
       title: "anzel",
       src: "/images/projects/anzel.webp",
       ctaText: "Ochish",
-      ctaLink: "https://app.anzel.ai",
+      ctaLink: "https://anzel.ai/",
       content:
         "Sport tashkilotlari uchun AI platforma: klub allaqachon biladigan narsalarni umumiy bilimlar bazasi va AI tahlillariga aylantiradi. Klubning har bir a'zosi bir xil bilimlarga ega bo'ladi: huquqlar, homiylar, inventar, auditoriya va o'tgan shartnomalar. Uning ustida ixtisoslashgan AI yordamchilar tayyor ish chiqaradi — homiylik shartnomasini uzaytirish asoslari, hamkor hisobotlari va narx tahlili, har bir fakt va manba ko'rinib turadi. Bir xil ma'lumotlar qatlami klublar va ularning a'zolariga, mamlakatdagi ligalarga hamda investorlarga xizmat qiladi. Hozir uni AI agentlar bilan spetsifikatsiyaga asoslangan usulda quryapman.",
     },
@@ -128,7 +128,7 @@ export const projects: Record<Language, Project[]> = {
       title: "anzel",
       src: "/images/projects/anzel.webp",
       ctaText: "Открыть",
-      ctaLink: "https://app.anzel.ai",
+      ctaLink: "https://anzel.ai/",
       content:
         "ИИ-платформа для спортивных организаций, которая превращает то, что клуб уже знает, в общую базу знаний и ИИ-аналитику. Каждый участник клуба получает доступ к одним и тем же знаниям: права, спонсоры, инвентарь, аудитории и прошлые сделки. Поверх неё специализированные ИИ-ассистенты готовят законченные документы — обоснование продления спонсорского контракта, отчёты для партнёров, анализ цен, — где видны все факты и источники. Один и тот же слой данных служит клубам и их участникам, лигам страны и инвесторам. Сейчас я разрабатываю его по спецификациям вместе с ИИ-агентами.",
     },

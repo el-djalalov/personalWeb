@@ -26,6 +26,8 @@ export default defineConfig({
     webAnalytics: { enabled: true }
   }),
   base: "/",
+  // Inline the CSS (~14 KB gzipped) so it doesn't block first paint as a separate request
+  build: { inlineStylesheets: "always" },
   i18n: {
     defaultLocale: "en",
     locales: ["en", "uz", "ru"],

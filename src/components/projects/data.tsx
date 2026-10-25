@@ -21,7 +21,7 @@ export const projects = [
   {
     description: "AgronetZero is a platform for farmers...",
     title: "AgronetZero Bio Sync 365",
-    src: "/images/projects/agroNetZeroLanding.png",
+    src: "/images/projects/agroNetZeroLanding.webp",
     ctaText: "Visit",
     ctaLink: "https://soilsync.bio",
     content: () => {

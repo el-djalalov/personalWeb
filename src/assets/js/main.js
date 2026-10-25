@@ -47,38 +47,6 @@ window.evaluateHeaderPosition = () => {
 };
 
 //--------------------------------------------------------
-// Animate on scroll fade in
-document.addEventListener("astro:page-load", () => {
-  const scrollElements = document.querySelectorAll(".elementAnimate");
-
-  scrollElements.forEach((scrollTitle) => {
-    scrollTitle.classList.add("elementAnimate");
-  });
-});
-
-document.addEventListener("astro:page-load", () => {
-  const observer = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    {
-      threshold: 0.3, // Trigger animation when 50% of the card is in the viewport
-    },
-  );
-
-  // Observe all elements with the '.card' class
-  const cards = document.querySelectorAll(".card");
-  cards.forEach((card) => {
-    observer.observe(card);
-  });
-});
-
-//--------------------------------------------------------
 // Active menu item
 document.addEventListener("astro:page-load", () => {
   document.querySelectorAll("a").forEach((anchor) => {

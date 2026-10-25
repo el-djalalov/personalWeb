@@ -17,7 +17,8 @@ const { title, description, pubDate, heroImage, tags, translationKey } = post.da
 const postId = post.id.replace(/\.(md|mdx)$/, '');
 const postSlug = translationKey || postId;
 
-const formattedDate = pubDate.toLocaleDateString("en-US", {
+const dateLocales = { en: "en-US", uz: "uz-UZ", ru: "ru-RU" };
+const formattedDate = pubDate.toLocaleDateString(dateLocales[lang] || "en-US", {
   year: "numeric",
   month: "short",
   day: "numeric",

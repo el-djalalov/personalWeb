@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import readingTime from "reading-time";
 import { t, buildLangUrl } from "@/i18n";
 import type { Language } from "@/content.config";
@@ -16,10 +16,19 @@ export const getStaticPaths = (async () => {
 
 const { lang } = Astro.params as { lang: Language };
 
-// Get all blog posts, filter out drafts, sort by date
-const posts = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// One card per post: the version in this language if it exists, otherwise
+// the English original (same as the /[lang]/blog/[slug] fallback)
+const postsByKey = new Map<string, CollectionEntry<"blog">>();
+for (const post of (await getCollection("blog")).filter((p) => !p.data.draft)) {
+  const key = post.data.translationKey || post.id.replace(/\.(md|mdx)$/, "");
+  const current = postsByKey.get(key);
+  if (!current || post.data.lang === lang || (current.data.lang !== lang && post.data.lang === "en")) {
+    postsByKey.set(key, post);
+  }
+}
+const posts = [...postsByKey.values()].sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 
 // Get all unique tags
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
@@ -34,6 +43,7 @@ function getReadingTime(body: string): string {
 <BaseLayout
   title={`${t("blog.title", lang)} | ${t("meta.title", lang)}`}
   description={t("blog.description", lang)}
+  lang={lang}
 >
   <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
     <!-- Back button -->

@@ -4,6 +4,7 @@ import SquareLines from "../components/home/square-lines.astro";
 import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import "../styles/globals.css";
+import type { Language } from "@/content.config";
 
 interface Props {
   title: string;
@@ -15,6 +16,8 @@ interface Props {
   modifiedTime?: Date;
   author?: string;
   tags?: string[];
+  // Language of the page UI (sets <html lang>)
+  lang?: Language;
 }
 
 const {
@@ -27,6 +30,7 @@ const {
   modifiedTime,
   author = "Elyor Djalalov",
   tags = [],
+  lang = "en",
 } = Astro.props;
 
 const siteUrl = "https://www.elyor.dev";
@@ -34,7 +38,7 @@ const currentUrl = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
 const ogImageUrl = image.startsWith("http") ? image : new URL(image, siteUrl).href;
 ---
 
-<html lang="en" transition:animate="initial">
+<html lang={lang} transition:animate="initial">
   <head>
     <title>{title}</title>
     <meta charset="UTF-8" />

@@ -3,11 +3,7 @@ export const prerender = true;
 import { getCollection, render } from "astro:content";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 import readingTime from "reading-time";
-import {
-  DEFAULT_LANGUAGE,
-  type Language,
-  SUPPORTED_LANGUAGES,
-} from "@/content.config";
+import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -82,15 +78,8 @@ if (!translations || !defaultPost) {
   defaultPost = translations.find(p => p.data.lang === "en") || translations[0];
 }
 
-// Get requested language from query param
-const url = new URL(Astro.request.url);
-const requestedLang = url.searchParams.get("lang") as Language | null;
-
-// Find the post for the requested language, fall back to default
-const currentLang =
-  requestedLang && SUPPORTED_LANGUAGES.includes(requestedLang)
-    ? requestedLang
-    : DEFAULT_LANGUAGE;
+// Unprefixed URLs are the English version; other languages live under /uz and /ru
+const currentLang: Language = DEFAULT_LANGUAGE;
 
 const post = translations.find(p => p.data.lang === currentLang) || defaultPost;
 

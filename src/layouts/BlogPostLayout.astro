@@ -40,7 +40,12 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString(dateLocales[current
   day: "numeric",
 });
 
-const postUrl = `https://www.elyor.dev/blog/${post.id}`;
+// The post's own URL (in its own language). Fallback pages, e.g. /ru/blog/x
+// showing the English post, point search engines and shares here.
+const postUrl =
+  post.data.canonicalUrl ||
+  new URL(buildLangUrl(`/blog/${baseSlug}`, post.data.lang), Astro.site).href;
+const blogUrl = buildLangUrl("/blog", currentLang);
 
 ---
 
@@ -53,13 +58,15 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
   modifiedTime={updatedDate}
   author={author}
   tags={tags}
+  lang={currentLang}
+  canonicalUrl={postUrl}
 >
   <ReadingProgress client:load />
 
   <main class="max-w-4xl mx-auto px-4 py-8 pt-20">
     <!-- Back to blog -->
     <a
-      href={currentLang === "en" ? "/blog" : `/blog?lang=${currentLang}`}
+      href={blogUrl}
       class="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors mb-8 group"
     >
       <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +75,7 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
       {t("blogPost.backToBlog", currentLang)}
     </a>
 
-    <article class="blog-post">
+    <article class="blog-post" lang={post.data.lang}>
       <!-- Header -->
       <header class="mb-8">
         <!-- Tags and Language Switcher -->
@@ -202,7 +209,7 @@ const postUrl = `https://www.elyor.dev/blog/${post.id}`;
               {t("blogPost.authorBio", currentLang)}
             </p>
             <a
-              href={currentLang === "en" ? "/blog" : `/blog?lang=${currentLang}`}
+              href={blogUrl}
               class="inline-flex items-center gap-1 text-sm text-violet-600 dark:text-violet-400 hover:underline mt-2"
             >
               {t("blogPost.viewAllPosts", currentLang)}

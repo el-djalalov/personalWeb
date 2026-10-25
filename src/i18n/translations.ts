@@ -12,7 +12,7 @@ export const translations = {
 
     // Hero section
     "hero.greeting": "Hi, I'm Elyor",
-    "hero.title": "Sr. Software Engineer",
+    "hero.title": "AI-Native Engineer",
     "hero.downloadResume": "Download Resume",
 
     // Section headers
@@ -62,7 +62,7 @@ export const translations = {
     "blogPost.viewAllPosts": "View all posts →",
     "blogPost.updated": "Updated",
     "blogPost.authorBio":
-      "Sr. Software Engineer. Writing about web development, software architecture, and engineering best practices.",
+      "AI-native engineer. Writing about AI-assisted engineering, spec-driven development, web development and software architecture.",
 
     // 404 page
     "error.404": "404",
@@ -76,7 +76,7 @@ export const translations = {
     // Meta
     "meta.title": "Elyor Djalalov",
     "meta.description":
-      "Elyor Djalalov - Sr. Software Engineer. Portfolio showcasing web development projects and skills.",
+      "Elyor Djalalov - AI-Native Engineer. Portfolio showcasing web development projects and skills.",
   },
   uz: {
     // Navigation
@@ -88,7 +88,7 @@ export const translations = {
 
     // Hero section
     "hero.greeting": "Salom, men Elyor",
-    "hero.title": "Katta dastur muhandisi",
+    "hero.title": "AI-native muhandis",
     "hero.downloadResume": "Rezyumeni yuklash",
 
     // Section headers
@@ -138,7 +138,7 @@ export const translations = {
     "blogPost.viewAllPosts": "Barcha maqolalar →",
     "blogPost.updated": "Yangilangan",
     "blogPost.authorBio":
-      "Katta dastur muhandisi. Veb-dasturlash, dasturiy ta'minot arxitekturasi va muhandislik haqida yozaman.",
+      "AI-native muhandis. AI yordamidagi muhandislik, spetsifikatsiyaga asoslangan ishlab chiqish, veb-dasturlash va dasturiy ta'minot arxitekturasi haqida yozaman.",
 
     // 404 page
     "error.404": "404",
@@ -152,7 +152,7 @@ export const translations = {
     // Meta
     "meta.title": "Elyor Djalalov",
     "meta.description":
-      "Elyor Djalalov - Katta dastur muhandisi. Veb-dasturlash loyihalari va ko'nikmalari.",
+      "Elyor Djalalov - AI-native muhandis. Veb-dasturlash loyihalari va ko'nikmalari.",
   },
   ru: {
     // Navigation
@@ -164,7 +164,7 @@ export const translations = {
 
     // Hero section
     "hero.greeting": "Привет, я Элёр",
-    "hero.title": "Старший инженер-программист",
+    "hero.title": "AI-native инженер",
     "hero.downloadResume": "Скачать резюме",
 
     // Section headers
@@ -214,7 +214,7 @@ export const translations = {
     "blogPost.viewAllPosts": "Все статьи →",
     "blogPost.updated": "Обновлено",
     "blogPost.authorBio":
-      "Старший инженер-программист. Пишу о веб-разработке, архитектуре ПО и лучших практиках инженерии.",
+      "AI-native инженер. Пишу об инженерии с ИИ, разработке на основе спецификаций, веб-разработке и архитектуре ПО.",
 
     // 404 page
     "error.404": "404",
@@ -228,7 +228,7 @@ export const translations = {
     // Meta
     "meta.title": "Элёр Джалалов",
     "meta.description":
-      "Элёр Джалалов - Старший инженер-программист. Портфолио с проектами и навыками веб-разработки.",
+      "Элёр Джалалов - AI-native инженер. Портфолио с проектами и навыками веб-разработки.",
   },
 } as const;
 

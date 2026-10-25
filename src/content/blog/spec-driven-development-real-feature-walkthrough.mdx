@@ -1,0 +1,157 @@
+---
+title: "Spec-Driven Development with AI Agents: A Real Feature, Start to Finish"
+description: "A hands-on walkthrough of spec-driven development on anzel, an AI platform for sports organizations: writing the spec, letting the agent interview you, deriving tasks, and reviewing the code against the spec."
+pubDate: 2026-10-25
+author: "Elyor Djalalov"
+tags: ["Spec-Driven Development", "AI", "AI Agents", "Claude Code", "anzel", "Workflow"]
+draft: false
+---
+
+In my [earlier post on spec-driven development](/blog/spec-driven-development-in-practice) I explained what SDD is and why it became the standard way to work with AI coding agents. That post was about the *why*. This one is about the *how*.
+
+I will walk through a single feature on **[anzel](/blog/introducing-anzel-ai-for-the-business-of-sport)**, the AI platform for sports organizations I am building, from first idea to merged pull request. The spec, code and review notes below are simplified, and some details are changed for the blog, but the shape of the workflow is exactly what we use day to day.
+
+## The Feature
+
+anzel gives a sports club a shared knowledge base: contracts, sponsors, inventory, audiences, past deals. Different people need different slices of it:
+
+- **Club staff** work with the full commercial picture
+- **Club members** should see what is relevant to them, not confidential deal terms
+- **Leagues** need aggregated data across their clubs
+- **Investors** need consistent, comparable numbers without access to raw documents
+
+The feature: *role-scoped access to the club knowledge base, applied everywhere, including inside AI answers.*
+
+This is a perfect SDD candidate. It is easy to describe in one sentence and very easy to get subtly wrong. An agent that "adds permissions" without a spec will happily filter the list page and forget the AI retrieval path, which is precisely where a leak would hurt most.
+
+## Step 1: Write the Spec Before Anything Else
+
+The spec is a short markdown file in the repository, next to the code. Ours always has the same sections:
+
+```markdown
+# Spec: Role-scoped knowledge base access
+Status: Draft
+Related ADRs: ADR-007 (tenant isolation), ADR-011 (retrieval pipeline)
+
+## Problem
+Every member of a club can open the knowledge base, but today access is
+all-or-nothing per organization. Members can see confidential deal terms;
+leagues and investors cannot be given access at all.
+
+## Goals
+- Four roles: club_staff, club_member, league, investor
+- Every knowledge item carries a visibility level
+- The same rules apply to the UI, the API and AI retrieval
+
+## Non-goals
+- Per-document custom sharing (separate spec)
+- Changing how documents are ingested
+
+## Rules
+1. Visibility is enforced server-side, in one place. Never in the UI only.
+2. AI retrieval filters BEFORE ranking. A forbidden item must never
+   reach a prompt, even if it would be the best match.
+3. League and investor roles only ever see aggregated values,
+   never source documents.
+4. Cross-organization access is impossible regardless of role (ADR-007).
+
+## Acceptance criteria
+- [ ] A club_member asking the assistant about a sponsor's fee gets an
+      answer that says the information is restricted, not a guess
+- [ ] A league user sees aggregated sponsorship revenue per club,
+      with no link to the underlying contracts
+- [ ] An item's visibility change applies to the next query (no stale cache)
+- [ ] Every denied access is logged with user, role and item id
+
+## Open questions
+- Can club staff grant temporary access to a member?
+```
+
+Two things matter more than the template itself.
+
+**Rules are written as constraints, not wishes.** "Filter before ranking" is testable. "Make retrieval secure" is not. Agents follow sharp rules remarkably well and fill vague ones with their own assumptions.
+
+**Non-goals are as important as goals.** Without "per-document sharing is out of scope", a capable agent will notice the gap and helpfully start building it.
+
+## Step 2: Let the Agent Interview You
+
+Before the spec is approved, the agent reads it together with the referenced ADRs and the relevant code, then asks questions. This is the most underrated step in the whole workflow. On this feature, it asked:
+
+- *"Aggregated values for leagues: is there a minimum group size, so a single club's numbers can't be reverse-engineered?"* We hadn't decided. It became Rule 5.
+- *"The assistant cites sources in its answers. If a member's answer is built only from allowed items, should citations to restricted items be hidden or shown as 'restricted'?"* Hidden. Showing them still leaks that a document exists.
+- *"Existing items have no visibility level. What is the default during migration?"* `club_staff`. Safe by default.
+
+Each answer goes back into the spec. Three ambiguities that would otherwise have become three bugs, or three inconsistent guesses across three sessions, are now resolved in writing. Only then does the status move from *Draft* to *Approved*.
+
+## Step 3: Derive the Plan From the Spec
+
+The plan is a task list where **every task cites the spec section it implements**:
+
+```markdown
+1. Add visibility column + migration, default club_staff   (Rules 1, Q3)
+2. Central access policy: canView(user, item)              (Rules 1, 4)
+3. Apply policy in knowledge base API endpoints            (Rule 1)
+4. Apply policy in retrieval, before ranking               (Rule 2)
+5. Aggregation service for league/investor, min group size (Rules 3, 5)
+6. Hide restricted citations in assistant answers          (Interview)
+7. Audit log for denied access                             (AC 4)
+8. Cache invalidation on visibility change                 (AC 3)
+```
+
+This is where misunderstandings show up cheaply. If a task cannot point at a spec section, either the spec is missing something or the task should not exist. Reviewing eight lines takes two minutes. Reviewing the wrong 1,500-line diff takes an afternoon.
+
+## Step 4: Implement Test-First
+
+Each task goes through RED, GREEN, REFACTOR. The acceptance criteria translate almost directly into tests, which is the point of writing them as observable behavior:
+
+```ts
+it("never sends restricted items to the model", async () => {
+  const member = await createUser({ role: "club_member", org: club });
+  await createItem({ org: club, visibility: "club_staff", text: "Fee: 2.4M" });
+
+  const { promptContext, answer } = await ask(member, "What does our shirt sponsor pay?");
+
+  expect(promptContext).not.toContain("2.4M");
+  expect(answer.citations).toHaveLength(0);
+  expect(answer.text).toMatch(/restricted/i);
+});
+```
+
+Notice the test checks `promptContext`, not only the final answer. A model might decline to repeat a number it was shown, but the rule says the item must never *reach* the prompt. The spec told the agent exactly what to assert, so it did not settle for the easier, weaker test.
+
+## Step 5: Review Against the Spec, Then the Code
+
+Review happens in two passes, in this order:
+
+1. **Spec compliance:** does the change implement every rule and acceptance criterion, and nothing outside the goals?
+2. **Code quality:** is it readable, consistent with our standards, and properly tested?
+
+The order matters. On this feature the first pass caught that the CSV export endpoint, added months earlier, bypassed the central policy. Nothing in the diff touched it, so a code-quality review would never have looked there. Rule 1, "enforced server-side, in one place", made it a clear violation instead of a judgement call.
+
+Then the usual gate: lint, types, tests and build all green, and the PR goes out with the spec linked in the description.
+
+## Step 6: When Requirements Change, Edit the Spec First
+
+Two weeks later, the open question came back as a real request: club staff wanted to grant a member temporary access to a specific report.
+
+The temptation is to open a chat and say "add temporary access". Instead, the spec gets a new section with its own rules (expiry is mandatory, grants are logged, the AI path respects grants like any other permission), goes through the same short interview, and only then becomes tasks. The agent implementing it reads the original rules too, so the new feature cannot quietly weaken Rule 2.
+
+## What This Bought Us
+
+- **The dangerous path was covered first.** AI retrieval, the place where a leak is invisible and costly, was named in the spec, so it was not an afterthought.
+- **Consistency across sessions.** Different agent sessions implemented different tasks over several days and made the same decisions, because the decisions were written down, not remembered.
+- **Reviewable intent.** Teammates reviewed a two-page spec and an eight-line plan before any code existed. That is a far better use of a human reviewer than reading generated code line by line.
+- **A record of why.** When someone asks why investors cannot open source documents, the answer is Rule 3, linked from the code.
+
+## Takeaways
+
+If you want to try this on your next feature:
+
+1. **Write rules as testable constraints**, and name the risky path explicitly
+2. **Always include non-goals**, so the agent does not expand the scope for you
+3. **Make the agent interview you** before approving the spec
+4. **Every task cites a spec section**, with no orphan tasks
+5. **Review spec compliance before code quality**
+6. **Change the spec first**, then the code
+
+AI agents made writing code cheap. On a product like anzel, where trust in the data is the product, the expensive part is being precise about what the code must and must not do. A spec is where that precision lives.

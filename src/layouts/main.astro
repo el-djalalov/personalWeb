@@ -62,6 +62,7 @@ const ogTitle = `${t("meta.title", lang)} - ${t("hero.title", lang)}`;
   <body class="antialiased bg-white dark:bg-slate-950 w-full overflow-x-hidden">
     <SquareLines />
     <Header />
+    <main>
     <slot />
     <Separator text={t("section.experience", lang)} />
     <slot name="experience" />
@@ -71,6 +72,7 @@ const ogTitle = `${t("meta.title", lang)} - ${t("hero.title", lang)}`;
     <slot name="blog" />
     <Separator text={t("section.contact", lang)} />
     <slot name="contacts" />
+    </main>
     <slot name="footer" />
     <script src="../assets/js/main.js"></script>
     <SpeedInsights />

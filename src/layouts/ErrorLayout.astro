@@ -20,7 +20,9 @@ import { ClientRouter } from "astro:transitions";
 
   <body class="antialiased bg-white dark:bg-slate-950 w-full h-full">
     <SquareLines />
-    <slot />
-    <ErrorPage />
+    <main>
+      <slot />
+      <ErrorPage />
+    </main>
   </body>
 </html>

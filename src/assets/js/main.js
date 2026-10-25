@@ -12,6 +12,12 @@ const stickyClassesContainer = [
 const unstickyClassesContainer = ["border-transparent"];
 let headerElement = null;
 
+// Jump instead of smooth-scrolling for users who prefer reduced motion
+const scrollBehavior = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ? "auto"
+    : "smooth";
+
 document.addEventListener("astro:page-load", () => {
   headerElement = document.getElementById("header");
   stickyHeaderFuncionality();
@@ -91,7 +97,7 @@ document.addEventListener("astro:page-load", () => {
         anchor.classList.add("active");
 
         if (targetId === "/") {
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: scrollBehavior() });
           history.pushState(null, "", "/");
         } else {
           const targetElement = document.querySelector(targetId);
@@ -99,7 +105,7 @@ document.addEventListener("astro:page-load", () => {
           history.pushState(null, "", targetId);
           if (targetElement) {
             targetElement.scrollIntoView({
-              behavior: "smooth",
+              behavior: scrollBehavior(),
               block: "start",
             });
           }
@@ -111,7 +117,7 @@ document.addEventListener("astro:page-load", () => {
         const targetElement = document.querySelector(href);
         if (targetElement) {
           targetElement.scrollIntoView({
-            behavior: "smooth",
+            behavior: scrollBehavior(),
             block: "start",
           });
           history.pushState(null, "", href);

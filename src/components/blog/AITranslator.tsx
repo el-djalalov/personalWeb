@@ -175,7 +175,7 @@ export default function AITranslator({
             {status === "translating" ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4"
+                  className="motion-safe:animate-spin h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   aria-hidden="true"

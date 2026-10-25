@@ -3,35 +3,32 @@
 @tailwind utilities;
 
 /* Add Your Custom CSS Here */
-@layer utilities {
-  @keyframes scroll-fade-in {
-    0% {
-      opacity: 0;
-      transform: translateY(30px); /* Start from below */
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0); /* Move to normal position */
-    }
-  }
-
-  .elementAnimate {
-    opacity: 0; /* Start with opacity 0 */
+/* Motion only runs for users who haven't asked to reduce it */
+@keyframes scroll-fade-in {
+  0% {
+    opacity: 0;
     transform: translateY(30px); /* Start from below */
-    animation: scroll-fade-in 0.6s ease-out forwards; /* Animate in from below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Move to normal position */
   }
 }
 
-@layer utilities {
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px); /* Start from below */
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0); /* Move to normal position */
-    }
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px); /* Start from below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Final position */
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .elementAnimate {
+    animation: scroll-fade-in 0.6s ease-out both; /* Animate in from below */
   }
 
   .card {

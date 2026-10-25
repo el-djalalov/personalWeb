@@ -32,7 +32,7 @@ export const projects: Record<Language, Project[]> = {
     {
       description: "AI- and GIS-powered soil productivity platform",
       title: "AgroNetZero Bio Sync 365",
-      src: "/images/projects/agroNetZeroLanding.webp",
+      src: "/images/projects/soilSyncLanding.webp",
       ctaText: "Visit",
       ctaLink: "https://soilsync.bio",
       content:
@@ -88,7 +88,7 @@ export const projects: Record<Language, Project[]> = {
     {
       description: "AI va GIS asosidagi tuproq unumdorligi platformasi",
       title: "AgroNetZero Bio Sync 365",
-      src: "/images/projects/agroNetZeroLanding.webp",
+      src: "/images/projects/soilSyncLanding.webp",
       ctaText: "Ochish",
       ctaLink: "https://soilsync.bio",
       content:
@@ -144,7 +144,7 @@ export const projects: Record<Language, Project[]> = {
     {
       description: "AI/GIS-платформа продуктивности почвы",
       title: "AgroNetZero Bio Sync 365",
-      src: "/images/projects/agroNetZeroLanding.webp",
+      src: "/images/projects/soilSyncLanding.webp",
       ctaText: "Открыть",
       ctaLink: "https://soilsync.bio",
       content:

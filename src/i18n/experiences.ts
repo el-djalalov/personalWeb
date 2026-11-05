@@ -13,21 +13,11 @@ export interface Experience {
 export const experiences: Record<Language, Experience[]> = {
   en: [
     {
-      dates: "Apr. 2026 - Present",
-      role: "AI-Native Engineer",
+      dates: "Nov. 2025 - Present",
+      role: "Full Stack / AI Native Engineer",
       company: "Vention",
       description:
-        "Pre-sale solutioning and AI engineering across 10+ prospective client projects — designed end-to-end architectures (service boundaries, API contracts, data models, AWS) and drove prompt- and context-engineering standards while mentoring engineers.",
-      logo: "/images/experiences/vention_logo.jpeg",
-      website: "https://ventionteams.com/",
-      content: null,
-    },
-    {
-      dates: "Nov. 2025 - Mar. 2026",
-      role: "Full Stack Engineer",
-      company: "Vention",
-      description:
-        "Delivered a full client MVP end to end with a spec-driven, AI-assisted (SDD) workflow — Node.js/NestJS backend, Next.js marketing site, React internal app, Redis caching, and PostgreSQL.",
+        "Delivered a full client MVP end to end with a spec-driven, AI-assisted (SDD) workflow — Node.js/NestJS, Next.js, React, Redis, and PostgreSQL. Led pre-sale solutioning and AI engineering across 10+ prospective client projects — designed end-to-end architectures (service boundaries, API contracts, data models, AWS) and drove prompt- and context-engineering standards while mentoring engineers.",
       logo: "/images/experiences/vention_logo.jpeg",
       website: "https://ventionteams.com/",
       content: null,
@@ -85,21 +75,11 @@ export const experiences: Record<Language, Experience[]> = {
   ],
   uz: [
     {
-      dates: "Apr. 2026 - Hozir",
-      role: "AI-native muhandis",
+      dates: "Noy. 2025 - Hozir",
+      role: "Full Stack / AI Native Muhandis",
       company: "Vention",
       description:
-        "10+ potentsial mijoz loyihalari bo'yicha presale yechimlar va AI muhandisligi — to'liq arxitekturalarni (servis chegaralari, API kontraktlari, ma'lumot modellari, AWS) loyihaladim hamda prompt va kontekst muhandisligi standartlarini joriy qilib, muhandislarga mentorlik qildim.",
-      logo: "/images/experiences/vention_logo.jpeg",
-      website: "https://ventionteams.com/",
-      content: null,
-    },
-    {
-      dates: "Noy. 2025 - Mart 2026",
-      role: "Full Stack Muhandis",
-      company: "Vention",
-      description:
-        "Spec-driven, AI yordamidagi (SDD) ish jarayoni bilan to'liq mijoz MVP'sini yetkazdim — Node.js/NestJS backend, Next.js marketing sayti, React ichki ilova, Redis keshlash va PostgreSQL.",
+        "Spec-driven, AI yordamidagi (SDD) ish jarayoni bilan to'liq mijoz MVP'sini yetkazdim — Node.js/NestJS, Next.js, React, Redis va PostgreSQL. 10+ potentsial mijoz loyihalari bo'yicha presale yechimlar va AI muhandisligi — to'liq arxitekturalarni (servis chegaralari, API kontraktlari, ma'lumot modellari, AWS) loyihaladim hamda prompt va kontekst muhandisligi standartlarini joriy qilib, muhandislarga mentorlik qildim.",
       logo: "/images/experiences/vention_logo.jpeg",
       website: "https://ventionteams.com/",
       content: null,
@@ -157,21 +137,11 @@ export const experiences: Record<Language, Experience[]> = {
   ],
   ru: [
     {
-      dates: "Апр. 2026 - Настоящее время",
-      role: "AI-native инженер",
+      dates: "Ноя. 2025 - Настоящее время",
+      role: "Full Stack / AI Native инженер",
       company: "Vention",
       description:
-        "Пресейл-инжиниринг решений и AI-инжиниринг для 10+ потенциальных клиентских проектов — проектировал end-to-end архитектуры (границы сервисов, API-контракты, модели данных, AWS) и внедрял стандарты prompt- и context-инжиниринга, менторя инженеров.",
-      logo: "/images/experiences/vention_logo.jpeg",
-      website: "https://ventionteams.com/",
-      content: null,
-    },
-    {
-      dates: "Ноя. 2025 - Март 2026",
-      role: "Full Stack инженер",
-      company: "Vention",
-      description:
-        "Поставил полный клиентский MVP по spec-driven, AI-ассистированному (SDD) процессу — backend на Node.js/NestJS, маркетинговый сайт на Next.js, внутреннее приложение на React, кеширование Redis и PostgreSQL.",
+        "Поставил полный клиентский MVP по spec-driven, AI-ассистированному (SDD) процессу — Node.js/NestJS, Next.js, React, Redis и PostgreSQL. Пресейл-инжиниринг решений и AI-инжиниринг для 10+ потенциальных клиентских проектов — проектировал end-to-end архитектуры (границы сервисов, API-контракты, модели данных, AWS) и внедрял стандарты prompt- и context-инжиниринга, менторя инженеров.",
       logo: "/images/experiences/vention_logo.jpeg",
       website: "https://ventionteams.com/",
       content: null,

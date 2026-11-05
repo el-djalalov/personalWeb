@@ -1,9 +1,9 @@
 [
   {
     "dates": "Nov. 2025 - Present",
-    "role": "Sr. Software Engineer",
+    "role": "Full Stack / AI Native Engineer",
     "company": "Vention",
-    "description": "Pre-sale solution engineering across 10+ prospective client projects — leading client discovery, requirement gathering and effort estimation, and designing end-to-end solution architectures (backend, frontend, API contracts, AWS).",
+    "description": "Delivered a full client MVP end to end with a spec-driven, AI-assisted (SDD) workflow — Node.js/NestJS, Next.js, React, Redis, and PostgreSQL. Led pre-sale solutioning and AI engineering across 10+ prospective client projects — designed end-to-end architectures (service boundaries, API contracts, data models, AWS) and drove prompt- and context-engineering standards while mentoring engineers.",
     "logo": "/images/experiences/vention_logo.jpeg",
     "website": "https://ventionteams.com/",
     "content": null

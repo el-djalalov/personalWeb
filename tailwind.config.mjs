@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"IBM Plex Sans"', ...defaultTheme.fontFamily.sans],
+        sans: ['"IBM Plex Sans"', '"Plex Sans Fallback"', ...defaultTheme.fontFamily.sans],
         mono: ['"IBM Plex Mono"', ...defaultTheme.fontFamily.mono],
         // Condensed for Latin headings; Russian swaps it in globals.css
         display: "var(--font-display)",

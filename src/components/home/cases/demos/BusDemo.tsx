@@ -33,17 +33,19 @@ export default function BusDemo({ label, t }: Props) {
   const [alarms, setAlarms] = useState<AlarmState>(emptyAlarms);
   const [info, setInfo] = useState<number | null>(null);
   const counter = useRef(0);
+  // Kept across effect runs, so buses do not jump back when the demo scrolls out and in
+  const progress = useRef(BUSES.map((_, i) => (i * 0.17) % 1));
 
   // Move the buses along their routes while the demo is on screen
   useEffect(() => {
-    const progress = BUSES.map((_, i) => (i * 0.17) % 1);
+    const position = progress.current;
     const speed = BUSES.map((_, i) => 0.0007 + (i % 3) * 0.00025);
     const place = () => {
       BUSES.forEach((_, i) => {
         const path = pathRefs.current[i % ROUTES.length];
         const bus = busRefs.current[i];
         if (!path || !bus) return;
-        const point = path.getPointAtLength(progress[i] * path.getTotalLength());
+        const point = path.getPointAtLength(position[i] * path.getTotalLength());
         bus.setAttribute("transform", `translate(${point.x.toFixed(1)},${point.y.toFixed(1)})`);
       });
     };
@@ -51,7 +53,7 @@ export default function BusDemo({ label, t }: Props) {
     if (reduce || !inView) return;
     let frame = 0;
     const loop = () => {
-      progress.forEach((p, i) => (progress[i] = (p + speed[i]) % 1));
+      position.forEach((p, i) => (position[i] = (p + speed[i]) % 1));
       place();
       frame = requestAnimationFrame(loop);
     };
@@ -181,7 +183,11 @@ export default function BusDemo({ label, t }: Props) {
                 aria-label={`${t.bus} ${id}`}
                 className="cursor-pointer focus:outline-none [&:focus-visible_circle.dot]:stroke-foreground"
                 onClick={() => setInfo(id)}
-                onKeyDown={event => event.key === "Enter" && setInfo(id)}
+                onKeyDown={event => {
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  setInfo(id);
+                }}
               >
                 <circle r="11" fill="transparent" />
                 <circle r="9" fill="none" className="stroke-crit" strokeWidth="2" opacity={alarmed ? 1 : 0} />

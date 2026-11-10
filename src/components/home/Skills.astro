@@ -26,7 +26,7 @@ const { copy } = Astro.props;
           >
             {skill.title}
           </button>
-          <div class="sk-b" id={`skill-${skill.id}`}>
+          <div class="sk-b" id={`skill-${skill.id}`} inert={index !== 0}>
             {skill.id === "system" && (
               <svg class="art" viewBox="0 0 300 150" aria-hidden="true">
                 <path class="ln" d="M40 75 L120 38 M40 75 L120 112 M120 38 L200 75 M120 112 L200 75 M200 75 L262 38 M200 75 L262 112 M120 38 L120 112" />
@@ -303,6 +303,7 @@ const { copy } = Astro.props;
     let openedAt = performance.now();
     let pausedAt = Number.NEGATIVE_INFINITY;
     let visible = false;
+    let focusInside = false;
     const hoverTimers = new Map<HTMLElement, number>();
 
     function open(index: number, byUser: boolean) {
@@ -313,6 +314,9 @@ const { copy } = Astro.props;
         const on = i === index;
         panel.classList.toggle("on", on);
         panel.querySelector(".sk-v")?.setAttribute("aria-expanded", String(on));
+        // Closed panels are hidden from screen readers and keyboard too
+        const body = panel.querySelector<HTMLElement>(".sk-b");
+        if (body) body.inert = !on;
         const svg = panel.querySelector<SVGSVGElement>("svg");
         if (svg) {
           if (on && !reduce) svg.unpauseAnimations();
@@ -356,6 +360,13 @@ const { copy } = Astro.props;
       });
     });
 
+    root.addEventListener("focusin", () => (focusInside = true), { signal: listeners.signal });
+    root.addEventListener(
+      "focusout",
+      event => (focusInside = root.contains(event.relatedTarget as Node | null)),
+      { signal: listeners.signal },
+    );
+
     open(0, false);
     const unwatch = watchVisibility(root, isVisible => {
       visible = isVisible;
@@ -364,7 +375,8 @@ const { copy } = Astro.props;
       ? 0
       : window.setInterval(() => {
           const now = performance.now();
-          if (!visible || document.hidden) return;
+          // Never rotate under a keyboard or screen-reader user
+          if (!visible || document.hidden || focusInside) return;
           if (now - pausedAt < PAUSE_AFTER_USE_MS || now - openedAt < AUTO_MS) return;
           open((current + 1) % panels.length, false);
         }, 250);

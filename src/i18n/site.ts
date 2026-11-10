@@ -27,6 +27,8 @@ export interface SiteCopy {
   };
   localTime: string;
   social: string;
+  /** Accessible names for shared controls */
+  a11y: { theme: string; toc: string; tocLabel: string; readingProgress: string; language: string };
 }
 
 export const site: Record<Language, SiteCopy> = {
@@ -56,6 +58,7 @@ export const site: Record<Language, SiteCopy> = {
     },
     localTime: "Local time",
     social: "Social links",
+    a11y: { theme: "Dark theme", toc: "On this page", tocLabel: "Table of contents", readingProgress: "Reading progress", language: "Language" },
   },
   uz: {
     name: "Elyor Djalalov",
@@ -83,6 +86,7 @@ export const site: Record<Language, SiteCopy> = {
     },
     localTime: "Mahalliy vaqt",
     social: "Ijtimoiy tarmoqlar",
+    a11y: { theme: "Tungi mavzu", toc: "Ushbu sahifada", tocLabel: "Mundarija", readingProgress: "O'qish jarayoni", language: "Til" },
   },
   ru: {
     name: "Элёр Джалалов",
@@ -110,6 +114,7 @@ export const site: Record<Language, SiteCopy> = {
     },
     localTime: "Местное время",
     social: "Соцсети",
+    a11y: { theme: "Тёмная тема", toc: "На этой странице", tocLabel: "Оглавление", readingProgress: "Прогресс чтения", language: "Язык" },
   },
 };
 

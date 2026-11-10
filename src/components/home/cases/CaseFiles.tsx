@@ -63,7 +63,8 @@ function CountUp({ result, animate }: { result: Result; animate: boolean }) {
 
 function CasePanel({ item, copy, animate }: { item: CaseFile; copy: CasesCopy; animate: boolean }) {
   return (
-    <article
+    // A div: the tabpanel role is not allowed on <article>
+    <div
       id={`case-${item.id}`}
       role="tabpanel"
       aria-labelledby={`tab-${item.id}`}
@@ -131,7 +132,7 @@ function CasePanel({ item, copy, animate }: { item: CaseFile; copy: CasesCopy; a
           </ol>
         </div>
       </div>
-    </article>
+    </div>
   );
 }
 
@@ -219,7 +220,8 @@ export default function CaseFiles({ copy }: Props) {
             role="tab"
             id={`tab-${c.id}`}
             aria-selected={c.id === active}
-            aria-controls={`case-${c.id}`}
+            // Only the open case's panel is on the page
+            aria-controls={c.id === active ? `case-${c.id}` : undefined}
             tabIndex={c.id === active ? 0 : -1}
             onClick={() => select(c.id)}
             onKeyDown={e => onKeyDown(e, index)}

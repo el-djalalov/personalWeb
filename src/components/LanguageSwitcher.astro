@@ -1,8 +1,10 @@
 ---
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from "@/content.config";
 import { getLangFromUrl } from "@/i18n";
+import { getSiteCopy } from "@/i18n/site";
 
 const currentLang = getLangFromUrl(Astro.url);
+const languageLabel = getSiteCopy(currentLang).a11y.language;
 const currentPath = Astro.url.pathname;
 
 // Remove language prefix from current path to get the base path
@@ -26,7 +28,7 @@ const basePath = getBasePath(currentPath, currentLang);
     <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
     </svg>
-    <span class="sr-only">Language: {LANGUAGE_NAMES[currentLang]}</span>
+    <span class="sr-only">{languageLabel}: {LANGUAGE_NAMES[currentLang]}</span>
     <span aria-hidden="true">{currentLang.toUpperCase()}</span>
     <svg class="w-3 h-3 transition-transform" id="lang-chevron" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

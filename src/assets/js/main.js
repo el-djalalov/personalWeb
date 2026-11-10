@@ -46,7 +46,13 @@ document.addEventListener(
       return;
     }
 
-    const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+    let id = url.hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch {
+      // Malformed %-escape: use the raw hash
+    }
+    const target = document.getElementById(id);
     if (!target) return;
     event.preventDefault();
     const oldURL = window.location.href;

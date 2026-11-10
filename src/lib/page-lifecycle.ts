@@ -52,7 +52,12 @@ function getRegistry(): Registry {
     registry.loaded = true;
     registry.inits.forEach(init => start(registry, init));
   });
-  document.addEventListener("astro:before-swap", () => stopAll(registry));
+  document.addEventListener("astro:before-swap", () => {
+    stopAll(registry);
+    // Scripts of the next page that load during the swap wait for its
+    // page-load instead of starting right away and then once more
+    registry.loaded = false;
+  });
   return registry;
 }
 

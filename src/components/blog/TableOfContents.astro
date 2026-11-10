@@ -1,4 +1,7 @@
 ---
+import { getLangFromUrl } from "@/i18n";
+import { getSiteCopy } from "@/i18n/site";
+
 interface Heading {
   depth: number;
   slug: string;
@@ -10,15 +13,16 @@ interface Props {
 }
 
 const { headings } = Astro.props;
+const labels = getSiteCopy(getLangFromUrl(Astro.url)).a11y;
 
 // Filter to only include h2 and h3
 const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {filteredHeadings.length > 0 && (
-  <nav class="toc" aria-label="Table of contents">
+  <nav class="toc" aria-label={labels.tocLabel}>
     <h4 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-      On this page
+      {labels.toc}
     </h4>
     <div class="toc-scroll-container max-h-[calc(100vh-12rem)] overflow-y-auto pr-2 -mr-2 scrollbar-thin scrollbar-track-transparent">
       <ul class="space-y-2 text-sm">
@@ -116,6 +120,8 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     // Smooth scroll on click
     tocLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
+        // main.js already scrolled and updated the address bar
+        if (e.defaultPrevented) return;
         e.preventDefault();
         const targetId = link.getAttribute("href")?.slice(1);
         if (targetId) {

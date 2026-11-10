@@ -44,6 +44,7 @@ function seeded(seed: number) {
 
 export default function MapDemo({ label, t }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const revealFrame = useRef(0);
   const model = useRef<Model>({ poly: START, drawing: false, hover: null, drag: -1, soil: true, reveal: 1 });
   const reduce = useReducedMotion();
   const themeVersion = useThemeVersion();
@@ -234,12 +235,12 @@ export default function MapDemo({ label, t }: Props) {
     ctx.stroke();
     ctx.fillStyle = token("--foreground");
     ctx.font = `11px ${mono}`;
-    ctx.fillText("200 m", 18 + len, h - 10);
+    ctx.fillText(`200 ${t.metres}`, 18 + len, h - 10);
 
     const ok = closed && poly.length > 2;
     const next = {
       area: ok ? `${area.toFixed(2)} ${t.ha}` : "–",
-      edge: ok ? `${Math.round(perimeterM(poly, { width: w, height: h }, MAP_METRES))} m` : "–",
+      edge: ok ? `${Math.round(perimeterM(poly, { width: w, height: h }, MAP_METRES))} ${t.metres}` : "–",
       om: ok && showSoil && omCells ? `${(omSum / omCells).toFixed(1)}%` : "–",
     };
     setReadout(prev =>
@@ -253,15 +254,16 @@ export default function MapDemo({ label, t }: Props) {
       draw();
       return () => {};
     }
+    // One reveal at a time: a new one replaces the running one
+    cancelAnimationFrame(revealFrame.current);
     const start = performance.now();
-    let frame = 0;
     const step = (now: number) => {
       model.current = { ...model.current, reveal: clamp01((now - start) / 900) };
       draw();
-      if (model.current.reveal < 1) frame = requestAnimationFrame(step);
+      if (model.current.reveal < 1) revealFrame.current = requestAnimationFrame(step);
     };
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
+    revealFrame.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(revealFrame.current);
   }, [draw, reduce]);
 
   useEffect(() => reveal(), [reveal]);
@@ -404,6 +406,8 @@ export default function MapDemo({ label, t }: Props) {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onLostPointerCapture={onPointerUp}
           onPointerLeave={onPointerLeave}
           onDoubleClick={() => model.current.drawing && finish()}
         />

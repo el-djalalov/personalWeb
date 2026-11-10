@@ -153,9 +153,10 @@ export default function QuizDemo({ label, t }: Props) {
                 <button
                   key={text}
                   type="button"
-                  disabled={phase !== "ask" || pick !== null}
+                  // aria-disabled (not disabled) keeps keyboard focus on the button
+                  aria-disabled={phase !== "ask" || pick !== null}
                   onClick={() => answer(i)}
-                  className={`relative flex items-center gap-2.5 overflow-hidden rounded-[10px] border bg-surf2 px-3 py-3.5 text-left text-[15px] font-semibold transition duration-200 enabled:hover:-translate-y-0.5 ${
+                  className={`relative flex items-center gap-2.5 overflow-hidden rounded-[10px] border bg-surf2 px-3 py-3.5 text-left text-[15px] font-semibold transition duration-200 aria-[disabled=false]:hover:-translate-y-0.5 ${
                     right ? "border-good" : pick === i ? "border-foreground" : "border-border"
                   } ${dim ? "opacity-40" : ""}`}
                   style={{ ["--c" as string]: OPTION_COLORS[i] }}
@@ -169,6 +170,12 @@ export default function QuizDemo({ label, t }: Props) {
                     {"ABCD"[i]}
                   </span>
                   <span className="relative">{text}</span>
+                  {right && (
+                    <>
+                      <span className="relative text-good" aria-hidden="true">✓</span>
+                      <span className="sr-only">{t.correct}</span>
+                    </>
+                  )}
                   <span className="relative ml-auto font-mono text-xs font-normal tabular-nums text-muted-foreground">
                     {counts[i]}
                   </span>

@@ -44,7 +44,8 @@ export interface HomeCopy {
     titleB: string;
     lead: string;
     cert: string;
-    certLabel: string;
+    /** Read by screen readers after the badge text */
+    certMore: string;
     ctaWork: string;
     ctaSkills: string;
     resume: string;
@@ -82,7 +83,7 @@ export const home: Record<Language, HomeCopy> = {
       titleB: "and ship them to real users.",
       lead: "Full-stack and AI-native engineer at Vention. Eight years of products, from cloud systems to AI agents.",
       cert: CERT,
-      certLabel: "Claude Certified Architect, Foundations. Verify on Credly (opens in a new tab)",
+      certMore: "Foundations. Verify on Credly, opens in a new tab",
       ctaWork: "See case files",
       ctaSkills: "What I build",
       resume: "Resume (PDF)",
@@ -171,7 +172,7 @@ export const home: Record<Language, HomeCopy> = {
       titleB: "va ularni haqiqiy foydalanuvchilarga yetkazaman.",
       lead: "Vention'da full-stack va AI-native muhandis. Bulut tizimlaridan AI agentlargacha, sakkiz yillik mahsulot tajribasi.",
       cert: CERT,
-      certLabel: "Claude Certified Architect, Foundations. Credly'da tekshirish (yangi oynada ochiladi)",
+      certMore: "Foundations. Credly'da tekshirish, yangi oynada ochiladi",
       ctaWork: "Loyihalarni ko'rish",
       ctaSkills: "Nima quraman",
       resume: "Rezyume (PDF)",
@@ -260,7 +261,7 @@ export const home: Record<Language, HomeCopy> = {
       titleB: "и довожу их до реальных пользователей.",
       lead: "Full-stack и AI-native инженер в Vention. Восемь лет продуктов: от облачных систем до AI-агентов.",
       cert: CERT,
-      certLabel: "Claude Certified Architect, Foundations. Проверить на Credly (откроется в новой вкладке)",
+      certMore: "Foundations. Проверить на Credly, откроется в новой вкладке",
       ctaWork: "Смотреть проекты",
       ctaSkills: "Что я делаю",
       resume: "Резюме (PDF)",

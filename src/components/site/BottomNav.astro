@@ -69,7 +69,11 @@ const items = [
       });
     };
 
+    // Blog and 404 pages have none of these sections: mark nothing there
+    const onHome = sections.some(id => id !== "top" && document.getElementById(id));
+
     const update = () => {
+      if (!onHome) return setActive("");
       if (window.scrollY < 100) return setActive(sections[0]);
       const atBottom =
         window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50;

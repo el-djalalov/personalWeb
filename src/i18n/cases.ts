@@ -67,6 +67,7 @@ export interface DemoCopy {
     om: string;
     bands: [string, string, string];
     ha: string;
+    metres: string;
     aria: string;
   };
   quiz: {
@@ -126,6 +127,7 @@ export interface DemoCopy {
     tip: string;
     example: string;
     tickets: Record<string, string>;
+    hours: string;
   };
   modules: {
     roles: Record<Role, string>;
@@ -307,6 +309,7 @@ export const cases: Record<Language, CasesCopy> = {
         om: "Organic matter",
         bands: ["low", "mid", "high"],
         ha: "ha",
+        metres: "m",
         aria: "Map demo. Draw a field, drag its corners, hover for soil data.",
       },
       quiz: {
@@ -396,6 +399,7 @@ export const cases: Record<Language, CasesCopy> = {
         upToDate: "Already up to date with Jira",
         tip: "Tip: click a ticket, then click a person",
         example: "Example tickets",
+        hours: "h",
         tickets: {
           "PLAN-142": "Fix login timeout",
           "PLAN-151": "Map export to PDF",
@@ -538,6 +542,7 @@ export const cases: Record<Language, CasesCopy> = {
         om: "Organik modda",
         bands: ["past", "o'rta", "yuqori"],
         ha: "ga",
+        metres: "m",
         aria: "Xarita namunasi. Maydon chizing, burchaklarini suring, tuproq ma'lumotini ko'ring.",
       },
       quiz: {
@@ -627,6 +632,7 @@ export const cases: Record<Language, CasesCopy> = {
         upToDate: "Jira bilan allaqachon bir xil",
         tip: "Maslahat: vazifani bosing, keyin odamni bosing",
         example: "Namuna vazifalar",
+        hours: "soat",
         tickets: {
           "PLAN-142": "Kirish taym-autini tuzatish",
           "PLAN-151": "Xaritani PDF ga eksport",
@@ -769,6 +775,7 @@ export const cases: Record<Language, CasesCopy> = {
         om: "Органика",
         bands: ["низко", "средне", "высоко"],
         ha: "га",
+        metres: "м",
         aria: "Демо карты. Нарисуйте поле, потяните углы, наведите на почву.",
       },
       quiz: {
@@ -858,6 +865,7 @@ export const cases: Record<Language, CasesCopy> = {
         upToDate: "Уже синхронизировано с Jira",
         tip: "Совет: нажмите на задачу, затем на человека",
         example: "Пример задач",
+        hours: "ч",
         tickets: {
           "PLAN-142": "Исправить тайм-аут входа",
           "PLAN-151": "Экспорт карты в PDF",

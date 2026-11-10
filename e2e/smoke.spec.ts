@@ -30,6 +30,20 @@ for (const [path, lang] of [
   });
 }
 
+test("clicking a log step explains it under the log and keeps the rows intact", async ({ page }) => {
+  await page.goto("/");
+  const card = page.locator("[data-agent-log]");
+  const second = card.locator(".step").nth(1);
+  const why = await second.getAttribute("data-why");
+  await second.click();
+  await expect(card.locator("[data-log-hint]")).toHaveText(why ?? "");
+  // Every row still has its three parts
+  await expect(card.locator("li:not([data-state=empty]) .s-name")).toHaveCount(5);
+  // Switching runs keeps the rows intact too
+  await card.locator("[data-run=cloud]").click();
+  await expect(card.locator(".step").first().locator(".s-name")).toHaveText("plan");
+});
+
 test("the theme choice stays after a reload", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).not.toHaveClass(/light/);

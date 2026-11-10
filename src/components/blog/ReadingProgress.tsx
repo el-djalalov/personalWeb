@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function ReadingProgress() {
+interface Props {
+  /** Accessible name, in the page language */
+  label: string;
+}
+
+export default function ReadingProgress({ label }: Props) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -41,7 +46,7 @@ export default function ReadingProgress() {
         aria-valuenow={Math.round(progress)}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-label="Reading progress"
+        aria-label={label}
       />
     </div>
   );

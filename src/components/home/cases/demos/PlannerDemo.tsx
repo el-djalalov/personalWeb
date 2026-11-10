@@ -49,6 +49,8 @@ export default function PlannerDemo({ label, t }: Props) {
   const [over, setOver] = useState<Column | null>(null);
   const [ghost, setGhost] = useState<{ id: string; x: number; y: number } | null>(null);
   const drag = useRef<Drag | null>(null);
+  const refocus = useRef<string | null>(null);
+  const [announce, setAnnounce] = useState("");
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(id => window.clearTimeout(id)), []);
@@ -56,11 +58,21 @@ export default function PlannerDemo({ label, t }: Props) {
   const titleOf = (id: string) => t.tickets[id] ?? id;
   const find = (id: string) => COLUMNS.flatMap(c => board[c]).find(x => x.id === id);
 
-  const move = (id: string, to: Column) => {
+  const move = (id: string, to: Column, byKeyboard = false) => {
     setBoard(b => moveTicket(b, id, to));
     setSelected(null);
     setLanded(id);
+    setAnnounce(`${titleOf(id)} → ${to === "backlog" ? t.backlog : PEOPLE[to]}`);
+    if (byKeyboard) refocus.current = id;
   };
+
+  // A moved ticket remounts in its new column; give keyboard focus back to it
+  useEffect(() => {
+    const id = refocus.current;
+    if (!id) return;
+    refocus.current = null;
+    frameRef.current?.querySelector<HTMLElement>(`[data-ticket="${id}"]`)?.focus();
+  }, [board]);
 
   const runSync = () => {
     if (sync !== "idle") {
@@ -89,6 +101,7 @@ export default function PlannerDemo({ label, t }: Props) {
   };
 
   const onPointerDown = (event: React.PointerEvent<HTMLElement>, id: string) => {
+    if (event.button !== 0) return;
     drag.current = { id, startX: event.clientX, startY: event.clientY, moved: false };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -119,10 +132,16 @@ export default function PlannerDemo({ label, t }: Props) {
     setSelected(s => (s === d.id ? null : d.id));
   };
 
+  const cancelDrag = () => {
+    drag.current = null;
+    setGhost(null);
+    setOver(null);
+  };
+
   const onKeyDown = (event: React.KeyboardEvent<HTMLElement>, id: string, from: Column) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     event.preventDefault();
-    move(id, COLUMNS[(COLUMNS.indexOf(from) + 1) % COLUMNS.length]);
+    move(id, COLUMNS[(COLUMNS.indexOf(from) + 1) % COLUMNS.length], true);
   };
 
   const renderTicket = (item: Ticket, column: Column) => {
@@ -133,10 +152,13 @@ export default function PlannerDemo({ label, t }: Props) {
         key={item.id}
         role="button"
         tabIndex={0}
+        data-ticket={item.id}
         aria-pressed={selected === item.id}
         onPointerDown={e => onPointerDown(e, item.id)}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        onPointerCancel={cancelDrag}
+        onLostPointerCapture={cancelDrag}
         onKeyDown={e => onKeyDown(e, item.id, column)}
         onAnimationEnd={() => setLanded(l => (l === item.id ? null : l))}
         className={`flex cursor-grab touch-none select-none flex-col gap-0.5 rounded-lg border bg-card px-2.5 py-2 text-[12.5px] transition duration-200 hover:border-acc ${
@@ -146,7 +168,7 @@ export default function PlannerDemo({ label, t }: Props) {
         <b className="font-semibold">{titleOf(item.id)}</b>
         <span className="flex justify-between font-mono text-[10.5px] text-muted-foreground">
           <span>{item.id}</span>
-          <span>{item.hours}h</span>
+          <span>{item.hours} {t.hours}</span>
         </span>
       </div>
     );
@@ -166,6 +188,7 @@ export default function PlannerDemo({ label, t }: Props) {
       }
     >
       <div ref={frameRef} className="relative grid gap-3 p-3.5">
+        <p className="sr-only" aria-live="polite">{announce}</p>
         <input
           type="search"
           value={query}
@@ -191,7 +214,7 @@ export default function PlannerDemo({ label, t }: Props) {
               >
                 <p className="flex justify-between font-mono text-xs text-muted-foreground">
                   <span>{column === "backlog" ? t.backlog : PEOPLE[column]}</span>
-                  <span className="tabular-nums">{column === "backlog" ? board.backlog.length : `${hours} / ${DAY_HOURS}h`}</span>
+                  <span className="tabular-nums">{column === "backlog" ? board.backlog.length : `${hours} / ${DAY_HOURS} ${t.hours}`}</span>
                 </p>
                 {column !== "backlog" && (
                   <div className="h-1 overflow-hidden rounded-sm bg-border">

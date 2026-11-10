@@ -10,6 +10,7 @@ import { getPublicImageSize } from "@/utils/publicImageSize";
 import type { CollectionEntry } from "astro:content";
 import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
 import { t, buildLangUrl } from "@/i18n";
+import { getSiteCopy } from "@/i18n/site";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -65,7 +66,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
   lang={currentLang}
   canonicalUrl={postUrl}
 >
-  <ReadingProgress client:load />
+  <ReadingProgress client:load label={getSiteCopy(currentLang).a11y.readingProgress} />
 
   <main class="max-w-4xl mx-auto px-4 py-8 pt-20">
     <!-- Back to blog -->

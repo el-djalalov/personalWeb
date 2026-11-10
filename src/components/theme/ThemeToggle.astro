@@ -1,16 +1,20 @@
 ---
+import { getLangFromUrl } from "@/i18n";
+import { getSiteCopy } from "@/i18n/site";
+
 interface Props {
   class?: string;
   iconClass?: string;
 }
 
 const { class: className, iconClass = "w-6 h-6" } = Astro.props;
+const label = getSiteCopy(getLangFromUrl(Astro.url)).a11y.theme;
 ---
 
 <button
   type="button"
   id="themeToggle"
-  aria-label="Dark theme"
+  aria-label={label}
   aria-pressed="false"
   class:list={["flex items-center justify-center", className]}
 >

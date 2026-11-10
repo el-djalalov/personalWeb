@@ -45,7 +45,9 @@ export function showToast(message: string): void {
   if (!toast) return;
   toast.textContent = message;
   toast.classList.add("is-on");
-  window.setTimeout(() => toast.classList.remove("is-on"), 2200);
+  // One timer for the shared toast, so a second message stays its full time
+  window.clearTimeout(Number(toast.dataset.timer));
+  toast.dataset.timer = String(window.setTimeout(() => toast.classList.remove("is-on"), 2200));
 }
 
 interface DemoFrameProps {
@@ -89,7 +91,8 @@ export function ToolButton({ on, pressed, onClick, children }: ToolButtonProps) 
     <button
       type="button"
       onClick={onClick}
-      aria-pressed={pressed}
+      // The selected state is also announced, not only shown by colour
+      aria-pressed={pressed ?? on}
       className={`rounded-[7px] border px-2.5 py-1 font-mono text-[11px] tracking-wide transition-colors ${
         active ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-acc"
       }`}

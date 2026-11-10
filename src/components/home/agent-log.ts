@@ -37,7 +37,8 @@ onPage(() => {
   const runButtons = [...card.querySelectorAll<HTMLButtonElement>("[data-run]")];
   const status = card.querySelector<HTMLElement>("[data-status]");
   const progress = card.querySelector<HTMLElement>("[data-progress]");
-  const why = card.querySelector<HTMLElement>("[data-why]");
+  // The line under the log (not the step buttons, which carry data-why)
+  const why = card.querySelector<HTMLElement>("[data-log-hint]");
   const hint = why?.textContent ?? "";
   const reduce = prefersReducedMotion();
   const listeners = new AbortController();
@@ -47,6 +48,9 @@ onPage(() => {
   let hold = 0;
   let pausedAt = Number.NEGATIVE_INFINITY;
   let visible = false;
+  // Hold still while someone points at or tabs into the log
+  let hovering = false;
+  let focused = false;
 
   const parts = (row: HTMLLIElement) => ({
     button: row.querySelector<HTMLButtonElement>(".step"),
@@ -100,7 +104,7 @@ onPage(() => {
   }
 
   function tick() {
-    if (!visible || document.hidden) return;
+    if (!visible || document.hidden || hovering || focused) return;
     if (performance.now() - pausedAt < PAUSE_AFTER_CLICK_MS) return;
 
     const run = runs[runIndex];
@@ -141,6 +145,14 @@ onPage(() => {
     },
     { signal: listeners.signal },
   );
+
+  const signal = { signal: listeners.signal };
+  card.addEventListener("pointerenter", () => (hovering = true), signal);
+  card.addEventListener("pointerleave", () => (hovering = false), signal);
+  card.addEventListener("focusin", () => (focused = true), signal);
+  card.addEventListener("focusout", event => {
+    focused = card.contains(event.relatedTarget as Node | null);
+  }, signal);
 
   const unwatch = watchVisibility(card, isVisible => {
     visible = isVisible;

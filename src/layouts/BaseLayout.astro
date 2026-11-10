@@ -85,7 +85,7 @@ const ogImageUrl = image.startsWith("http") ? image : new URL(image, siteUrl).hr
     <ClientRouter fallback="animate" />
   </head>
 
-  <body class="antialiased bg-white dark:bg-slate-950 w-full min-h-screen">
+  <body class="antialiased bg-background text-foreground w-full min-h-screen">
     <SquareLines />
     <Header />
     <div transition:animate="fade">

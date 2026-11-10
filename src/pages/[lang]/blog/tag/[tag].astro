@@ -3,10 +3,16 @@ export const prerender = true;
 import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import readingTime from "reading-time";
 import { buildLangUrl, t } from "@/i18n";
 import type { Language } from "@/content.config";
+
+// A type alias (not an interface) so it fits Astro's props record type
+type TagPageProps = {
+  tag: string;
+  posts: CollectionEntry<"blog">[];
+};
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("blog");
@@ -15,7 +21,7 @@ export const getStaticPaths = (async () => {
   );
 
   const languages: Language[] = ["uz", "ru"];
-  const paths: { params: { lang: string; tag: string }; props: any }[] = [];
+  const paths: { params: { lang: string; tag: string }; props: TagPageProps }[] = [];
 
   for (const lang of languages) {
     for (const tag of allTags) {

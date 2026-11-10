@@ -43,56 +43,67 @@ const { class: className, iconClass = "w-6 h-6" } = Astro.props;
 </button>
 
 <script>
+  // Dark is the default; the stored choice is "light" or "dark".
   const KEY = "color-scheme";
   const root = document.documentElement;
-  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  type Scheme = "light" | "dark";
 
-  const isDark = () =>
-    root.classList.contains("dark") ||
-    (!root.classList.contains("light") && systemDark.matches);
+  const isDark = () => !root.classList.contains("light");
 
   function syncButtons() {
-    document
-      .querySelectorAll("#themeToggle")
-      .forEach(button =>
-        button.setAttribute("aria-pressed", String(isDark())),
-      );
+    const dark = isDark();
+    document.querySelectorAll("#themeToggle").forEach(button => {
+      button.setAttribute("aria-pressed", String(dark));
+    });
   }
 
-  function apply(scheme: "light" | "dark" | null) {
-    root.classList.remove("light", "dark");
-    if (scheme) root.classList.add(scheme);
+  function apply(scheme: Scheme) {
+    root.classList.remove("dark");
+    root.classList.toggle("light", scheme === "light");
     const meta = document.querySelector<HTMLMetaElement>(
       'meta[name="color-scheme"]',
     );
-    if (meta) meta.content = scheme ?? "light dark";
+    if (meta) meta.content = scheme;
     syncButtons();
+    // Canvas drawings read colors once; tell them the theme changed
+    document.dispatchEvent(new CustomEvent("site:theme", { detail: scheme }));
+  }
+
+  // Grow the new theme out of the button, where the browser supports it
+  function switchTo(scheme: Scheme, button: Element) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !document.startViewTransition) {
+      apply(scheme);
+      return;
+    }
+    const r = button.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.style.setProperty("--vt-x", `${x}px`);
+    root.style.setProperty("--vt-y", `${y}px`);
+    root.style.setProperty("--vt-r", `${radius}px`);
+    root.classList.add("theme-switching");
+    document
+      .startViewTransition(() => apply(scheme))
+      .finished.finally(() => root.classList.remove("theme-switching"));
   }
 
   // One delegated listener survives client-side navigations
   document.addEventListener("click", event => {
-    if (!(event.target as Element).closest?.("#themeToggle")) return;
-
-    const target = isDark() ? "light" : "dark";
-    const system = systemDark.matches ? "dark" : "light";
-    // Picking the system's own scheme means "follow the system" again,
-    // so clear the override instead of pinning it.
-    const override = target === system ? null : target;
+    const button = (event.target as Element).closest?.("#themeToggle");
+    if (!button) return;
+    const target: Scheme = isDark() ? "light" : "dark";
     try {
-      if (override) localStorage.setItem(KEY, override);
-      else localStorage.removeItem(KEY);
+      localStorage.setItem(KEY, target);
     } catch {}
-    apply(override);
+    switchTo(target, button);
   });
-
-  // Keep the pressed state right when the system setting changes
-  systemDark.addEventListener("change", syncButtons);
 
   // Stay in sync with changes made in other tabs
   window.addEventListener("storage", event => {
     if (event.key !== KEY && event.key !== null) return;
-    const value = event.newValue;
-    apply(value === "light" || value === "dark" ? value : null);
+    apply(event.newValue === "light" ? "light" : "dark");
   });
 
   document.addEventListener("astro:page-load", syncButtons);

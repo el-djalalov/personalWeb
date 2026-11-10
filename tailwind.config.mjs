@@ -1,19 +1,20 @@
 import typography from "@tailwindcss/typography";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  // Dark when the system prefers it (unless overridden with .light on <html>),
-  // or when forced with .dark
-  darkMode: [
-    "variant",
-    [
-      "@media (prefers-color-scheme: dark) { &:not(:where(.light, .light *)) }",
-      "&:is(.dark *)",
-    ],
-  ],
+  // Dark is the default. The visitor switches to light with .light on <html>
+  // (see src/components/theme/ThemeHead.astro).
+  darkMode: ["variant", "&:not(:where(.light, .light *))"],
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"IBM Plex Sans"', ...defaultTheme.fontFamily.sans],
+        mono: ['"IBM Plex Mono"', ...defaultTheme.fontFamily.mono],
+        // Condensed for Latin headings; Russian swaps it in globals.css
+        display: "var(--font-display)",
+      },
       // Optics Typography Scale
       fontSize: {
         'hero': ['72px', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '700' }],
@@ -128,6 +129,23 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+        // Periwinkle palette extras (values in src/styles/globals.css)
+        acc: "hsl(var(--acc) / <alpha-value>)",
+        acc2: "hsl(var(--acc2) / <alpha-value>)",
+        surf2: "hsl(var(--surf2) / <alpha-value>)",
+        good: "hsl(var(--good) / <alpha-value>)",
+        warn: "hsl(var(--warn) / <alpha-value>)",
+        crit: "hsl(var(--crit) / <alpha-value>)",
+        log: {
+          bg: "hsl(var(--log-bg) / <alpha-value>)",
+          line: "hsl(var(--log-line) / <alpha-value>)",
+          text: "hsl(var(--log-text) / <alpha-value>)",
+          mute: "hsl(var(--log-mute) / <alpha-value>)",
+          acc: "hsl(var(--log-acc) / <alpha-value>)",
+        },
+      },
+      transitionTimingFunction: {
+        site: "var(--ease)",
       },
     },
   },

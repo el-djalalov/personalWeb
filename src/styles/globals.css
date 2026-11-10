@@ -1,3 +1,14 @@
+/* Self-hosted fonts. Each file covers all scripts; the browser only
+   downloads the subsets a page uses (unicode-range). */
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans/700.css";
+@import "@fontsource/ibm-plex-sans-condensed/600.css";
+@import "@fontsource/ibm-plex-sans-condensed/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,6 +37,19 @@
   ::view-transition-new(root) {
     animation: fade-in 0.25s ease-out forwards;
   }
+}
+
+/* Theme switch: the new theme grows as a circle from the sun button
+   (ThemeToggle.astro sets the class and the --vt-* values) */
+html.theme-switching::view-transition-old(root) {
+  animation: none;
+}
+html.theme-switching::view-transition-new(root) {
+  animation: theme-reveal 0.6s var(--ease);
+}
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x) var(--vt-y)); }
+  to { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
 }
 
 /* Smooth morph for blog hero images */
@@ -115,7 +139,7 @@ body {
 }
 
 .active {
-  color: #5c2ce1;
+  color: hsl(var(--acc));
   /* Change this to whatever color you prefer */
   font-weight: bold;
   /* Optional: Makes the text bold for better visibility */
@@ -168,128 +192,118 @@ body {
 }
 
 @layer base {
+  /* Periwinkle palette. Dark is the default for everyone; .light on <html>
+     (set by ThemeHead.astro from the visitor's choice) switches to light.
+     Values are HSL triplets, used as hsl(var(--x)) or hsl(var(--x) / alpha). */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --inline-code-bg: #f1f5f9;
-    --inline-code-fg: #7c3aed;
-    --glass-bg: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --navbar-glass-bg: rgba(255, 255, 255, 0.85);
-    --navbar-glass-border: rgba(0, 0, 0, 0.08);
-    --thin-scrollbar-thumb: rgb(203 213 225); /* slate-300 */
-    --thin-scrollbar-thumb-hover: rgb(148 163 184); /* slate-400 */
+    color-scheme: dark;
+    --background: 228 18.5% 5.3%;
+    --foreground: 227 25.7% 93.1%;
+    --card: 225 18.2% 8.6%;
+    --card-foreground: 227 25.7% 93.1%;
+    --popover: 225 18.2% 8.6%;
+    --popover-foreground: 227 25.7% 93.1%;
+    --primary: 232 100% 80.2%;
+    --primary-foreground: 228 18.5% 5.3%;
+    --secondary: 224 18% 12%;
+    --secondary-foreground: 227 25.7% 93.1%;
+    --muted: 224 18% 12%;
+    --muted-foreground: 226 12.1% 59.4%;
+    --accent: 224 18% 12%;
+    --accent-foreground: 227 25.7% 93.1%;
+    --destructive: 0 100% 71%;
+    --destructive-foreground: 228 18.5% 5.3%;
+    --border: 226 18.7% 17.8%;
+    --input: 226 18.7% 17.8%;
+    --ring: 232 100% 80.2%;
+    --radius: 0.625rem;
+    --chart-1: 232 100% 80.2%;
+    --chart-2: 165 71.6% 66.9%;
+    --chart-3: 39 89.5% 62.5%;
+    --chart-4: 280 65% 70%;
+    --chart-5: 0 100% 71%;
+
+    /* Palette extras */
+    --acc: 232 100% 80.2%;
+    --acc2: 165 71.6% 66.9%;
+    --surf2: 224 18% 12%;
+    --good: 165 71.6% 66.9%;
+    --warn: 39 89.5% 62.5%;
+    --crit: 0 100% 71%;
+    /* The agent log card stays dark in both themes */
+    --log-bg: 225 18.2% 8.6%;
+    --log-line: 226 18.7% 17.8%;
+    --log-text: 227 25.7% 93.1%;
+    --log-mute: 226 12.1% 59.4%;
+    --log-acc: 232 100% 80.2%;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+
+    --inline-code-bg: hsl(224 18% 12%);
+    --inline-code-fg: hsl(232 100% 80.2%);
+    --glass-bg: hsl(225 18.2% 8.6% / 0.8);
+    --glass-border: hsl(226 18.7% 17.8%);
+    --glass-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.5);
+    --navbar-glass-bg: hsl(225 18.2% 8.6% / 0.8);
+    --navbar-glass-border: hsl(226 18.7% 17.8%);
+    --thin-scrollbar-thumb: hsl(226 18.7% 17.8%);
+    --thin-scrollbar-thumb-hover: hsl(226 12.1% 59.4%);
   }
 
-  /* Dark tokens: forced with .dark on <html>, or from the system setting
-     unless .light forces light */
-  :root.dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --inline-code-bg: #1e293b;
-    --inline-code-fg: #a78bfa;
-    --glass-bg: rgba(2, 6, 23, 0.85); /* slate-950 */
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-    --navbar-glass-bg: rgba(15, 23, 42, 0.85); /* slate-900 */
-    --navbar-glass-border: rgba(255, 255, 255, 0.1);
-    --thin-scrollbar-thumb: rgb(51 65 85); /* slate-700 */
-    --thin-scrollbar-thumb-hover: rgb(71 85 105); /* slate-600 */
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light) {
-      --background: 222.2 84% 4.9%;
-      --foreground: 210 40% 98%;
-      --card: 222.2 84% 4.9%;
-      --card-foreground: 210 40% 98%;
-      --popover: 222.2 84% 4.9%;
-      --popover-foreground: 210 40% 98%;
-      --primary: 217.2 91.2% 59.8%;
-      --primary-foreground: 222.2 47.4% 11.2%;
-      --secondary: 217.2 32.6% 17.5%;
-      --secondary-foreground: 210 40% 98%;
-      --muted: 217.2 32.6% 17.5%;
-      --muted-foreground: 215 20.2% 65.1%;
-      --accent: 217.2 32.6% 17.5%;
-      --accent-foreground: 210 40% 98%;
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 210 40% 98%;
-      --border: 217.2 32.6% 17.5%;
-      --input: 217.2 32.6% 17.5%;
-      --ring: 224.3 76.3% 48%;
-      --chart-1: 220 70% 50%;
-      --chart-2: 160 60% 45%;
-      --chart-3: 30 80% 55%;
-      --chart-4: 280 65% 60%;
-      --chart-5: 340 75% 55%;
-      --inline-code-bg: #1e293b;
-      --inline-code-fg: #a78bfa;
-      --glass-bg: rgba(2, 6, 23, 0.85); /* slate-950 */
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-      --navbar-glass-bg: rgba(15, 23, 42, 0.85); /* slate-900 */
-      --navbar-glass-border: rgba(255, 255, 255, 0.1);
-      --thin-scrollbar-thumb: rgb(51 65 85); /* slate-700 */
-      --thin-scrollbar-thumb-hover: rgb(71 85 105); /* slate-600 */
-    }
-  }
-
-  /* Native UI (scrollbars, form controls, canvas) follows the theme */
-  :root {
-    color-scheme: light dark;
-  }
   :root.light {
     color-scheme: light;
+    --background: 228 33% 97.1%;
+    --foreground: 228 26.3% 7.5%;
+    --card: 0 0% 100%;
+    --card-foreground: 228 26.3% 7.5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 228 26.3% 7.5%;
+    --primary: 233 65.1% 53.9%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 225 30.8% 94.9%;
+    --secondary-foreground: 228 26.3% 7.5%;
+    --muted: 225 30.8% 94.9%;
+    --muted-foreground: 225 11.8% 40%;
+    --accent: 225 30.8% 94.9%;
+    --accent-foreground: 228 26.3% 7.5%;
+    --destructive: 357 69.4% 51.4%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 225 27.6% 88.6%;
+    --input: 225 27.6% 88.6%;
+    --ring: 233 65.1% 53.9%;
+    --chart-1: 233 65.1% 53.9%;
+    --chart-2: 165 80.4% 30%;
+    --chart-3: 35 80.6% 36.5%;
+    --chart-4: 280 50% 45%;
+    --chart-5: 357 69.4% 51.4%;
+
+    --acc: 233 65.1% 53.9%;
+    --acc2: 165 80.4% 30%;
+    --surf2: 225 30.8% 94.9%;
+    --good: 165 80.4% 30%;
+    --warn: 35 80.6% 36.5%;
+    --crit: 357 69.4% 51.4%;
+    --log-bg: 228 26.3% 7.5%;
+    --log-line: 227 19.1% 18.4%;
+    --log-text: 227 25.7% 93.1%;
+    --log-mute: 226 12.1% 59.4%;
+    --log-acc: 232 100% 80.2%;
+
+    --inline-code-bg: hsl(225 30.8% 94.9%);
+    --inline-code-fg: hsl(233 65.1% 53.9%);
+    --glass-bg: hsl(0 0% 100% / 0.85);
+    --glass-border: hsl(225 27.6% 88.6%);
+    --glass-shadow: 0 10px 30px -14px rgb(20 24 40 / 0.18);
+    --navbar-glass-bg: hsl(0 0% 100% / 0.85);
+    --navbar-glass-border: hsl(225 27.6% 88.6%);
+    --thin-scrollbar-thumb: hsl(225 27.6% 88.6%);
+    --thin-scrollbar-thumb-hover: hsl(225 11.8% 40%);
   }
-  :root.dark {
-    color-scheme: dark;
+
+  /* IBM Plex Sans Condensed has no basic Cyrillic, so Russian headings use
+     regular Plex Sans instead of mixing two fonts in one line. */
+  :lang(ru) {
+    --font-display: "IBM Plex Sans", system-ui, sans-serif;
   }
 }
 

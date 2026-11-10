@@ -67,7 +67,7 @@ function getReadingTime(body: string): string {
     <header class="mb-12 text-center">
       <a
         href={buildLangUrl("/blog", lang)}
-        class="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors mb-4 group"
+        class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-acc transition-colors mb-4 group"
       >
         <svg
           class="w-4 h-4 transition-transform group-hover:-translate-x-1"
@@ -84,11 +84,11 @@ function getReadingTime(body: string): string {
         {t("blog.allPosts", lang)}
       </a>
       <h1
-        class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4"
+        class="text-4xl md:text-5xl font-bold text-foreground mb-4"
       >
-        <span class="text-violet-600 dark:text-violet-400">#{tag}</span>
+        <span class="text-acc">#{tag}</span>
       </h1>
-      <p class="text-lg text-slate-600 dark:text-slate-400">
+      <p class="text-lg text-muted-foreground">
         {posts.length}
         {posts.length === 1 ? t("blog.post", lang) : t("blog.posts", lang)} {t("blog.taggedWith", lang)} <span
           class="font-medium">{tag}</span
@@ -101,7 +101,7 @@ function getReadingTime(body: string): string {
       <div class="flex flex-wrap justify-center gap-2">
         <a
           href={buildLangUrl("/blog", lang)}
-          class="px-4 py-2 text-sm font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-violet-100 dark:hover:bg-violet-900/30 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
+          class="px-4 py-2 text-sm font-medium rounded-full bg-secondary text-muted-foreground hover:bg-acc/10 hover:text-acc transition-colors"
         >
           {t("blog.allPosts", lang)}
         </a>
@@ -112,8 +112,8 @@ function getReadingTime(body: string): string {
               class:list={[
                 "px-4 py-2 text-sm font-medium rounded-full transition-colors",
                 t.toLowerCase() === tag.toLowerCase()
-                  ? "bg-violet-600 text-white"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-violet-100 dark:hover:bg-violet-900/30 hover:text-violet-700 dark:hover:text-violet-300",
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:bg-acc/10 hover:text-acc",
               ]}
             >
               #{t}
@@ -137,7 +137,7 @@ function getReadingTime(body: string): string {
         </div>
       ) : (
         <div class="text-center py-20">
-          <p class="text-slate-500 dark:text-slate-400">
+          <p class="text-muted-foreground">
             {t("blog.noPosts", lang)}
           </p>
         </div>

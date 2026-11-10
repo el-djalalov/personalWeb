@@ -69,7 +69,7 @@ export const translations = {
     "error.404": "404",
     "error.notFound": "Sorry, we couldn't find this page.",
     "error.goHome":
-      "But dont worry, you can find plenty of other things on our homepage.",
+      "Go to the home page, or press Ctrl K to find a section.",
 
     // Footer
     "footer.copyright": "Elyor Djalalov",
@@ -146,7 +146,7 @@ export const translations = {
     "error.404": "404",
     "error.notFound": "Kechirasiz, bu sahifa topilmadi.",
     "error.goHome":
-      "Lekin xavotir olmang, bosh sahifada boshqa ko'p narsalarni topishingiz mumkin.",
+      "Bosh sahifaga o'ting yoki bo'limni topish uchun Ctrl K ni bosing.",
 
     // Footer
     "footer.copyright": "Elyor Djalalov",
@@ -223,7 +223,7 @@ export const translations = {
     "error.404": "404",
     "error.notFound": "Извините, страница не найдена.",
     "error.goHome":
-      "Но не волнуйтесь, на главной странице вы найдёте много другого интересного.",
+      "Перейдите на главную или нажмите Ctrl K, чтобы найти раздел.",
 
     // Footer
     "footer.copyright": "Элёр Джалалов",

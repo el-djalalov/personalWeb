@@ -67,7 +67,8 @@ const evalJson = async (expression) => {
   return r.result.value;
 };
 
-const items = ["home", "work", "projects", "blog", "contact"];
+// data-nav holds the id of the section each bottom-bar link goes to
+const items = ["top", "skills", "work", "writing", "contact"];
 for (const nav of items) {
   await evalJson(
     `document.querySelector('#bottomNav a[data-nav="${nav}"]').click(); "ok"`,
@@ -75,7 +76,7 @@ for (const nav of items) {
   await new Promise((r) => setTimeout(r, 1500));
   const report = await evalJson(`
     (() => {
-      const ids = { home: null, work: "experience", projects: "projects", blog: "blog", contact: "contact" };
+      const ids = { top: null, skills: "skills", work: "work", writing: "writing", contact: "contact" };
       const targetId = ids["${nav}"];
       const y = Math.round(scrollY);
       let sectionTop = null;

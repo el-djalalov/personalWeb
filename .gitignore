@@ -13,6 +13,9 @@ yarn-error.log*
 pnpm-debug.log*
 # hook logs written into content folders
 src/**/logs/
+# Playwright output
+test-results/
+playwright-report/
 
 
 # environment variables

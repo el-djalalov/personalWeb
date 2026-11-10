@@ -1,26 +1,25 @@
 ---
-// Place as early as possible in <head>. Applies a stored light/dark override
-// before first paint; with no override the page follows the system setting
-// through CSS alone, so nothing depends on this script running.
+// Place as early as possible in <head>. The site is dark by default through
+// CSS alone, so nothing depends on this script running. When the visitor has
+// picked light, it adds .light to <html> before first paint.
 ---
 
-<meta name="color-scheme" content="light dark" />
+<meta name="color-scheme" content="dark" />
 <script is:inline>
   (() => {
     const apply = () => {
-      let scheme = null;
+      let light = false;
       try {
-        scheme = localStorage.getItem("color-scheme");
+        light = localStorage.getItem("color-scheme") === "light";
         // Older versions pinned everyone to their first-visit theme
         localStorage.removeItem("theme");
       } catch {}
-      if (scheme !== "light" && scheme !== "dark") scheme = null;
 
       const root = document.documentElement;
-      root.classList.remove("light", "dark");
-      if (scheme) root.classList.add(scheme);
+      root.classList.remove("dark");
+      root.classList.toggle("light", light);
       const meta = document.querySelector('meta[name="color-scheme"]');
-      if (meta) meta.content = scheme ?? "light dark";
+      if (meta) meta.content = light ? "light" : "dark";
     };
 
     apply();

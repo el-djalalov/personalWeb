@@ -1,0 +1,304 @@
+---
+import { buildLangUrl, getLangFromUrl } from "@/i18n";
+import { CONTACT, getSiteCopy } from "@/i18n/site";
+import { getCasesCopy } from "@/i18n/cases";
+
+const lang = getLangFromUrl(Astro.url);
+const copy = getSiteCopy(lang);
+const cases = getCasesCopy(lang);
+const home = buildLangUrl("/", lang);
+const blog = buildLangUrl("/blog", lang);
+
+interface Item {
+  id: string;
+  label: string;
+  hint: string;
+  href?: string;
+  action?: "theme" | "copy-email";
+}
+
+interface Group {
+  label: string;
+  items: Item[];
+}
+
+// Section links point at the home page, so they also work from the blog
+const groups: Group[] = [
+  {
+    label: copy.groups.sections,
+    items: [
+      { id: "skills", label: copy.nav.skills, hint: "#skills", href: `${home}#skills` },
+      { id: "work", label: copy.nav.work, hint: "#work", href: `${home}#work` },
+      { id: "jobs", label: copy.nav.jobs, hint: "#jobs", href: `${home}#jobs` },
+      { id: "writing", label: copy.nav.writing, hint: "#writing", href: `${home}#writing` },
+      { id: "contact", label: copy.nav.contact, hint: "#contact", href: `${home}#contact` },
+      { id: "posts", label: copy.actions.allPosts, hint: "/blog", href: blog },
+    ],
+  },
+  {
+    label: copy.groups.cases,
+    items: cases.items.map(item => ({
+      id: `case-${item.id}`,
+      label: item.title,
+      hint: item.tag,
+      href: `${home}#work-${item.id}`,
+    })),
+  },
+  {
+    label: copy.groups.actions,
+    items: [
+      { id: "theme", label: copy.actions.switchTheme, hint: "☾ ☀", action: "theme" },
+      { id: "email", label: copy.actions.copyEmail, hint: CONTACT.email, action: "copy-email" },
+    ],
+  },
+];
+---
+
+<dialog
+  id="cmdk"
+  class="cmdk w-[min(32rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-border bg-popover p-0 text-popover-foreground shadow-2xl"
+  aria-label={copy.menuLabel}
+  data-copied={copy.actions.emailCopied}
+  data-email={CONTACT.email}
+>
+  <input
+    id="cmdk-input"
+    type="text"
+    role="combobox"
+    aria-expanded="true"
+    aria-controls="cmdk-list"
+    aria-autocomplete="list"
+    autocomplete="off"
+    spellcheck="false"
+    placeholder={copy.placeholder}
+    class="w-full border-b border-border bg-transparent px-5 py-4 font-mono text-sm outline-none placeholder:text-muted-foreground"
+  />
+  <div id="cmdk-list" role="listbox" aria-label={copy.menuLabel} class="max-h-80 overflow-y-auto p-2">
+    {
+      groups.map((group, g) => (
+        <div role="group" aria-labelledby={`cmdk-group-${g}`} data-group>
+          <div
+            id={`cmdk-group-${g}`}
+            class="px-3 pb-1 pt-3 font-mono text-[11px] uppercase tracking-wider text-muted-foreground"
+          >
+            {group.label}
+          </div>
+          {group.items.map(item => (
+            <div
+              role="option"
+              id={`cmdk-opt-${item.id}`}
+              aria-selected="false"
+              data-href={item.href}
+              data-action={item.action}
+              class="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm aria-selected:bg-acc/15 aria-selected:outline aria-selected:outline-1 aria-selected:outline-acc/40"
+            >
+              <span>{item.label}</span>
+              <span class="font-mono text-[11px] text-muted-foreground">{item.hint}</span>
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  <p id="cmdk-empty" hidden class="px-5 pb-4 text-sm text-muted-foreground">{copy.noMatch}</p>
+  <p class="border-t border-border px-5 py-2.5 font-mono text-[11px] text-muted-foreground">{copy.keyHints}</p>
+</dialog>
+
+<div
+  id="site-toast"
+  role="status"
+  class="site-toast pointer-events-none fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-foreground px-4 py-2 font-mono text-xs text-background opacity-0 md:bottom-8"
+>
+</div>
+
+<style>
+  .cmdk {
+    margin: 12vh auto auto;
+  }
+  .cmdk::backdrop {
+    background: hsl(var(--background) / 0.55);
+    backdrop-filter: blur(4px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cmdk[open] {
+      animation: cmdk-in 0.22s var(--ease);
+    }
+    .site-toast {
+      transition: opacity 0.3s, transform 0.3s var(--ease);
+    }
+  }
+  @keyframes cmdk-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+  }
+  .site-toast.is-on {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  // This module runs once per full page load. ClientRouter swaps the dialog on
+  // every navigation, so every handler looks the elements up again.
+  const dialog = () => document.getElementById("cmdk") as HTMLDialogElement | null;
+  const input = () => document.getElementById("cmdk-input") as HTMLInputElement | null;
+  const options = () =>
+    [...document.querySelectorAll<HTMLElement>("#cmdk-list [role=option]")].filter(o => !o.hidden);
+
+  let lastFocus: HTMLElement | null = null;
+
+  function select(option: HTMLElement | undefined) {
+    document
+      .querySelectorAll("#cmdk-list [role=option]")
+      .forEach(o => o.setAttribute("aria-selected", String(o === option)));
+    if (option) {
+      input()?.setAttribute("aria-activedescendant", option.id);
+      option.scrollIntoView({ block: "nearest" });
+    } else {
+      input()?.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  function filter() {
+    const query = input()?.value.toLowerCase().trim() ?? "";
+    let total = 0;
+    document.querySelectorAll<HTMLElement>("#cmdk-list [data-group]").forEach(group => {
+      let visible = 0;
+      group.querySelectorAll<HTMLElement>("[role=option]").forEach(option => {
+        const match = !query || (option.textContent ?? "").toLowerCase().includes(query);
+        option.hidden = !match;
+        if (match) visible++;
+      });
+      group.hidden = visible === 0;
+      total += visible;
+    });
+    const empty = document.getElementById("cmdk-empty");
+    if (empty) empty.hidden = total > 0;
+    select(options()[0]);
+  }
+
+  function open() {
+    const d = dialog();
+    if (!d || d.open) return;
+    lastFocus = document.activeElement as HTMLElement | null;
+    d.showModal();
+    const i = input();
+    if (i) i.value = "";
+    filter();
+    i?.focus();
+  }
+
+  function close() {
+    const d = dialog();
+    if (d?.open) d.close();
+  }
+
+  // Same behaviour as showToast() in home/cases/ui.tsx: one shared timer
+  function toast(message: string) {
+    const el = document.getElementById("site-toast");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add("is-on");
+    window.clearTimeout(Number(el.dataset.timer));
+    el.dataset.timer = String(window.setTimeout(() => el.classList.remove("is-on"), 2200));
+  }
+
+  async function copyEmail() {
+    const d = dialog();
+    const email = d?.dataset.email ?? "";
+    try {
+      await navigator.clipboard.writeText(email);
+      toast(d?.dataset.copied ?? email);
+    } catch {
+      // Clipboard can be blocked; show the address so it can be copied by hand
+      toast(email);
+    }
+  }
+
+  function run(option: HTMLElement | undefined) {
+    if (!option) return;
+    const { href, action } = option.dataset;
+    close();
+    if (action === "theme") {
+      document.getElementById("themeToggle")?.click();
+      return;
+    }
+    if (action === "copy-email") {
+      void copyEmail();
+      return;
+    }
+    if (!href) return;
+    const url = new URL(href, location.href);
+    const samePage = url.pathname.replace(/\/+$/, "") === location.pathname.replace(/\/+$/, "");
+    if (samePage && url.hash) {
+      // Let the shared smooth-scroll handler in main.js do the work
+      const link = document.createElement("a");
+      link.href = url.pathname + url.hash;
+      link.hidden = true;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      return;
+    }
+    void navigate(url.pathname + url.hash);
+  }
+
+  document.addEventListener("click", event => {
+    const target = event.target as Element;
+    if (target.closest?.("[data-open-cmdk]")) {
+      open();
+      return;
+    }
+    const d = dialog();
+    if (d && target === d) {
+      close(); // click on the backdrop
+      return;
+    }
+    const option = target.closest?.<HTMLElement>("#cmdk-list [role=option]");
+    if (option) run(option);
+  });
+
+  document.addEventListener("input", event => {
+    if ((event.target as Element).id === "cmdk-input") filter();
+  });
+
+  document.addEventListener("keydown", event => {
+    // key can be missing (e.g. autofill keydown events)
+    if ((event.ctrlKey || event.metaKey) && event.key?.toLowerCase() === "k") {
+      event.preventDefault();
+      if (dialog()?.open) close();
+      else open();
+      return;
+    }
+    if ((event.target as Element).id !== "cmdk-input") return;
+    const list = options();
+    const current = list.findIndex(o => o.getAttribute("aria-selected") === "true");
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const step = event.key === "ArrowDown" ? 1 : -1;
+      select(list[(current + step + list.length) % Math.max(1, list.length)]);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      run(list[current]);
+    }
+  });
+
+  document.addEventListener(
+    "close",
+    event => {
+      if ((event.target as Element).id === "cmdk") lastFocus?.focus({ preventScroll: true });
+    },
+    true,
+  );
+
+  // Show the Mac shortcut on Macs
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+  const labelKeys = () =>
+    document.querySelectorAll("[data-kbd]").forEach(k => {
+      k.textContent = isMac ? "⌘ K" : "Ctrl K";
+    });
+  document.addEventListener("astro:page-load", labelKeys);
+</script>

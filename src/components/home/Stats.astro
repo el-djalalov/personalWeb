@@ -1,0 +1,72 @@
+---
+import type { Stat } from "@/i18n/home";
+
+interface Props {
+  stats: Stat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<div class="mx-auto max-w-6xl px-4">
+  <dl id="stats" class="grid grid-cols-2 gap-5 border-y border-border py-7 md:grid-cols-4">
+    {
+      stats.map(stat => (
+        <div class="flex flex-col-reverse gap-0.5">
+          <dt class="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">{stat.label}</dt>
+          <dd
+            class="font-display text-[clamp(1.6rem,3vw,2.1rem)] font-bold tabular-nums tracking-tight"
+            data-count={stat.value}
+            data-suffix={stat.suffix}
+          >
+            {`${stat.value}${stat.suffix}`}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</div>
+
+<script>
+  import { onPage } from "@/lib/page-lifecycle";
+  import { prefersReducedMotion, watchVisibility } from "@/lib/motion";
+
+  // The real numbers are in the HTML. They count up only when the row scrolls
+  // into view later; if it is already on screen at load, they stay as they are.
+  onPage(() => {
+    const row = document.getElementById("stats");
+    if (!row || prefersReducedMotion()) return;
+    if (row.getBoundingClientRect().top < window.innerHeight) return;
+
+    let frame = 0;
+    const count = () => {
+      const items = [...row.querySelectorAll<HTMLElement>("[data-count]")];
+      const start = performance.now();
+      const step = (now: number) => {
+        const progress = Math.min(1, (now - start) / 1100);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        items.forEach(item => {
+          const target = Number(item.dataset.count);
+          item.textContent = `${Math.round(target * eased)}${item.dataset.suffix ?? ""}`;
+        });
+        if (progress < 1) frame = requestAnimationFrame(step);
+      };
+      frame = requestAnimationFrame(step);
+    };
+
+    let done = false;
+    const unwatch = watchVisibility(
+      row,
+      visible => {
+        if (!visible || done) return;
+        done = true;
+        count();
+      },
+      { threshold: 0.5 },
+    );
+    return () => {
+      unwatch();
+      cancelAnimationFrame(frame);
+    };
+  });
+</script>

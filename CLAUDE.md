@@ -45,7 +45,9 @@ yarn preview  # Preview production build
 - Use **Tailwind CSS** utility classes for all styling
 - Use the `cn()` utility from `@/lib/utils` for conditional classes
 - Follow shadcn/ui theming with CSS variables (defined in globals.css)
-- Dark mode follows the system `prefers-color-scheme`; `.light`/`.dark` on `<html>` is a user override (see `src/components/theme/`). Put dark colours in the CSS variables in globals.css rather than `.dark .x` selectors
+- Dark is the default for everyone; `.light` on `<html>` switches to light when the visitor picks it (see `src/components/theme/`). `:root` in globals.css holds the dark tokens and `:root.light` the light ones; put colours there rather than `.dark .x` selectors
+- Palette is "Periwinkle". Besides the shadcn tokens there are `--acc`, `--acc2`, `--surf2`, `--good`, `--warn`, `--crit` and `--log-*` (Tailwind colours `acc`, `acc2`, `surf2`, `log-*`). Tokens are HSL triplets: use `hsl(var(--x) / alpha)`
+- Fonts are self-hosted IBM Plex (Sans, Sans Condensed for headings via `font-display`, Mono). Condensed has no Cyrillic, so `:lang(ru)` swaps headings to Plex Sans
 
 ### Components
 - **Astro components** (`.astro`) for static content

@@ -1,0 +1,219 @@
+---
+import { FEATURES } from "@/config";
+import { CONTACT } from "@/i18n/site";
+import type { HomeCopy } from "@/i18n/home";
+
+interface Props {
+  copy: HomeCopy;
+}
+
+const { copy } = Astro.props;
+const { hero, runs } = copy;
+const first = runs[0];
+// The card always has room for the longest run, so switching runs never
+// changes its height (no layout shift)
+const ROWS = Math.max(...runs.map(run => run.steps.length));
+const rows = Array.from({ length: ROWS }, (_, i) => first.steps[i]);
+
+const button =
+  "inline-flex items-center rounded-full border px-[18px] py-[11px] text-sm font-semibold transition duration-300 ease-site hover:-translate-y-px";
+---
+
+<section id="top" class="relative overflow-hidden">
+  <canvas
+    data-hero-lines
+    class="hero-lines pointer-events-none absolute inset-0 h-full w-full"
+    aria-hidden="true"></canvas>
+
+  <div
+    class="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-8 md:grid-cols-[1fr_1.1fr] md:pt-14"
+  >
+    <div>
+      <p class="rise flex items-center gap-2.5 font-mono text-xs text-muted-foreground" style="--i:0">
+        <span class="h-1.5 w-1.5 rounded-full bg-good" aria-hidden="true"></span>
+        {hero.who}
+      </p>
+      <h1
+        class="hero-title mt-4 text-balance font-display text-[clamp(2.25rem,4.8vw,3.4rem)] font-bold leading-[1.04] tracking-[-0.025em]"
+      >
+        {hero.titleA} <span class="text-acc">{hero.titleB}</span>
+      </h1>
+      <p class="mt-4 max-w-[38ch] text-[17px] leading-relaxed text-muted-foreground">{hero.lead}</p>
+
+      <a
+        href={CONTACT.credly}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rise mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-acc/10 py-1 pl-1.5 pr-3 font-mono text-xs transition-colors hover:border-acc"
+        style="--i:1"
+      >
+        <span
+          class="grid h-[18px] w-[18px] place-items-center rounded-full bg-acc text-[11px] text-primary-foreground"
+          aria-hidden="true">✓</span
+        >
+        {hero.cert}<span class="sr-only">. {hero.certMore}</span>
+      </a>
+
+      <div class="rise mt-7 flex flex-wrap gap-2.5" style="--i:2">
+        <a href="#work" class:list={[button, "border-primary bg-primary text-primary-foreground"]}>
+          {hero.ctaWork}
+        </a>
+        <a href="#skills" class:list={[button, "border-border hover:border-acc"]}>{hero.ctaSkills}</a>
+        {
+          FEATURES.resumeDownload && (
+            <a href="/ResumeElyorDjalalov.pdf" download class:list={[button, "border-border hover:border-acc"]}>
+              {hero.resume}
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    <div
+      data-agent-log
+      role="group"
+      aria-label={hero.logLabel}
+      class="agent-log rise rounded-2xl border border-log-line bg-log-bg p-5 font-mono text-[12.5px] leading-relaxed text-log-text shadow-[0_40px_80px_-40px_hsl(var(--acc)/0.35)] sm:p-6 sm:text-[13.5px]"
+      style="--i:1"
+    >
+      <!-- The status text changes length while a run plays. It has its own
+           line on phones and a fixed width above that, so nothing reflows. -->
+      <div class="mb-3.5 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+        <div class="flex min-w-0 gap-1">
+          {
+            runs.map((run, i) => (
+              <button
+                type="button"
+                data-run={run.id}
+                aria-pressed={i === 0 ? "true" : "false"}
+                class="rounded-full px-2.5 py-0.5 text-xs text-log-mute transition-colors hover:text-log-text aria-pressed:bg-log-acc/20 aria-pressed:text-log-text"
+              >
+                {run.id}
+              </button>
+            ))
+          }
+        </div>
+        <span data-status class="block truncate px-2.5 text-xs text-log-mute sm:w-[11rem] sm:shrink-0 sm:px-0 sm:text-right">done</span>
+      </div>
+
+      <ol data-steps class="flex flex-col gap-1.5">
+        {
+          rows.map(step => (
+            <li data-state={step ? "done" : "empty"}>
+              <button
+                type="button"
+                class="step"
+                data-why={step?.why ?? ""}
+                tabindex={step ? undefined : -1}
+                aria-hidden={step ? undefined : "true"}
+              >
+                <span class="s-name">{step?.name ?? " "}</span>
+                <span class="s-detail">{step?.detail ?? ""}</span>
+                <span class="s-state">{step ? "pass" : ""}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="mt-4 h-[3px] overflow-hidden rounded bg-log-text/10">
+        <i data-progress class="block h-full origin-left bg-log-acc"></i>
+      </div>
+      <p data-log-hint aria-live="polite" class="mt-3.5 min-h-5 text-[12.5px] text-log-mute">{hero.logHint}</p>
+      <!-- "<" escaped so copy can never close this script tag -->
+      <script
+        is:inline
+        type="application/json"
+        data-runs-json
+        set:html={JSON.stringify(runs).replace(/</g, "\\u003c")}
+      />
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* The Uzbek and Russian sentences are longer; keep the heading to ~4 lines */
+  :is(:lang(uz), :lang(ru)) .hero-title {
+    font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+    line-height: 1.08;
+  }
+  .hero-lines {
+    -webkit-mask-image: radial-gradient(ellipse 70% 90% at 74% 45%, #000 25%, transparent 78%);
+    mask-image: radial-gradient(ellipse 70% 90% at 74% 45%, #000 25%, transparent 78%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .rise {
+      animation: hero-rise 0.7s var(--ease) both;
+      animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+    }
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  .agent-log .step {
+    display: grid;
+    grid-template-columns: minmax(5.5rem, auto) 1fr auto;
+    gap: 0.75rem;
+    width: calc(100% + 1rem);
+    margin-inline: -0.5rem;
+    padding: 1px 0.5rem;
+    border-radius: 6px;
+    text-align: left;
+    transition: background-color 0.2s;
+  }
+  /* On phones each row stays one line, so switching runs never changes the
+     card height; the full meaning shows in the line under the log */
+  .agent-log .s-detail {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @media (min-width: 640px) {
+    .agent-log .step {
+      grid-template-columns: minmax(6.5rem, auto) 1fr auto;
+    }
+    .agent-log .s-detail {
+      white-space: normal;
+    }
+  }
+  .agent-log .step:hover,
+  .agent-log .step[aria-current="true"] {
+    background-color: hsl(var(--log-acc) / 0.1);
+  }
+  .agent-log .step:focus-visible {
+    outline: 2px solid hsl(var(--log-acc));
+    outline-offset: 1px;
+  }
+  .agent-log .s-name,
+  .agent-log .s-state {
+    color: hsl(var(--log-acc));
+  }
+  .agent-log .s-state {
+    min-width: 4.25rem;
+    text-align: right;
+  }
+  /* Queued rows use the muted colour (not low opacity), so they stay readable */
+  .agent-log li[data-state="wait"] :is(.s-name, .s-detail, .s-state) {
+    color: hsl(var(--log-mute));
+  }
+  .agent-log li[data-state="run"] .s-state {
+    color: hsl(var(--log-text));
+  }
+  .agent-log li[data-state="empty"] {
+    visibility: hidden;
+  }
+  .agent-log [data-progress] {
+    transition: transform 0.6s var(--ease);
+  }
+</style>
+
+<script>
+  import "./hero-lines";
+  import "./agent-log";
+</script>

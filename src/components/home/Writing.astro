@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import { buildLangUrl } from "@/i18n";
+import type { HomeCopy } from "@/i18n/home";
+import type { Language } from "@/content.config";
+import { getPublicImageSize } from "@/utils/publicImageSize";
+import { postKey, postsForLanguage, readTimeLabel } from "@/lib/blog";
+
+interface Props {
+  lang: Language;
+  copy: HomeCopy["writing"];
+}
+
+const { lang, copy } = Astro.props;
+const DATE_LOCALES: Record<Language, string> = { en: "en-US", uz: "uz-UZ", ru: "ru-RU" };
+
+// The top 3 of this language's blog page: each post in this language,
+// else its English original
+const posts = postsForLanguage(await getCollection("blog"), lang).slice(0, 3);
+
+// Width and height on every image, so the cards never jump while images load
+const cards = await Promise.all(
+  posts.map(async post => ({
+    post,
+    slug: postKey(post),
+    size: await getPublicImageSize(post.data.heroImage),
+    readTime: readTimeLabel(post.body ?? "", lang),
+  })),
+);
+---
+
+<section id="writing" class="mx-auto max-w-6xl px-4 pt-20">
+  <!-- Old links to /#blog still land here -->
+  <span id="blog" aria-hidden="true"></span>
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+    <h2 class="font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{copy.title}</h2>
+    <a href={buildLangUrl("/blog", lang)} class="font-mono text-xs text-acc hover:underline">{copy.allPosts}</a>
+  </div>
+  {
+    cards.length === 0 ? (
+      <p class="text-muted-foreground">{copy.empty}</p>
+    ) : (
+      <ul class="grid gap-4 md:grid-cols-3">
+        {cards.map(({ post, slug, size, readTime }) => (
+          <li lang={post.data.lang !== lang ? post.data.lang : undefined}>
+            <a
+              href={buildLangUrl(`/blog/${slug}`, lang)}
+              class="group flex h-full flex-col overflow-hidden rounded-[14px] border border-border bg-card transition-[border-color,transform] duration-300 ease-site hover:-translate-y-1 hover:border-acc/60"
+            >
+              <div class="aspect-[16/9] overflow-hidden border-b border-border bg-surf2">
+                {post.data.heroImage ? (
+                  <img
+                    src={post.data.heroImage}
+                    width={size?.width}
+                    height={size?.height}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    transition:name={`blog-hero-${post.id}`}
+                    class="h-full w-full object-cover transition-transform duration-500 ease-site group-hover:scale-[1.04]"
+                  />
+                ) : (
+                  <div class="grid h-full place-items-center bg-gradient-to-br from-acc/15 to-acc2/10 font-mono text-xs text-muted-foreground">
+                    #{post.data.tags[0] ?? "blog"}
+                  </div>
+                )}
+              </div>
+              <div class="flex flex-1 flex-col gap-2 p-4">
+                <p class="flex flex-wrap gap-x-3 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString(DATE_LOCALES[lang], {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </time>
+                  <span>{readTime}</span>
+                </p>
+                <h3
+                  transition:name={`blog-title-${post.id}`}
+                  class="line-clamp-2 text-[17px] font-semibold leading-snug transition-colors group-hover:text-acc"
+                >
+                  {post.data.title}
+                </h3>
+                <p class="line-clamp-2 text-sm text-muted-foreground">{post.data.description}</p>
+                <span
+                  class="mt-auto pt-1 font-mono text-xs text-acc transition-transform duration-300 ease-site group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

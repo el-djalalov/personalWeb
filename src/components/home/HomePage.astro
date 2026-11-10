@@ -1,0 +1,29 @@
+---
+// The whole home page. Both src/pages/index.astro (English) and
+// src/pages/[lang]/index.astro (Uzbek, Russian) render this component.
+import Hero from "@/components/home/Hero.astro";
+import Stats from "@/components/home/Stats.astro";
+import Skills from "@/components/home/Skills.astro";
+import Work from "@/components/home/Work.astro";
+import Jobs from "@/components/home/Jobs.astro";
+import Writing from "@/components/home/Writing.astro";
+import Contact from "@/components/home/Contact.astro";
+import { getHomeCopy } from "@/i18n/home";
+import { getCasesCopy } from "@/i18n/cases";
+import type { Language } from "@/content.config";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const copy = getHomeCopy(lang);
+---
+
+<Hero copy={copy} />
+<Stats stats={copy.stats} />
+<Skills copy={copy.skills} />
+<Work title={copy.work} cases={getCasesCopy(lang)} />
+<Jobs lang={lang} copy={copy.jobs} />
+<Writing lang={lang} copy={copy.writing} />
+<Contact copy={copy.contact} />

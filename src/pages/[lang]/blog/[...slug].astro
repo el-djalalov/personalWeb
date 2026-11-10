@@ -3,7 +3,7 @@ export const prerender = true;
 import type { GetStaticPaths } from "astro";
 import { getCollection, render } from "astro:content";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
-import readingTime from "reading-time";
+import { readTimeLabel } from "@/lib/blog";
 import type { Language } from "@/content.config";
 
 export const getStaticPaths = (async () => {
@@ -58,9 +58,6 @@ const post = translations.find(p => p.data.lang === lang) || defaultPost;
 
 const { Content, headings } = await render(post);
 
-// Calculate reading time
-const stats = readingTime(post.body || "");
-
 // Get available languages for this post
 const availableLanguages = translations.map(p => p.data.lang);
 
@@ -70,7 +67,7 @@ const baseSlug = post.data.translationKey || post.id.replace(/\.(md|mdx)$/, "");
 
 <BlogPostLayout
   post={post}
-  readingTime={stats.text}
+  readingTime={readTimeLabel(post.body ?? "", lang)}
   headings={headings}
   availableLanguages={availableLanguages}
   currentLang={lang}

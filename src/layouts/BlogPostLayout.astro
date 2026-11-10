@@ -10,6 +10,7 @@ import { getPublicImageSize } from "@/utils/publicImageSize";
 import type { CollectionEntry } from "astro:content";
 import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
 import { t, buildLangUrl } from "@/i18n";
+import { getSiteCopy } from "@/i18n/site";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -65,13 +66,13 @@ const blogUrl = buildLangUrl("/blog", currentLang);
   lang={currentLang}
   canonicalUrl={postUrl}
 >
-  <ReadingProgress client:load />
+  <ReadingProgress client:load label={getSiteCopy(currentLang).a11y.readingProgress} />
 
-  <main class="max-w-4xl mx-auto px-4 py-8 pt-20">
+  <main class="max-w-4xl mx-auto px-4 py-8">
     <!-- Back to blog -->
     <a
       href={blogUrl}
-      class="inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors mb-8 group"
+      class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-acc transition-colors mb-8 group"
     >
       <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -89,7 +90,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
               {tags.map((tag) => (
                 <a
                   href={buildLangUrl(`/blog/tag/${tag.toLowerCase()}`, currentLang)}
-                  class="px-3 py-1 text-xs font-medium rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-colors"
+                  class="px-3 py-1 text-xs font-medium rounded-full bg-acc/10 text-acc hover:bg-acc/20 transition-colors"
                 >
                   #{tag}
                 </a>
@@ -106,18 +107,18 @@ const blogUrl = buildLangUrl("/blog", currentLang);
         </div>
 
         <h1
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-4"
+          class="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-tight mb-4"
           transition:name={`blog-title-${post.id}`}
         >
           {title}
         </h1>
 
-        <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">
+        <p class="text-lg text-muted-foreground mb-6">
           {description}
         </p>
 
         <!-- Meta info -->
-        <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400 pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-6 border-b border-border">
           <div class="flex items-center gap-2">
             <Image
               src={avatar}
@@ -127,7 +128,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
               densities={[1, 2]}
               class="w-8 h-8 rounded-full object-cover object-top"
             />
-            <span class="font-medium text-slate-700 dark:text-slate-300">{author}</span>
+            <span class="font-medium text-muted-foreground">{author}</span>
           </div>
 
           <time datetime={pubDate.toISOString()} class="flex items-center gap-1">
@@ -138,7 +139,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
           </time>
 
           {updatedDate && (
-            <span class="flex items-center gap-1 text-violet-600 dark:text-violet-400">
+            <span class="flex items-center gap-1 text-acc">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
@@ -177,13 +178,13 @@ const blogUrl = buildLangUrl("/blog", currentLang);
           prose-headings:scroll-mt-20 prose-headings:font-bold
           prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
           prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-          prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed
-          prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-a:no-underline hover:prose-a:underline
+          prose-p:text-foreground/90 prose-p:leading-relaxed
+          prose-a:text-acc prose-a:no-underline hover:prose-a:underline
           prose-code:font-mono
           prose-pre:my-6
-          prose-blockquote:border-violet-500 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:rounded-r-lg prose-blockquote:py-1
+          prose-blockquote:border-acc prose-blockquote:bg-secondary prose-blockquote:rounded-r-lg prose-blockquote:py-1
           prose-img:rounded-xl prose-img:shadow-lg
-          prose-li:marker:text-violet-500
+          prose-li:marker:text-acc
         ">
           <slot />
         </div>
@@ -199,12 +200,12 @@ const blogUrl = buildLangUrl("/blog", currentLang);
       </div>
 
       <!-- Social Share -->
-      <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+      <div class="mt-12 pt-8 border-t border-border">
         <SocialShare title={title} url={postUrl} description={description} tags={tags} />
       </div>
 
       <!-- Author bio -->
-      <div class="mt-8 p-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+      <div class="mt-8 p-6 rounded-xl bg-secondary border border-border">
         <div class="flex items-start gap-4">
           <Image
             src={avatar}
@@ -216,13 +217,13 @@ const blogUrl = buildLangUrl("/blog", currentLang);
             class="w-16 h-16 rounded-full object-cover object-top flex-shrink-0"
           />
           <div>
-            <h3 class="font-semibold text-slate-900 dark:text-white">{author}</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            <h3 class="font-semibold text-foreground">{author}</h3>
+            <p class="text-sm text-muted-foreground mt-1">
               {t("blogPost.authorBio", currentLang)}
             </p>
             <a
               href={blogUrl}
-              class="inline-flex items-center gap-1 text-sm text-violet-600 dark:text-violet-400 hover:underline mt-2"
+              class="inline-flex items-center gap-1 text-sm text-acc hover:underline mt-2"
             >
               {t("blogPost.viewAllPosts", currentLang)}
             </a>

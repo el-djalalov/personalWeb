@@ -1,0 +1,391 @@
+---
+import type { HomeCopy } from "@/i18n/home";
+
+interface Props {
+  copy: HomeCopy["skills"];
+}
+
+const { copy } = Astro.props;
+---
+
+<section id="skills" class="mx-auto max-w-6xl px-4 pt-20">
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+    <h2 class="font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{copy.title}</h2>
+    <span class="font-mono text-xs text-muted-foreground">{copy.hint}</span>
+  </div>
+
+  <div class="sks" data-skills>
+    {
+      copy.items.map((skill, index) => (
+        <div class:list={["sk", { on: index === 0 }]} data-skill={skill.id}>
+          <button
+            type="button"
+            class="sk-v"
+            aria-expanded={index === 0 ? "true" : "false"}
+            aria-controls={`skill-${skill.id}`}
+          >
+            {skill.title}
+          </button>
+          <div class="sk-b" id={`skill-${skill.id}`} inert={index !== 0}>
+            {skill.id === "system" && (
+              <svg class="art" viewBox="0 0 300 150" aria-hidden="true">
+                <path class="ln" d="M40 75 L120 38 M40 75 L120 112 M120 38 L200 75 M120 112 L200 75 M200 75 L262 38 M200 75 L262 112 M120 38 L120 112" />
+                <path class="fl" d="M40 75 L120 38 L200 75 L262 38" />
+                <path class="fl" d="M40 75 L120 112 L200 75 L262 112" style="animation-delay:-.55s" />
+                <circle class="ping" cx="40" cy="75" r="9" />
+                <circle class="ping" cx="200" cy="75" r="11" style="animation-delay:1.3s" />
+                <circle class="nd" cx="40" cy="75" r="9" />
+                <circle class="nd" cx="120" cy="38" r="8" />
+                <circle class="nd" cx="120" cy="112" r="8" />
+                <circle class="nd" cx="200" cy="75" r="11" />
+                <circle class="nd2" cx="262" cy="38" r="8" />
+                <circle class="nd2" cx="262" cy="112" r="8" />
+                <text x="40" y="100" text-anchor="middle">client</text>
+                <text x="200" y="102" text-anchor="middle">api</text>
+                <text x="262" y="22" text-anchor="middle">cache</text>
+                <text x="262" y="137" text-anchor="middle">db</text>
+              </svg>
+            )}
+            {skill.id === "cloud" && (
+              <svg class="art" viewBox="0 0 300 150" aria-hidden="true">
+                <path class="spark" pathLength="1" d="M14 18 C50 16, 70 4, 100 10 S150 22, 180 8 S240 2, 286 12" />
+                <rect class="vpc" x="14" y="28" width="272" height="114" rx="12" />
+                <text x="26" y="44">vpc · 3 zones</text>
+                {[28, 112, 196].map((x, zone) => (
+                  <>
+                    <rect class="zone" x={x} y="54" width="76" height="76" rx="9" />
+                    <circle class="inst" cx={x + 24} cy="78" r="7" />
+                    <circle class="inst sc" cx={x + 52} cy="78" r="7" style={`animation-delay:${zone * 0.3}s`} />
+                    <circle class="inst sc" cx={x + 24} cy="106" r="7" style={`animation-delay:${0.6 + zone * 0.3}s`} />
+                    <circle class="inst sc" cx={x + 52} cy="106" r="7" style={`animation-delay:${1.2 + zone * 0.3}s`} />
+                  </>
+                ))}
+              </svg>
+            )}
+            {skill.id === "agents" && (
+              <svg class="art" viewBox="0 0 300 150" aria-hidden="true">
+                <rect class="soft" x="26" y="34" width="40" height="52" rx="5" />
+                <rect class="soft" x="20" y="42" width="40" height="52" rx="5" />
+                <rect class="soft" x="14" y="50" width="40" height="52" rx="5" />
+                <path class="ln" d="M21 64 H46 M21 72 H42 M21 80 H46 M21 88 H38" />
+                <path class="ln" d="M66 75 H136 M164 75 C200 75, 205 35, 236 35 M164 75 H236 M164 75 C200 75, 205 115, 236 115" />
+                <circle class="ping" cx="150" cy="75" r="12" />
+                <polygon class="nd" points="150,61 164,75 150,89 136,75" />
+                <circle class="nd2" cx="246" cy="35" r="9" />
+                <circle class="nd2" cx="246" cy="75" r="9" />
+                <circle class="nd2" cx="246" cy="115" r="9" />
+                <text x="34" y="122" text-anchor="middle">context</text>
+                <text x="150" y="108" text-anchor="middle">orchestrator</text>
+                <text x="260" y="38">plan</text>
+                <text x="260" y="78">tools</text>
+                <text x="260" y="118">review</text>
+                <circle class="pt" r="3"><animateMotion dur="1.6s" repeatCount="indefinite" begin="-0.2s" path="M66 75 H136" /></circle>
+                <circle class="pt" r="3"><animateMotion dur="1.6s" repeatCount="indefinite" begin="-1s" path="M66 75 H136" /></circle>
+                <circle class="pt2" r="3"><animateMotion dur="1.8s" repeatCount="indefinite" begin="-0.6s" path="M164 75 C200 75, 205 35, 236 35" /></circle>
+                <circle class="pt2" r="3"><animateMotion dur="1.4s" repeatCount="indefinite" begin="-1.1s" path="M164 75 H236" /></circle>
+                <circle class="pt2" r="3"><animateMotion dur="2s" repeatCount="indefinite" begin="-0.3s" path="M164 75 C200 75, 205 115, 236 115" /></circle>
+              </svg>
+            )}
+            {skill.id === "product" && (
+              <svg class="art" viewBox="0 0 300 150" aria-hidden="true">
+                <rect class="soft" x="20" y="12" width="260" height="128" rx="10" />
+                <path class="ln" d="M20 34 H280" />
+                <circle class="txt" cx="34" cy="23" r="3" />
+                <circle class="txt" cx="44" cy="23" r="3" />
+                <circle class="txt" cx="54" cy="23" r="3" />
+                <circle class="live" cx="246" cy="23" r="3.5" />
+                <text x="254" y="26">live</text>
+                <rect class="txt" x="34" y="48" width="56" height="6" rx="3" />
+                <rect class="txt" x="34" y="62" width="44" height="6" rx="3" />
+                <rect class="txt" x="34" y="76" width="50" height="6" rx="3" />
+                <rect class="txt" x="34" y="90" width="38" height="6" rx="3" />
+                {[
+                  [112, 66, 60, 0],
+                  [134, 56, 70, -0.4],
+                  [156, 80, 46, -1.1],
+                  [178, 50, 76, -0.7],
+                  [200, 70, 56, -1.6],
+                  [222, 44, 82, -0.2],
+                ].map(([x, y, h, delay]) => (
+                  <rect class="bar" x={x} y={y} width="14" height={h} rx="3" style={`animation-delay:${delay}s`} />
+                ))}
+                <path class="ln" d="M106 126 H262" />
+              </svg>
+            )}
+            <h3 class="font-display text-[26px] font-bold tracking-tight">{skill.title}</h3>
+            <p class="max-w-[40ch] text-[15px] text-muted-foreground">{skill.text}</p>
+            <em class="font-mono text-xs not-italic text-acc">{skill.proof}</em>
+          </div>
+          <i class="sk-bar" aria-hidden="true" />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style is:global>
+  /* Four panels; the open one grows. On phones they stack. */
+  .sks {
+    display: flex;
+    gap: 10px;
+    height: 370px;
+  }
+  .sk {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid hsl(var(--border));
+    border-radius: 14px;
+    background-color: hsl(var(--card));
+    transition:
+      flex-grow 0.8s var(--ease),
+      border-color 0.5s,
+      background-color 0.5s;
+  }
+  .sk:hover:not(.on) {
+    background-color: hsl(var(--surf2));
+  }
+  .sk.on {
+    flex-grow: 3.2;
+    cursor: default;
+    border-color: hsl(var(--acc) / 0.5);
+    background-color: hsl(var(--acc) / 0.05);
+  }
+  .sk-v {
+    position: absolute;
+    left: 18px;
+    bottom: 22px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 650;
+    white-space: nowrap;
+    transition: opacity 0.35s;
+  }
+  .sk-v:focus-visible {
+    outline: 2px solid hsl(var(--acc));
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .sk.on .sk-v {
+    opacity: 0;
+  }
+  .sk-b {
+    position: absolute;
+    inset: 0;
+    min-width: 360px;
+    padding: 22px 26px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition:
+      opacity 0.3s,
+      transform 0.5s var(--ease);
+  }
+  .sk.on .sk-b {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.28s;
+    pointer-events: auto;
+  }
+  .sk-b .art {
+    position: absolute;
+    left: 26px;
+    top: 22px;
+    width: calc(100% - 52px);
+    height: 176px;
+    overflow: visible;
+  }
+  .sk-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background: hsl(var(--acc));
+    transform-origin: left;
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  .sk.on .sk-bar.run {
+    opacity: 0.8;
+    animation: sk-bar 6s linear forwards;
+  }
+  @keyframes sk-bar {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @media (max-width: 767px) {
+    .sks {
+      flex-direction: column;
+      height: auto;
+    }
+    .sk {
+      flex: none;
+      height: 60px;
+      transition:
+        height 0.7s var(--ease),
+        border-color 0.5s,
+        background-color 0.5s;
+    }
+    .sk.on {
+      height: 370px;
+    }
+    .sk-v {
+      writing-mode: horizontal-tb;
+      transform: none;
+      bottom: auto;
+      top: 18px;
+    }
+    .sk-b {
+      min-width: 0;
+    }
+  }
+
+  /* Panel drawings */
+  .art .ln { fill: none; stroke: hsl(var(--border)); stroke-width: 1.5; }
+  .art .fl { fill: none; stroke: hsl(var(--acc)); stroke-width: 1.6; stroke-dasharray: 3 9; animation: sk-flow 1.1s linear infinite; }
+  .art .nd { fill: hsl(var(--surf2)); stroke: hsl(var(--acc)); stroke-width: 1.5; }
+  .art .nd2 { fill: hsl(var(--surf2)); stroke: hsl(var(--acc2)); stroke-width: 1.5; }
+  .art .ping { fill: none; stroke: hsl(var(--acc)); stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: sk-ping 2.6s var(--ease) infinite; }
+  .art .zone { fill: none; stroke: hsl(var(--border)); stroke-width: 1.2; stroke-dasharray: 4 4; }
+  .art .vpc { fill: none; stroke: hsl(var(--acc2)); stroke-width: 1.2; stroke-dasharray: 5 5; opacity: 0.75; }
+  .art .inst { fill: hsl(var(--acc)); }
+  .art .sc { transform-box: fill-box; transform-origin: center; animation: sk-scale 5s var(--ease) infinite; }
+  .art .pt { fill: hsl(var(--acc)); }
+  .art .pt2 { fill: hsl(var(--acc2)); }
+  .art .bar { fill: hsl(var(--acc)); opacity: 0.85; transform-box: fill-box; transform-origin: 50% 100%; animation: sk-bars 2.4s var(--ease) infinite alternate; }
+  .art .soft { fill: hsl(var(--surf2)); stroke: hsl(var(--border)); }
+  .art .txt { fill: hsl(var(--border)); }
+  .art text { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 9px; fill: hsl(var(--muted-foreground)); }
+  .art .live { fill: hsl(var(--good)); animation: sk-live 1.4s ease-in-out infinite; }
+  .art .spark { fill: none; stroke: hsl(var(--acc2)); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; animation: sk-spark 5s var(--ease) infinite; }
+  @keyframes sk-flow { to { stroke-dashoffset: -12; } }
+  @keyframes sk-ping { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(2.8); } }
+  @keyframes sk-scale { 0%, 12% { transform: scale(0); } 28%, 72% { transform: scale(1); } 88%, 100% { transform: scale(0); } }
+  @keyframes sk-bars { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
+  @keyframes sk-live { 50% { opacity: 0.35; } }
+  @keyframes sk-spark { 0% { stroke-dashoffset: 1; } 45%, 80% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
+  .sk:not(.on) .art * { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .art * { animation: none !important; }
+    .art .spark { stroke-dashoffset: 0; }
+    .sk, .sk-b { transition: none; }
+  }
+</style>
+
+<script>
+  import { onPage } from "@/lib/page-lifecycle";
+  import { prefersReducedMotion, watchVisibility } from "@/lib/motion";
+
+  const AUTO_MS = 6000;
+  const PAUSE_AFTER_USE_MS = 10000;
+  const HOVER_DELAY_MS = 140;
+
+  // Opens one panel at a time. Hover or click opens a panel; when nobody
+  // touches them, the next panel opens every few seconds while in view.
+  onPage(() => {
+    const root = document.querySelector<HTMLElement>("[data-skills]");
+    if (!root) return;
+    const panels = [...root.querySelectorAll<HTMLElement>(".sk")];
+    const reduce = prefersReducedMotion();
+    const hover = window.matchMedia("(hover: hover)").matches;
+    const listeners = new AbortController();
+    let current = 0;
+    let openedAt = performance.now();
+    let pausedAt = Number.NEGATIVE_INFINITY;
+    let visible = false;
+    let focusInside = false;
+    const hoverTimers = new Map<HTMLElement, number>();
+
+    function open(index: number, byUser: boolean) {
+      current = index;
+      openedAt = performance.now();
+      if (byUser) pausedAt = openedAt;
+      panels.forEach((panel, i) => {
+        const on = i === index;
+        panel.classList.toggle("on", on);
+        panel.querySelector(".sk-v")?.setAttribute("aria-expanded", String(on));
+        // Closed panels are hidden from screen readers and keyboard too
+        const body = panel.querySelector<HTMLElement>(".sk-b");
+        if (body) body.inert = !on;
+        const svg = panel.querySelector<SVGSVGElement>("svg");
+        if (svg) {
+          if (on && !reduce) svg.unpauseAnimations();
+          else svg.pauseAnimations();
+        }
+        const bar = panel.querySelector<HTMLElement>(".sk-bar");
+        bar?.classList.remove("run");
+        if (on && !byUser && !reduce && bar) {
+          void bar.offsetWidth; // restart the CSS animation
+          bar.classList.add("run");
+        }
+      });
+    }
+
+    panels.forEach((panel, index) => {
+      panel.addEventListener(
+        "click",
+        () => {
+          if (current !== index) open(index, true);
+          else pausedAt = performance.now();
+        },
+        { signal: listeners.signal },
+      );
+      if (!hover) return;
+      panel.addEventListener(
+        "pointerenter",
+        () => {
+          window.clearTimeout(hoverTimers.get(panel));
+          hoverTimers.set(
+            panel,
+            window.setTimeout(() => {
+              if (current !== index) open(index, true);
+              else pausedAt = performance.now();
+            }, HOVER_DELAY_MS),
+          );
+        },
+        { signal: listeners.signal },
+      );
+      panel.addEventListener("pointerleave", () => window.clearTimeout(hoverTimers.get(panel)), {
+        signal: listeners.signal,
+      });
+    });
+
+    root.addEventListener("focusin", () => (focusInside = true), { signal: listeners.signal });
+    root.addEventListener(
+      "focusout",
+      event => (focusInside = root.contains(event.relatedTarget as Node | null)),
+      { signal: listeners.signal },
+    );
+
+    open(0, false);
+    const unwatch = watchVisibility(root, isVisible => {
+      visible = isVisible;
+    });
+    const timer = reduce
+      ? 0
+      : window.setInterval(() => {
+          const now = performance.now();
+          // Never rotate under a keyboard or screen-reader user
+          if (!visible || document.hidden || focusInside) return;
+          if (now - pausedAt < PAUSE_AFTER_USE_MS || now - openedAt < AUTO_MS) return;
+          open((current + 1) % panels.length, false);
+        }, 250);
+
+    return () => {
+      window.clearInterval(timer);
+      hoverTimers.forEach(id => window.clearTimeout(id));
+      unwatch();
+      listeners.abort();
+    };
+  });
+</script>

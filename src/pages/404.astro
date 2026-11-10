@@ -1,29 +1,79 @@
 ---
 import ErrorLayout from "../layouts/ErrorLayout.astro";
-import { getLangFromUrl, t } from "@/i18n";
+import { buildLangUrl, t } from "@/i18n";
+import { SUPPORTED_LANGUAGES } from "@/content.config";
 
-const lang = getLangFromUrl(Astro.url);
+// 404.html is one static file for every URL, so it is built in English.
+// The script below swaps in the Uzbek or Russian text for /uz/… and /ru/… URLs.
+const lang = "en";
+const copy = Object.fromEntries(
+  SUPPORTED_LANGUAGES.map(l => [
+    l,
+    { notFound: t("error.notFound", l), goHome: t("error.goHome", l), home: buildLangUrl("/", l) },
+  ]),
+);
 ---
 
 <ErrorLayout>
-  <section class="relative z-20 max-w-2xl mx-auto my-12 px-7 lg:px-0">
-    <div
-      class="container flex flex-col items-center justify-center px-5 mx-auto my-8"
+  <section
+    class="mx-auto flex max-w-xl flex-col items-start gap-6 px-4 py-20"
+    data-error-copy={JSON.stringify(copy)}
+  >
+    <p class="font-mono text-xs text-muted-foreground">error · {t("error.404", lang)}</p>
+    <h1
+      class="text-balance font-display text-[clamp(2rem,5vw,3rem)] font-bold leading-tight tracking-tight"
+      data-error-text="notFound"
     >
-      <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
-          <span class="sr-only">Error</span>
-          <span class="text-primary text-slate-900 dark:text-slate-100"
-            >{t("error.404", lang)}</span
-          >
-        </h2>
-        <p class="text-3xl font-semibold md:text-3xl dark:text-slate-400">
-          {t("error.notFound", lang)}
-        </p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          {t("error.goHome", lang)}
-        </p>
-      </div>
+      {t("error.notFound", lang)}
+    </h1>
+    <div class="w-full rounded-2xl border border-log-line bg-log-bg p-5 font-mono text-[13px] text-log-text">
+      <p class="flex justify-between gap-4">
+        <span><span class="text-log-acc">GET</span> <span data-missing-path>/</span></span>
+        <span class="text-crit">404</span>
+      </p>
+      <p class="mt-2 text-log-mute" data-error-text="goHome">{t("error.goHome", lang)}</p>
     </div>
+    <a
+      href={buildLangUrl("/", lang)}
+      class="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      data-error-home
+    >
+      ← elyor.dev
+    </a>
   </section>
 </ErrorLayout>
+
+<script>
+  import { onPage } from "@/lib/page-lifecycle";
+
+  type ErrorCopy = Record<string, { notFound: string; goHome: string; home: string }>;
+
+  const readCopy = (raw: string | undefined): ErrorCopy | null => {
+    try {
+      return raw ? (JSON.parse(raw) as ErrorCopy) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  onPage(() => {
+    // Show the path the visitor asked for
+    const path = window.location.pathname;
+    const slot = document.querySelector("[data-missing-path]");
+    if (slot) slot.textContent = path;
+
+    // /uz/… and /ru/… get their own language (English stays as built)
+    const section = document.querySelector<HTMLElement>("[data-error-copy]");
+    const copy = readCopy(section?.dataset.errorCopy);
+    const lang = path.split("/")[1] ?? "";
+    const text = lang !== "en" ? copy?.[lang] : undefined;
+    if (!section || !text) return;
+
+    section.lang = lang;
+    section.querySelectorAll<HTMLElement>("[data-error-text]").forEach(el => {
+      const key = el.dataset.errorText as "notFound" | "goHome";
+      el.textContent = text[key];
+    });
+    section.querySelector<HTMLAnchorElement>("[data-error-home]")?.setAttribute("href", text.home);
+  });
+</script>

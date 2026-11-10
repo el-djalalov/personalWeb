@@ -3,47 +3,11 @@ import type { Language } from "@/content.config";
 // Translation keys and their values for each language
 export const translations = {
   en: {
-    // Navigation
-    "nav.about": "About",
-    "nav.work": "Work",
-    "nav.projects": "Projects",
-    "nav.blog": "Blog",
-    "nav.contact": "Contact",
-
     // Hero section
-    "hero.greeting": "Hi, I'm Elyor",
     "hero.title": "AI-Native Engineer",
-    "hero.downloadResume": "Download Resume",
-    "hero.portraitAlt": "Portrait of Elyor Djalalov",
 
     // Section headers
-    "section.experience": "Work experience",
-    "section.projects": "Apps I build",
-    "section.blog": "Latest from blog",
     "section.contact": "Contact",
-
-    // Experience section
-    "experience.title": "Experience",
-
-    // Projects section
-    "projects.title": "My Projects",
-    "projects.description":
-      "Here are <u>some</u> of my recent projects. I'm always working on something new, so check back often!",
-    "projects.visit": "Visit",
-
-    // Contact section
-    "contact.title": "Let's Connect",
-    "contact.description":
-      "If you want to stay up to date with my work be sure to join my channel on",
-    "contact.telegram": "Telegram",
-    "contact.orEmail": ", or you can send me an",
-    "contact.email": "email",
-    "contact.willReply": "and I'll be sure to get back to you.",
-
-    // Blog preview (homepage)
-    "blogPreview.title": "Latest Posts",
-    "blogPreview.comingSoon": "Blog posts coming soon!",
-    "blogPreview.morePosts": "More Posts",
 
     // Blog index page
     "blog.title": "Blog",
@@ -56,6 +20,8 @@ export const translations = {
     "blog.subscribeRss": "Subscribe via RSS",
     "blog.post": "post",
     "blog.posts": "posts",
+    // Russian 2–4 (and 22–24 …) form; other languages repeat "blog.posts"
+    "blog.postsFew": "posts",
     "blog.taggedWith": "tagged with",
 
     // Blog post layout
@@ -69,58 +35,17 @@ export const translations = {
     "error.404": "404",
     "error.notFound": "Sorry, we couldn't find this page.",
     "error.goHome":
-      "But dont worry, you can find plenty of other things on our homepage.",
-
-    // Footer
-    "footer.copyright": "Elyor Djalalov",
+      "Go to the home page, or press Ctrl K to find a section.",
 
     // Meta
     "meta.title": "Elyor Djalalov",
-    "meta.description":
-      "Elyor Djalalov - AI-Native Engineer. Portfolio showcasing web development projects and skills.",
   },
   uz: {
-    // Navigation
-    "nav.about": "Men haqimda",
-    "nav.work": "Ish",
-    "nav.projects": "Loyihalar",
-    "nav.blog": "Blog",
-    "nav.contact": "Aloqa",
-
     // Hero section
-    "hero.greeting": "Salom, men Elyor",
     "hero.title": "AI-native muhandis",
-    "hero.downloadResume": "Rezyumeni yuklash",
-    "hero.portraitAlt": "Elyor Djalalov portreti",
 
     // Section headers
-    "section.experience": "Ish tajribasi",
-    "section.projects": "Yaratgan ilovalarim",
-    "section.blog": "Blogdan so'nggi yangiliklar",
     "section.contact": "Aloqa",
-
-    // Experience section
-    "experience.title": "Tajriba",
-
-    // Projects section
-    "projects.title": "Loyihalarim",
-    "projects.description":
-      "Mana so'nggi loyihalarimdan <u>ba'zilari</u>. Doimo yangi narsalar ustida ishlayapman, shuning uchun tez-tez qaytib keling!",
-    "projects.visit": "Ochish",
-
-    // Contact section
-    "contact.title": "Bog'lanaylik",
-    "contact.description":
-      "Agar ishlarim bilan tanishib borishni istasangiz, Telegram kanalimga qo'shiling",
-    "contact.telegram": "Telegram",
-    "contact.orEmail": ", yoki menga",
-    "contact.email": "email",
-    "contact.willReply": "yuboring va men albatta javob beraman.",
-
-    // Blog preview (homepage)
-    "blogPreview.title": "So'nggi maqolalar",
-    "blogPreview.comingSoon": "Tez orada blog maqolalari!",
-    "blogPreview.morePosts": "Ko'proq maqolalar",
 
     // Blog index page
     "blog.title": "Blog",
@@ -133,6 +58,7 @@ export const translations = {
     "blog.subscribeRss": "RSS orqali obuna bo'ling",
     "blog.post": "maqola",
     "blog.posts": "maqola",
+    "blog.postsFew": "maqola",
     "blog.taggedWith": "bu tegda",
 
     // Blog post layout
@@ -146,58 +72,17 @@ export const translations = {
     "error.404": "404",
     "error.notFound": "Kechirasiz, bu sahifa topilmadi.",
     "error.goHome":
-      "Lekin xavotir olmang, bosh sahifada boshqa ko'p narsalarni topishingiz mumkin.",
-
-    // Footer
-    "footer.copyright": "Elyor Djalalov",
+      "Bosh sahifaga o'ting yoki bo'limni topish uchun Ctrl K ni bosing.",
 
     // Meta
     "meta.title": "Elyor Djalalov",
-    "meta.description":
-      "Elyor Djalalov - AI-native muhandis. Veb-dasturlash loyihalari va ko'nikmalari.",
   },
   ru: {
-    // Navigation
-    "nav.about": "Обо мне",
-    "nav.work": "Работа",
-    "nav.projects": "Проекты",
-    "nav.blog": "Блог",
-    "nav.contact": "Контакт",
-
     // Hero section
-    "hero.greeting": "Привет, я Элёр",
     "hero.title": "AI-native инженер",
-    "hero.downloadResume": "Скачать резюме",
-    "hero.portraitAlt": "Портрет Элёра Джалалова",
 
     // Section headers
-    "section.experience": "Опыт работы",
-    "section.projects": "Мои приложения",
-    "section.blog": "Последнее из блога",
     "section.contact": "Контакт",
-
-    // Experience section
-    "experience.title": "Опыт",
-
-    // Projects section
-    "projects.title": "Мои проекты",
-    "projects.description":
-      "Вот <u>некоторые</u> из моих последних проектов. Я всегда работаю над чем-то новым, так что заходите почаще!",
-    "projects.visit": "Открыть",
-
-    // Contact section
-    "contact.title": "Давайте свяжемся",
-    "contact.description":
-      "Если вы хотите быть в курсе моей работы, подписывайтесь на мой канал в",
-    "contact.telegram": "Telegram",
-    "contact.orEmail": ", или отправьте мне",
-    "contact.email": "email",
-    "contact.willReply": "и я обязательно отвечу.",
-
-    // Blog preview (homepage)
-    "blogPreview.title": "Последние статьи",
-    "blogPreview.comingSoon": "Скоро появятся статьи!",
-    "blogPreview.morePosts": "Больше статей",
 
     // Blog index page
     "blog.title": "Блог",
@@ -210,6 +95,7 @@ export const translations = {
     "blog.subscribeRss": "Подписаться на RSS",
     "blog.post": "статья",
     "blog.posts": "статей",
+    "blog.postsFew": "статьи",
     "blog.taggedWith": "с тегом",
 
     // Blog post layout
@@ -223,15 +109,10 @@ export const translations = {
     "error.404": "404",
     "error.notFound": "Извините, страница не найдена.",
     "error.goHome":
-      "Но не волнуйтесь, на главной странице вы найдёте много другого интересного.",
-
-    // Footer
-    "footer.copyright": "Элёр Джалалов",
+      "Перейдите на главную или нажмите Ctrl K, чтобы найти раздел.",
 
     // Meta
     "meta.title": "Элёр Джалалов",
-    "meta.description":
-      "Элёр Джалалов - AI-native инженер. Портфолио с проектами и навыками веб-разработки.",
   },
 } as const;
 

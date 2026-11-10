@@ -1,0 +1,111 @@
+---
+import { CONTACT } from "@/i18n/site";
+import type { HomeCopy } from "@/i18n/home";
+
+interface Props {
+  copy: HomeCopy["contact"];
+}
+
+const { copy } = Astro.props;
+---
+
+<section id="contact" class="contact mx-auto max-w-6xl px-4 pb-6 pt-24">
+  <h2 class="font-display text-[clamp(2.1rem,5vw,3.6rem)] font-bold leading-[1.05] tracking-[-0.03em] text-balance">
+    {copy.line1}<br />
+    {copy.before}<span class="ring-word relative inline-block text-acc"
+      >{copy.ring}<svg
+        viewBox="0 0 200 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        class="pointer-events-none absolute -left-[12%] -top-[20%] h-[140%] w-[124%] overflow-visible"
+        ><path
+          pathLength="1"
+          d="M18 52 C 14 18, 120 4, 176 26 C 206 40, 190 82, 110 90 C 40 96, 6 74, 22 40 C 30 26, 60 16, 92 14"
+        ></path></svg
+      ></span
+    >{copy.after}
+  </h2>
+  <div class="mt-9 flex flex-wrap items-center gap-x-9 gap-y-5">
+    <a
+      href={`mailto:${CONTACT.email}`}
+      data-magnet
+      class="grid h-[132px] w-[132px] flex-none place-items-center rounded-full bg-primary text-[15px] font-bold text-primary-foreground transition-transform duration-300 ease-site"
+    >
+      {copy.button}
+    </a>
+    <div class="flex flex-col gap-2 font-mono text-[13px] text-muted-foreground">
+      <p class="max-w-[32ch]">{copy.note}</p>
+      <p>
+        <span class="text-foreground">{CONTACT.email}</span> ·
+        <a href={CONTACT.telegramChannel} target="_blank" rel="noopener noreferrer" class="text-acc hover:underline">
+          {copy.telegram} ↗
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .contact .ring-word path {
+    fill: none;
+    stroke: hsl(var(--acc));
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .contact.js-ready .ring-word path {
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.6, 0, 0.2, 1) 0.2s;
+    }
+    .contact.js-ready.is-drawn .ring-word path {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  import { onPage } from "@/lib/page-lifecycle";
+  import { prefersReducedMotion, watchVisibility } from "@/lib/motion";
+
+  // Draws the circle around the key word once it scrolls into view, and lets
+  // the round email button lean toward the cursor.
+  onPage(() => {
+    const section = document.querySelector<HTMLElement>("section.contact");
+    const magnet = section?.querySelector<HTMLElement>("[data-magnet]");
+    if (!section || !magnet || prefersReducedMotion()) return;
+
+    // Without this script the circle simply shows, drawn
+    section.classList.add("js-ready");
+    const unwatch = watchVisibility(
+      section,
+      visible => {
+        if (visible) section.classList.add("is-drawn");
+      },
+      { threshold: 0.4 },
+    );
+
+    const listeners = new AbortController();
+    if (window.matchMedia("(hover: hover)").matches) {
+      section.addEventListener(
+        "pointermove",
+        event => {
+          const rect = magnet.getBoundingClientRect();
+          const dx = event.clientX - (rect.left + rect.width / 2);
+          const dy = event.clientY - (rect.top + rect.height / 2);
+          magnet.style.transform = Math.hypot(dx, dy) < 200 ? `translate(${dx * 0.3}px, ${dy * 0.3}px)` : "";
+        },
+        { signal: listeners.signal },
+      );
+      section.addEventListener("pointerleave", () => (magnet.style.transform = ""), {
+        signal: listeners.signal,
+      });
+    }
+
+    return () => {
+      unwatch();
+      listeners.abort();
+    };
+  });
+</script>

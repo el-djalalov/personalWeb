@@ -1,0 +1,95 @@
+---
+import { buildLangUrl, getLangFromUrl } from "@/i18n";
+import { getSiteCopy } from "@/i18n/site";
+
+const lang = getLangFromUrl(Astro.url);
+const copy = getSiteCopy(lang);
+const home = buildLangUrl("/", lang);
+
+// One entry per home page section. `id` is the section's element id.
+const ICONS = {
+  home: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+  skills: "M12 3 3 7.5l9 4.5 9-4.5L12 3zM3 12l9 4.5 9-4.5M3 16.5 12 21l9-4.5",
+  jobs: "M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  work: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
+  writing: "M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z",
+  contact: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+} as const;
+
+const items = [
+  { key: "home", id: "top", label: copy.nav.home, href: home },
+  { key: "skills", id: "skills", label: copy.nav.skills, href: `${home}#skills` },
+  { key: "work", id: "work", label: copy.nav.work, href: `${home}#work` },
+  { key: "writing", id: "writing", label: copy.nav.writing, href: `${home}#writing` },
+  { key: "contact", id: "contact", label: copy.nav.contact, href: `${home}#contact` },
+] as const;
+---
+
+<nav
+  id="bottomNav"
+  aria-label={copy.menuLabel}
+  data-sections={items.map(i => i.id).join(",")}
+  class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/80 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-xl md:hidden"
+>
+  <div class="flex h-16 items-center justify-around px-2">
+    {
+      items.map(item => (
+        <a
+          href={item.href}
+          data-nav={item.id}
+          class="bottom-nav-link flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-2 text-muted-foreground transition-colors duration-200 aria-[current=location]:bg-acc/10 aria-[current=location]:text-acc"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d={ICONS[item.key]} />
+          </svg>
+          <span class="text-[10px] font-medium">{item.label}</span>
+        </a>
+      ))
+    }
+  </div>
+</nav>
+
+<!-- Keeps the page end clear of the fixed bar on phones -->
+<div class="h-16 md:hidden" aria-hidden="true"></div>
+
+<script>
+  import { onPage } from "@/lib/page-lifecycle";
+
+  // Marks the link of the section in view. Re-armed on every page view.
+  onPage(() => {
+    const nav = document.getElementById("bottomNav");
+    if (!nav) return;
+    const sections = (nav.dataset.sections ?? "").split(",").filter(Boolean);
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>("a[data-nav]")];
+
+    const setActive = (id: string) => {
+      links.forEach(link => {
+        if (link.dataset.nav === id) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+
+    // Blog and 404 pages have none of these sections: mark nothing there
+    const onHome = sections.some(id => id !== "top" && document.getElementById(id));
+
+    const update = () => {
+      if (!onHome) return setActive("");
+      if (window.scrollY < 100) return setActive(sections[0]);
+      const atBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50;
+      if (atBottom) return setActive(sections[sections.length - 1]);
+      const line = window.scrollY + window.innerHeight / 3;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.getBoundingClientRect().top + window.scrollY <= line) {
+          return setActive(sections[i]);
+        }
+      }
+      setActive(sections[0]);
+    };
+
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
+  });
+</script>

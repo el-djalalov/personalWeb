@@ -30,8 +30,8 @@ export async function GET(context: APIContext) {
     })),
     customData: `<language>en-us</language>
 <copyright>Copyright ${new Date().getFullYear()}, Elyor Djalalov</copyright>
-<managingEditor>hello@elyor.dev (Elyor Djalalov)</managingEditor>
-<webMaster>hello@elyor.dev (Elyor Djalalov)</webMaster>
+<managingEditor>info@elyor.dev (Elyor Djalalov)</managingEditor>
+<webMaster>info@elyor.dev (Elyor Djalalov)</webMaster>
 <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 <image>
   <url>https://www.elyor.dev/og-image.png</url>

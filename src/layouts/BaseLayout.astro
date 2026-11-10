@@ -1,7 +1,9 @@
 ---
 import ThemeHead from "@/components/theme/ThemeHead.astro";
-import Header from "../components/home/header.astro";
-import SquareLines from "../components/home/square-lines.astro";
+import SiteHeader from "@/components/site/SiteHeader.astro";
+import BottomNav from "@/components/site/BottomNav.astro";
+import SiteFooter from "@/components/site/SiteFooter.astro";
+import CommandMenu from "@/components/site/CommandMenu.astro";
 import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import "../styles/globals.css";
@@ -86,11 +88,13 @@ const ogImageUrl = image.startsWith("http") ? image : new URL(image, siteUrl).hr
   </head>
 
   <body class="antialiased bg-background text-foreground w-full min-h-screen">
-    <SquareLines />
-    <Header />
+    <SiteHeader />
     <div transition:animate="fade">
       <slot />
     </div>
+    <SiteFooter />
+    <BottomNav />
+    <CommandMenu />
     <script src="../assets/js/main.js"></script>
     <SpeedInsights />
   </body>

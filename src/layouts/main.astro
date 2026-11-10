@@ -1,10 +1,11 @@
 ---
 import ThemeHead from "@/components/theme/ThemeHead.astro";
-import Header from "../components/home/header.astro";
-import SquareLines from "../components/home/square-lines.astro";
+import SiteHeader from "@/components/site/SiteHeader.astro";
+import BottomNav from "@/components/site/BottomNav.astro";
+import SiteFooter from "@/components/site/SiteFooter.astro";
+import CommandMenu from "@/components/site/CommandMenu.astro";
 import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import Separator from "@/components/separator.astro";
 import { getLangFromUrl, t, buildLangUrl } from "@/i18n";
 import { SUPPORTED_LANGUAGES } from "@/content.config";
 import "../styles/globals.css";
@@ -60,20 +61,13 @@ const ogTitle = `${t("meta.title", lang)} - ${t("hero.title", lang)}`;
   </head>
 
   <body class="antialiased bg-background text-foreground w-full overflow-x-hidden">
-    <SquareLines />
-    <Header />
+    <SiteHeader />
     <main>
-    <slot />
-    <Separator text={t("section.experience", lang)} />
-    <slot name="experience" />
-    <Separator text={t("section.projects", lang)} />
-    <slot name="projects" />
-    <Separator text={t("section.blog", lang)} />
-    <slot name="blog" />
-    <Separator text={t("section.contact", lang)} />
-    <slot name="contacts" />
+      <slot />
     </main>
-    <slot name="footer" />
+    <SiteFooter />
+    <BottomNav />
+    <CommandMenu />
     <script src="../assets/js/main.js"></script>
     <SpeedInsights />
   </body>

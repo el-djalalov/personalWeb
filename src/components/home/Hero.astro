@@ -34,7 +34,7 @@ const button =
         {hero.who}
       </p>
       <h1
-        class="mt-4 text-balance font-display text-[clamp(2.25rem,4.8vw,3.4rem)] font-bold leading-[1.04] tracking-[-0.025em]"
+        class="hero-title mt-4 text-balance font-display text-[clamp(2.25rem,4.8vw,3.4rem)] font-bold leading-[1.04] tracking-[-0.025em]"
       >
         {hero.titleA} <span class="text-acc">{hero.titleB}</span>
       </h1>
@@ -125,6 +125,11 @@ const button =
 </section>
 
 <style is:global>
+  /* The Uzbek and Russian sentences are longer; keep the heading to ~4 lines */
+  :is(:lang(uz), :lang(ru)) .hero-title {
+    font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+    line-height: 1.08;
+  }
   .hero-lines {
     -webkit-mask-image: radial-gradient(ellipse 70% 90% at 74% 45%, #000 25%, transparent 78%);
     mask-image: radial-gradient(ellipse 70% 90% at 74% 45%, #000 25%, transparent 78%);

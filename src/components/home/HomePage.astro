@@ -3,6 +3,7 @@
 // src/pages/[lang]/index.astro (Uzbek, Russian) render this component.
 import Hero from "@/components/home/Hero.astro";
 import Stats from "@/components/home/Stats.astro";
+import Skills from "@/components/home/Skills.astro";
 import Projects from "@/components/projects";
 import Contact from "@/components/contact/contact.astro";
 import ExperienceSection from "@/components/experience/ExperienceSection";
@@ -20,6 +21,7 @@ const copy = getHomeCopy(lang);
 
 <Hero copy={copy} />
 <Stats stats={copy.stats} />
+<Skills copy={copy.skills} />
 
 <ExperienceSection lang={lang} />
 <Projects client:visible lang={lang} />

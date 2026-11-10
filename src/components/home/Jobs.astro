@@ -1,0 +1,46 @@
+---
+import { getExperiences } from "@/i18n";
+import type { HomeCopy } from "@/i18n/home";
+import type { Language } from "@/content.config";
+
+interface Props {
+  lang: Language;
+  copy: HomeCopy["jobs"];
+}
+
+const { lang, copy } = Astro.props;
+const jobs = getExperiences(lang);
+// The freelance years point at this site; no need to link it to itself
+const external = (url: string) => !url.includes("elyor.dev");
+---
+
+<section id="jobs" class="mx-auto max-w-6xl px-4 pt-20">
+  <!-- Old links to /#experience still land here -->
+  <span id="experience" aria-hidden="true"></span>
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+    <h2 class="font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{copy.title}</h2>
+    <span class="font-mono text-xs text-muted-foreground">{copy.hint}</span>
+  </div>
+  <ol class="border-t border-border">
+    {
+      jobs.map(job => (
+        <li class="grid gap-x-6 gap-y-1 border-b border-border py-4 md:grid-cols-[13rem_1fr_auto] md:items-baseline">
+          <span class="font-mono text-xs tabular-nums text-muted-foreground">{job.dates}</span>
+          <span class="font-semibold">{job.role}</span>
+          {external(job.website) ? (
+            <a
+              href={job.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground transition-colors hover:text-acc"
+            >
+              {job.company} ↗
+            </a>
+          ) : (
+            <span class="text-sm text-muted-foreground">{job.company}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</section>

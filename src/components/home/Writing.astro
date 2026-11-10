@@ -1,0 +1,65 @@
+---
+import { getCollection } from "astro:content";
+import { buildLangUrl } from "@/i18n";
+import type { HomeCopy } from "@/i18n/home";
+import type { Language } from "@/content.config";
+
+interface Props {
+  lang: Language;
+  copy: HomeCopy["writing"];
+}
+
+const { lang, copy } = Astro.props;
+const DATE_LOCALES: Record<Language, string> = { en: "en-US", uz: "uz-UZ", ru: "ru-RU" };
+
+const published = (await getCollection("blog")).filter(post => !post.data.draft);
+const newestFirst = <T extends { data: { pubDate: Date } }>(list: T[]) =>
+  [...list].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// Latest 3 posts in this language; fall back to English when there are none yet
+const inLanguage = published.filter(post => post.data.lang === lang);
+const posts = newestFirst(inLanguage.length > 0 ? inLanguage : published.filter(p => p.data.lang === "en")).slice(0, 3);
+
+const slugOf = (post: (typeof posts)[number]) =>
+  post.data.translationKey || post.id.replace(/\.(md|mdx)$/, "");
+---
+
+<section id="writing" class="mx-auto max-w-6xl px-4 pt-20">
+  <!-- Old links to /#blog still land here -->
+  <span id="blog" aria-hidden="true"></span>
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+    <h2 class="font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{copy.title}</h2>
+    <a href={buildLangUrl("/blog", lang)} class="font-mono text-xs text-acc hover:underline">{copy.allPosts}</a>
+  </div>
+  {
+    posts.length === 0 ? (
+      <p class="text-muted-foreground">{copy.empty}</p>
+    ) : (
+      <ul class="border-t border-border">
+        {posts.map(post => (
+          <li>
+            <a
+              href={buildLangUrl(`/blog/${slugOf(post)}`, lang)}
+              class="group grid grid-cols-[1fr_auto] items-center gap-4 border-b border-border py-[18px]"
+            >
+              <span class="text-[clamp(1rem,1.6vw,1.2rem)] font-semibold transition-colors group-hover:text-acc">
+                {post.data.title}
+              </span>
+              <span class="flex items-center gap-3.5 font-mono text-xs text-muted-foreground">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString(DATE_LOCALES[lang], {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </time>
+                <span class="text-acc transition-transform duration-300 ease-site group-hover:translate-x-1" aria-hidden="true">
+                  →
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

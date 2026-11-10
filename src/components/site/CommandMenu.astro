@@ -1,9 +1,11 @@
 ---
 import { buildLangUrl, getLangFromUrl } from "@/i18n";
 import { CONTACT, getSiteCopy } from "@/i18n/site";
+import { getCasesCopy } from "@/i18n/cases";
 
 const lang = getLangFromUrl(Astro.url);
 const copy = getSiteCopy(lang);
+const cases = getCasesCopy(lang);
 const home = buildLangUrl("/", lang);
 const blog = buildLangUrl("/blog", lang);
 
@@ -27,11 +29,20 @@ const groups: Group[] = [
     items: [
       { id: "skills", label: copy.nav.skills, hint: "#skills", href: `${home}#skills` },
       { id: "jobs", label: copy.nav.jobs, hint: "#experience", href: `${home}#experience` },
-      { id: "work", label: copy.nav.work, hint: "#projects", href: `${home}#projects` },
+      { id: "work", label: copy.nav.work, hint: "#work", href: `${home}#work` },
       { id: "writing", label: copy.nav.writing, hint: "#blog", href: `${home}#blog` },
       { id: "contact", label: copy.nav.contact, hint: "#contact", href: `${home}#contact` },
       { id: "posts", label: copy.actions.allPosts, hint: "/blog", href: blog },
     ],
+  },
+  {
+    label: copy.groups.cases,
+    items: cases.items.map(item => ({
+      id: `case-${item.id}`,
+      label: item.title,
+      hint: item.tag,
+      href: `${home}#work-${item.id}`,
+    })),
   },
   {
     label: copy.groups.actions,
@@ -72,7 +83,7 @@ const groups: Group[] = [
           {group.items.map(item => (
             <li
               role="option"
-              id={`cmdk-${item.id}`}
+              id={`cmdk-opt-${item.id}`}
               aria-selected="false"
               data-href={item.href}
               data-action={item.action}

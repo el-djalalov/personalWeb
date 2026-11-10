@@ -1,0 +1,92 @@
+---
+import CaseFiles from "@/components/home/cases/CaseFiles";
+import type { HomeCopy } from "@/i18n/home";
+import { CASE_IDS, type CasesCopy } from "@/i18n/cases";
+
+interface Props {
+  title: HomeCopy["work"];
+  cases: CasesCopy;
+}
+
+const { title, cases } = Astro.props;
+---
+
+<section id="work" class="mx-auto max-w-6xl px-4 pt-20">
+  <!-- Old links to /#projects still land here -->
+  <span id="projects" aria-hidden="true"></span>
+  <!-- Targets for links such as /#work-tallinja; the island opens that case -->
+  {CASE_IDS.map(id => <span id={`work-${id}`} aria-hidden="true" />)}
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+    <h2 class="font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{title.title}</h2>
+    <span class="font-mono text-xs text-muted-foreground">{title.hint}</span>
+  </div>
+  <CaseFiles client:visible={{ rootMargin: "300px" }} copy={cases} />
+</section>
+
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    .case-enter {
+      animation: case-enter 0.5s var(--ease) both;
+    }
+    .row-in {
+      animation: row-in 0.45s var(--ease) both;
+    }
+    .ticket-land {
+      animation: ticket-land 0.45s var(--ease);
+    }
+    .alarm-card {
+      animation: alarm-shake 0.5s;
+    }
+    .demo-live {
+      animation: demo-live 1.6s ease-in-out infinite;
+    }
+  }
+  @keyframes case-enter {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  @keyframes row-in {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+  }
+  @keyframes ticket-land {
+    from {
+      opacity: 0.4;
+      transform: scale(0.92);
+    }
+  }
+  @keyframes alarm-shake {
+    20% {
+      transform: translateX(-3px);
+    }
+    40% {
+      transform: translateX(3px);
+    }
+    60% {
+      transform: translateX(-2px);
+    }
+  }
+  @keyframes demo-live {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  /* Hidden text in the anzel demo */
+  .redacted {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 0 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: hsl(var(--muted-foreground));
+    background: repeating-linear-gradient(
+      135deg,
+      hsl(var(--border)) 0 6px,
+      transparent 6px 9px
+    );
+  }
+</style>

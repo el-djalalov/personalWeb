@@ -4,11 +4,12 @@
 import Hero from "@/components/home/Hero.astro";
 import Stats from "@/components/home/Stats.astro";
 import Skills from "@/components/home/Skills.astro";
-import Projects from "@/components/projects";
+import Work from "@/components/home/Work.astro";
 import Contact from "@/components/contact/contact.astro";
 import ExperienceSection from "@/components/experience/ExperienceSection";
 import BlogPreview from "@/components/blog/BlogPreview.astro";
 import { getHomeCopy } from "@/i18n/home";
+import { getCasesCopy } from "@/i18n/cases";
 import type { Language } from "@/content.config";
 
 interface Props {
@@ -22,8 +23,8 @@ const copy = getHomeCopy(lang);
 <Hero copy={copy} />
 <Stats stats={copy.stats} />
 <Skills copy={copy.skills} />
+<Work title={copy.work} cases={getCasesCopy(lang)} />
 
 <ExperienceSection lang={lang} />
-<Projects client:visible lang={lang} />
 <BlogPreview lang={lang} />
 <Contact lang={lang} />

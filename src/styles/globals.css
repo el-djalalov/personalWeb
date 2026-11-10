@@ -69,7 +69,8 @@ section[id],
 [id="experience"],
 [id="projects"],
 [id="blog"],
-[id="contact"] {
+[id="contact"],
+[id^="work-"] {
   scroll-margin-top: 4.5rem;
 }
 

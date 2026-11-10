@@ -68,7 +68,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
 >
   <ReadingProgress client:load label={getSiteCopy(currentLang).a11y.readingProgress} />
 
-  <main class="max-w-4xl mx-auto px-4 py-8 pt-20">
+  <main class="max-w-4xl mx-auto px-4 py-8">
     <!-- Back to blog -->
     <a
       href={blogUrl}
@@ -107,7 +107,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
         </div>
 
         <h1
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4"
+          class="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-tight mb-4"
           transition:name={`blog-title-${post.id}`}
         >
           {title}

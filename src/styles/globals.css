@@ -102,15 +102,10 @@ html.theme-switching::view-transition-new(root) {
   to { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
 }
 
-/* Smooth morph for blog hero images */
-::view-transition-group(blog-hero-*) {
+/* Smooth morph for named elements (blog images and titles). Prefix
+   wildcards such as blog-hero-* are not valid here, so time them all. */
+::view-transition-group(*) {
   animation-duration: 0.4s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Smooth morph for blog titles */
-::view-transition-group(blog-title-*) {
-  animation-duration: 0.35s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 

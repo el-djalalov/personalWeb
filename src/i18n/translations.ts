@@ -20,6 +20,8 @@ export const translations = {
     "blog.subscribeRss": "Subscribe via RSS",
     "blog.post": "post",
     "blog.posts": "posts",
+    // Russian 2–4 (and 22–24 …) form; other languages repeat "blog.posts"
+    "blog.postsFew": "posts",
     "blog.taggedWith": "tagged with",
 
     // Blog post layout
@@ -56,6 +58,7 @@ export const translations = {
     "blog.subscribeRss": "RSS orqali obuna bo'ling",
     "blog.post": "maqola",
     "blog.posts": "maqola",
+    "blog.postsFew": "maqola",
     "blog.taggedWith": "bu tegda",
 
     // Blog post layout
@@ -92,6 +95,7 @@ export const translations = {
     "blog.subscribeRss": "Подписаться на RSS",
     "blog.post": "статья",
     "blog.posts": "статей",
+    "blog.postsFew": "статьи",
     "blog.taggedWith": "с тегом",
 
     // Blog post layout

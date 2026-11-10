@@ -29,6 +29,8 @@ export interface SiteCopy {
   social: string;
   /** Accessible names for shared controls */
   a11y: { theme: string; toc: string; tocLabel: string; readingProgress: string; language: string };
+  /** Share block under blog posts. {name} is the network */
+  share: { title: string; on: string; email: string; copyLink: string; copy: string; copied: string };
 }
 
 export const site: Record<Language, SiteCopy> = {
@@ -59,6 +61,7 @@ export const site: Record<Language, SiteCopy> = {
     localTime: "Local time",
     social: "Social links",
     a11y: { theme: "Dark theme", toc: "On this page", tocLabel: "Table of contents", readingProgress: "Reading progress", language: "Language" },
+    share: { title: "Share this article", on: "Share on {name}", email: "Share by email", copyLink: "Copy link", copy: "Copy", copied: "Copied!" },
   },
   uz: {
     name: "Elyor Djalalov",
@@ -87,6 +90,7 @@ export const site: Record<Language, SiteCopy> = {
     localTime: "Mahalliy vaqt",
     social: "Ijtimoiy tarmoqlar",
     a11y: { theme: "Tungi mavzu", toc: "Ushbu sahifada", tocLabel: "Mundarija", readingProgress: "O'qish jarayoni", language: "Til" },
+    share: { title: "Maqolani ulashish", on: "{name} orqali ulashish", email: "Email orqali ulashish", copyLink: "Havolani nusxalash", copy: "Nusxalash", copied: "Nusxalandi!" },
   },
   ru: {
     name: "Элёр Джалалов",
@@ -115,6 +119,7 @@ export const site: Record<Language, SiteCopy> = {
     localTime: "Местное время",
     social: "Соцсети",
     a11y: { theme: "Тёмная тема", toc: "На этой странице", tocLabel: "Оглавление", readingProgress: "Прогресс чтения", language: "Язык" },
+    share: { title: "Поделиться статьёй", on: "Поделиться в {name}", email: "Отправить по email", copyLink: "Скопировать ссылку", copy: "Копировать", copied: "Скопировано!" },
   },
 };
 

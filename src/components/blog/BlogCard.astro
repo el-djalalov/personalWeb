@@ -28,7 +28,7 @@ const formattedDate = pubDate.toLocaleDateString(dateLocales[lang] || "en-US", {
 
 ---
 
-<article class="group relative flex flex-col h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-xl hover:shadow-acc/10 hover:border-acc/50">
+<article lang={post.data.lang !== lang ? post.data.lang : undefined} class="group relative flex flex-col h-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:shadow-xl hover:shadow-acc/10 hover:border-acc/50">
   <!-- Image -->
   <a href={buildLangUrl(`/blog/${postSlug}`, lang)} class="relative aspect-video overflow-hidden" tabindex="-1" aria-hidden="true">
     {heroImage ? (

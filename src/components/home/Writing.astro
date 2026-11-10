@@ -1,10 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import readingTime from "reading-time";
 import { buildLangUrl } from "@/i18n";
 import type { HomeCopy } from "@/i18n/home";
 import type { Language } from "@/content.config";
 import { getPublicImageSize } from "@/utils/publicImageSize";
+import { postKey, postsForLanguage, readTimeLabel } from "@/lib/blog";
 
 interface Props {
   lang: Language;
@@ -14,20 +14,17 @@ interface Props {
 const { lang, copy } = Astro.props;
 const DATE_LOCALES: Record<Language, string> = { en: "en-US", uz: "uz-UZ", ru: "ru-RU" };
 
-const published = (await getCollection("blog")).filter(post => !post.data.draft);
-const newestFirst = <T extends { data: { pubDate: Date } }>(list: T[]) =>
-  [...list].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-// Latest 3 posts in this language; fall back to English when there are none yet
-const inLanguage = published.filter(post => post.data.lang === lang);
-const posts = newestFirst(inLanguage.length > 0 ? inLanguage : published.filter(p => p.data.lang === "en")).slice(0, 3);
+// The top 3 of this language's blog page: each post in this language,
+// else its English original
+const posts = postsForLanguage(await getCollection("blog"), lang).slice(0, 3);
 
 // Width and height on every image, so the cards never jump while images load
 const cards = await Promise.all(
   posts.map(async post => ({
     post,
-    slug: post.data.translationKey || post.id.replace(/\.(md|mdx)$/, ""),
+    slug: postKey(post),
     size: await getPublicImageSize(post.data.heroImage),
-    minutes: Math.max(1, Math.round(readingTime(post.body ?? "").minutes)),
+    readTime: readTimeLabel(post.body ?? "", lang),
   })),
 );
 ---
@@ -44,8 +41,8 @@ const cards = await Promise.all(
       <p class="text-muted-foreground">{copy.empty}</p>
     ) : (
       <ul class="grid gap-4 md:grid-cols-3">
-        {cards.map(({ post, slug, size, minutes }) => (
-          <li>
+        {cards.map(({ post, slug, size, readTime }) => (
+          <li lang={post.data.lang !== lang ? post.data.lang : undefined}>
             <a
               href={buildLangUrl(`/blog/${slug}`, lang)}
               class="group flex h-full flex-col overflow-hidden rounded-[14px] border border-border bg-card transition-[border-color,transform] duration-300 ease-site hover:-translate-y-1 hover:border-acc/60"
@@ -77,7 +74,7 @@ const cards = await Promise.all(
                       day: "numeric",
                     })}
                   </time>
-                  <span>{copy.readTime.replace("{n}", String(minutes))}</span>
+                  <span>{readTime}</span>
                 </p>
                 <h3
                   transition:name={`blog-title-${post.id}`}

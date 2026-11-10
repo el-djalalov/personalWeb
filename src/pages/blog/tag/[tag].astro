@@ -1,60 +1,35 @@
 ---
 export const prerender = true;
+import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
-import { getCollection } from "astro:content";
-import readingTime from "reading-time";
-import { getLangFromUrl, buildLangUrl, t } from "@/i18n";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { buildLangUrl, t } from "@/i18n";
+import type { Language } from "@/content.config";
+import { hasTag, postCountWord, readTimeLabel, uniqueTags } from "@/lib/blog";
 
-export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  const allTags = [...new Set(posts.flatMap(post => post.data.tags))].filter(
-    tag => tag && tag.trim() !== "",
-  );
+// A type alias (not an interface) so it fits Astro's props record type
+type TagPageProps = {
+  tag: string;
+  posts: CollectionEntry<"blog">[];
+  allTags: string[];
+};
 
+export const getStaticPaths = (async () => {
+  // Same posts as /blog: English only, newest first. Tags that only
+  // translated posts carry get no English page, so no page is empty.
+  const posts = (await getCollection("blog"))
+    .filter(post => !post.data.draft && post.data.lang === "en")
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const allTags = uniqueTags(posts);
   return allTags.map(tag => ({
     params: { tag: tag.toLowerCase() },
-    props: {
-      tag,
-      posts: posts
-        .filter(
-          post =>
-            !post.data.draft &&
-            post.data.tags
-              .map(t => t.toLowerCase())
-              .includes(tag.toLowerCase()),
-        )
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-    },
+    props: { tag, allTags, posts: posts.filter(post => hasTag(post, tag)) } satisfies TagPageProps,
   }));
-}
+}) satisfies GetStaticPaths;
 
-const { tag, posts: allPostsForTag } = Astro.props;
-
-// Handle case where props might be undefined (SSR mode)
-if (!tag || !allPostsForTag) {
-  return Astro.redirect("/blog");
-}
-
-const lang = getLangFromUrl(Astro.url);
-
-// Filter posts by current language
-const posts = allPostsForTag.filter(post => post.data.lang === lang);
-
-// Get all unique tags for filter (only from posts in current language)
-const allPosts = await getCollection("blog");
-const allTags = [...new Set(
-  allPosts
-    .filter(post => !post.data.draft && post.data.lang === lang)
-    .flatMap(post => post.data.tags)
-)]
-  .filter(tag => tag && tag.trim() !== "")
-  .sort();
-
-function getReadingTime(body: string): string {
-  const stats = readingTime(body);
-  return stats.text;
-}
+const lang: Language = "en";
+const { tag, posts, allTags } = Astro.props;
 ---
 
 <BaseLayout
@@ -62,7 +37,7 @@ function getReadingTime(body: string): string {
   description={`${t("blog.description", lang)} - ${tag}`}
   lang={lang}
 >
-  <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
+  <main class="max-w-6xl mx-auto px-4 py-8">
     <!-- Header -->
     <header class="mb-12 text-center">
       <a
@@ -84,13 +59,13 @@ function getReadingTime(body: string): string {
         {t("blog.allPosts", lang)}
       </a>
       <h1
-        class="text-4xl md:text-5xl font-bold text-foreground mb-4"
+        class="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4"
       >
         <span class="text-acc">#{tag}</span>
       </h1>
       <p class="text-lg text-muted-foreground">
         {posts.length}
-        {posts.length === 1 ? t("blog.post", lang) : t("blog.posts", lang)} {t("blog.taggedWith", lang)} <span
+        {postCountWord(posts.length, lang)} {t("blog.taggedWith", lang)} <span
           class="font-medium">{tag}</span
         >
       </p>
@@ -130,7 +105,7 @@ function getReadingTime(body: string): string {
           {posts.map(post => (
             <BlogCard
               post={post}
-              readingTime={getReadingTime(post.body || "")}
+              readingTime={readTimeLabel(post.body ?? "", lang)}
               lang={lang}
             />
           ))}

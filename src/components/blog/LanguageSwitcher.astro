@@ -31,7 +31,7 @@ const { currentLang, availableLanguages, baseSlug } = Astro.props;
               "px-3 py-1.5 text-sm font-medium transition-colors",
               isCurrent
                 ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-muted-foreground hover:bg-secondary",
+                : "bg-secondary text-muted-foreground hover:bg-acc/10 hover:text-acc",
             ]}
             aria-current={isCurrent ? "page" : undefined}
           >

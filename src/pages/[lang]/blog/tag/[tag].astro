@@ -4,61 +4,34 @@ import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/blog/BlogCard.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
-import readingTime from "reading-time";
 import { buildLangUrl, t } from "@/i18n";
 import type { Language } from "@/content.config";
+import { hasTag, postCountWord, postsForLanguage, readTimeLabel, uniqueTags } from "@/lib/blog";
 
 // A type alias (not an interface) so it fits Astro's props record type
 type TagPageProps = {
   tag: string;
   posts: CollectionEntry<"blog">[];
+  allTags: string[];
 };
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection("blog");
-  const allTags = [...new Set(posts.flatMap(post => post.data.tags))].filter(
-    tag => tag && tag.trim() !== "",
-  );
-
+  const all = await getCollection("blog");
   const languages: Language[] = ["uz", "ru"];
-  const paths: { params: { lang: string; tag: string }; props: TagPageProps }[] = [];
 
-  for (const lang of languages) {
-    for (const tag of allTags) {
-      paths.push({
-        params: { lang, tag: tag.toLowerCase() },
-        props: {
-          tag,
-          posts: posts
-            .filter(
-              post =>
-                !post.data.draft &&
-                post.data.tags
-                  .map(t => t.toLowerCase())
-                  .includes(tag.toLowerCase()),
-            )
-            .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-        },
-      });
-    }
-  }
-
-  return paths;
+  // Same posts as /[lang]/blog: this language, else the English original
+  return languages.flatMap(lang => {
+    const posts = postsForLanguage(all, lang);
+    const allTags = uniqueTags(posts);
+    return allTags.map(tag => ({
+      params: { lang, tag: tag.toLowerCase() },
+      props: { tag, allTags, posts: posts.filter(post => hasTag(post, tag)) } satisfies TagPageProps,
+    }));
+  });
 }) satisfies GetStaticPaths;
 
 const { lang } = Astro.params as { lang: Language };
-const { tag, posts } = Astro.props;
-
-// Get all unique tags for filter
-const allPosts = await getCollection("blog");
-const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))]
-  .filter(tag => tag && tag.trim() !== "")
-  .sort();
-
-function getReadingTime(body: string): string {
-  const stats = readingTime(body);
-  return stats.text;
-}
+const { tag, posts, allTags } = Astro.props;
 ---
 
 <BaseLayout
@@ -66,7 +39,7 @@ function getReadingTime(body: string): string {
   description={`${t("blog.description", lang)} - ${tag}`}
   lang={lang}
 >
-  <main class="max-w-6xl mx-auto px-4 py-8 pt-20">
+  <main class="max-w-6xl mx-auto px-4 py-8">
     <!-- Header -->
     <header class="mb-12 text-center">
       <a
@@ -88,13 +61,13 @@ function getReadingTime(body: string): string {
         {t("blog.allPosts", lang)}
       </a>
       <h1
-        class="text-4xl md:text-5xl font-bold text-foreground mb-4"
+        class="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4"
       >
         <span class="text-acc">#{tag}</span>
       </h1>
       <p class="text-lg text-muted-foreground">
         {posts.length}
-        {posts.length === 1 ? t("blog.post", lang) : t("blog.posts", lang)} {t("blog.taggedWith", lang)} <span
+        {postCountWord(posts.length, lang)} {t("blog.taggedWith", lang)} <span
           class="font-medium">{tag}</span
         >
       </p>
@@ -134,7 +107,7 @@ function getReadingTime(body: string): string {
           {posts.map(post => (
             <BlogCard
               post={post}
-              readingTime={getReadingTime(post.body || "")}
+              readingTime={readTimeLabel(post.body ?? "", lang)}
               lang={lang}
             />
           ))}

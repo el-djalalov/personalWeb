@@ -88,11 +88,9 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       tocLinks.forEach((link) => {
         const isActive = link.dataset.heading === id;
         link.classList.toggle("text-acc", isActive);
-        link.classList.toggle("", isActive);
         link.classList.toggle("border-acc/50", isActive);
         link.classList.toggle("font-medium", isActive);
         link.classList.toggle("text-muted-foreground", !isActive);
-        link.classList.toggle("", !isActive);
         link.classList.toggle("border-transparent", !isActive);
 
         // Auto-scroll active link into view within TOC container

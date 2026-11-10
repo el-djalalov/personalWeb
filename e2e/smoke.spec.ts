@@ -101,14 +101,67 @@ test("nothing is wider than a 390px phone screen", async ({ page }) => {
   }
 });
 
-test("a blog post opens", async ({ page }) => {
+test("a blog post opens and scrolls to the end without errors", async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto("/blog");
-  await page.locator("main a[href^='/blog/']").first().click();
-  await expect(page).toHaveURL(/\/blog\/.+/);
+  await page.locator("main article h2 a").first().click();
+  await expect(page).toHaveURL(/\/blog\/(?!tag\/).+/);
   await expect(page.locator("h1")).toBeVisible();
+
+  // Scroll in steps, so the table of contents and reading bar react on the way
+  for (let i = 0; i < 12; i++) {
+    await page.mouse.wheel(0, 1200);
+    await page.waitForTimeout(60);
+  }
+  await expect(page.getByRole("heading", { name: "Share this article" })).toBeInViewport();
   expect(errors).toEqual([]);
 });
+
+test("the Uzbek blog lists posts with Uzbek links and reading times", async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto("/uz/blog");
+  await expect(page.locator("html")).toHaveAttribute("lang", "uz");
+  const cards = page.locator("main article");
+  await expect(cards.first()).toBeVisible();
+  await expect(cards.first().locator("h2 a")).toHaveAttribute("href", /^\/uz\/blog\//);
+  await expect(cards.first()).toContainText("daqiqa o'qish");
+  expect(errors).toEqual([]);
+});
+
+test("a tag page lists only posts with that tag", async ({ page }) => {
+  await page.goto("/blog");
+  const tagLink = page.locator("main a[href^='/blog/tag/']").first();
+  const tag = (await tagLink.textContent())?.trim().replace(/^#/, "") ?? "";
+  await tagLink.click();
+  await expect(page).toHaveURL(/\/blog\/tag\/.+/);
+  await expect(page.locator("h1")).toHaveText(`#${tag}`);
+
+  const cards = page.locator("main article");
+  const count = await cards.count();
+  expect(count).toBeGreaterThan(0);
+  await expect(page.locator("header p").first()).toContainText(String(count));
+});
+
+test("Russian tag pages use the right plural form", async ({ page }) => {
+  await page.goto("/ru/blog/tag/ai");
+  const count = await page.locator("main article").count();
+  expect(count).toBeGreaterThan(0);
+  const form = new Intl.PluralRules("ru").select(count);
+  const word = form === "one" ? "статья" : form === "few" ? "статьи" : "статей";
+  await expect(page.locator("main header p").first()).toHaveText(new RegExp(`^\\s*${count}\\s+${word}\\s`));
+});
+
+for (const [path, heading, home] of [
+  ["/no-such-page", "Sorry, we couldn't find this page.", "/"],
+  ["/ru/no-such-page", "Извините, страница не найдена.", "/ru/"],
+  ["/uz/no-such-page", "Kechirasiz, bu sahifa topilmadi.", "/uz/"],
+] as const) {
+  test(`the 404 page speaks the language of ${path}`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.locator("h1")).toHaveText(heading);
+    await expect(page.locator("[data-error-home]")).toHaveAttribute("href", home);
+  });
+}
 
 test("after home → blog → home, the log still plays and Ctrl K still works", async ({ page }) => {
   await page.goto("/");

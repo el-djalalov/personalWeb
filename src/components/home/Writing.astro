@@ -1,8 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import readingTime from "reading-time";
 import { buildLangUrl } from "@/i18n";
 import type { HomeCopy } from "@/i18n/home";
 import type { Language } from "@/content.config";
+import { getPublicImageSize } from "@/utils/publicImageSize";
 
 interface Props {
   lang: Language;
@@ -19,8 +21,15 @@ const newestFirst = <T extends { data: { pubDate: Date } }>(list: T[]) =>
 const inLanguage = published.filter(post => post.data.lang === lang);
 const posts = newestFirst(inLanguage.length > 0 ? inLanguage : published.filter(p => p.data.lang === "en")).slice(0, 3);
 
-const slugOf = (post: (typeof posts)[number]) =>
-  post.data.translationKey || post.id.replace(/\.(md|mdx)$/, "");
+// Width and height on every image, so the cards never jump while images load
+const cards = await Promise.all(
+  posts.map(async post => ({
+    post,
+    slug: post.data.translationKey || post.id.replace(/\.(md|mdx)$/, ""),
+    size: await getPublicImageSize(post.data.heroImage),
+    minutes: Math.max(1, Math.round(readingTime(post.body ?? "").minutes)),
+  })),
+);
 ---
 
 <section id="writing" class="mx-auto max-w-6xl px-4 pt-20">
@@ -31,31 +40,59 @@ const slugOf = (post: (typeof posts)[number]) =>
     <a href={buildLangUrl("/blog", lang)} class="font-mono text-xs text-acc hover:underline">{copy.allPosts}</a>
   </div>
   {
-    posts.length === 0 ? (
+    cards.length === 0 ? (
       <p class="text-muted-foreground">{copy.empty}</p>
     ) : (
-      <ul class="border-t border-border">
-        {posts.map(post => (
+      <ul class="grid gap-4 md:grid-cols-3">
+        {cards.map(({ post, slug, size, minutes }) => (
           <li>
             <a
-              href={buildLangUrl(`/blog/${slugOf(post)}`, lang)}
-              class="group grid grid-cols-[1fr_auto] items-center gap-4 border-b border-border py-[18px]"
+              href={buildLangUrl(`/blog/${slug}`, lang)}
+              class="group flex h-full flex-col overflow-hidden rounded-[14px] border border-border bg-card transition-[border-color,transform] duration-300 ease-site hover:-translate-y-1 hover:border-acc/60"
             >
-              <span class="text-[clamp(1rem,1.6vw,1.2rem)] font-semibold transition-colors group-hover:text-acc">
-                {post.data.title}
-              </span>
-              <span class="flex items-center gap-3.5 font-mono text-xs text-muted-foreground">
-                <time datetime={post.data.pubDate.toISOString()}>
-                  {post.data.pubDate.toLocaleDateString(DATE_LOCALES[lang], {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </time>
-                <span class="text-acc transition-transform duration-300 ease-site group-hover:translate-x-1" aria-hidden="true">
+              <div class="aspect-[16/9] overflow-hidden border-b border-border bg-surf2">
+                {post.data.heroImage ? (
+                  <img
+                    src={post.data.heroImage}
+                    width={size?.width}
+                    height={size?.height}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    transition:name={`blog-hero-${post.id}`}
+                    class="h-full w-full object-cover transition-transform duration-500 ease-site group-hover:scale-[1.04]"
+                  />
+                ) : (
+                  <div class="grid h-full place-items-center bg-gradient-to-br from-acc/15 to-acc2/10 font-mono text-xs text-muted-foreground">
+                    #{post.data.tags[0] ?? "blog"}
+                  </div>
+                )}
+              </div>
+              <div class="flex flex-1 flex-col gap-2 p-4">
+                <p class="flex flex-wrap gap-x-3 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString(DATE_LOCALES[lang], {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </time>
+                  <span>{copy.readTime.replace("{n}", String(minutes))}</span>
+                </p>
+                <h3
+                  transition:name={`blog-title-${post.id}`}
+                  class="line-clamp-2 text-[17px] font-semibold leading-snug transition-colors group-hover:text-acc"
+                >
+                  {post.data.title}
+                </h3>
+                <p class="line-clamp-2 text-sm text-muted-foreground">{post.data.description}</p>
+                <span
+                  class="mt-auto pt-1 font-mono text-xs text-acc transition-transform duration-300 ease-site group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
                   →
                 </span>
-              </span>
+              </div>
             </a>
           </li>
         ))}

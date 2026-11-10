@@ -198,7 +198,7 @@ export default function CaseFiles({ copy }: Props) {
         ref={listRef}
         role="tablist"
         aria-label={copy.tabsLabel}
-        className="relative flex gap-0.5 overflow-x-auto rounded-[14px] border border-log-line bg-log-bg p-2 font-mono text-[13px] text-log-text [scrollbar-width:none] lg:sticky lg:top-24 lg:flex-col lg:p-3"
+        className="sticky top-[4.25rem] z-20 flex gap-0.5 overflow-x-auto rounded-[14px] border border-log-line bg-log-bg p-2 font-mono text-[13px] text-log-text shadow-lg [scrollbar-width:none] lg:top-24 lg:flex-col lg:p-3 lg:shadow-none"
       >
         <span className="hidden px-2 pb-2.5 pt-1 text-xs text-log-mute lg:block">$ ls ./work</span>
         {indicator && (

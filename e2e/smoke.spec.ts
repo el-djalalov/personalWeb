@@ -74,6 +74,22 @@ test("arrow keys move between case tabs", async ({ page }) => {
   await expect(page.locator("#case-topqir")).toBeVisible();
 });
 
+test("the case list stays in view while the case scrolls", async ({ page }) => {
+  await page.goto("/");
+  const list = page.locator("[role=tablist]");
+  const top = await page.locator("#work").evaluate(el => el.getBoundingClientRect().top + window.scrollY);
+  await page.evaluate(y => window.scrollTo({ top: y + 400, behavior: "instant" }), top);
+  const box = await list.boundingBox();
+  // Sticky at lg:top-24 (96px); without sticky it would be above the screen
+  expect(box?.y ?? -1).toBeGreaterThanOrEqual(0);
+  expect(box?.y ?? 999).toBeLessThan(120);
+});
+
+test("writing cards show their post images", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#writing img")).toHaveCount(3);
+});
+
 test("nothing is wider than a 390px phone screen", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   for (const path of ["/", "/blog", "/ru/"]) {

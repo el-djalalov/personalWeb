@@ -57,7 +57,7 @@ export interface HomeCopy {
   skills: { title: string; hint: string; items: Skill[] };
   work: { title: string; hint: string };
   jobs: { title: string; hint: string };
-  writing: { title: string; allPosts: string; empty: string };
+  writing: { title: string; allPosts: string; empty: string; readTime: string };
   contact: {
     line1: string;
     before: string;
@@ -149,7 +149,7 @@ export const home: Record<Language, HomeCopy> = {
     },
     work: { title: "Case files", hint: "Try each one" },
     jobs: { title: "Where I worked", hint: "2018 → now" },
-    writing: { title: "Writing", allPosts: "All posts →", empty: "Posts coming soon." },
+    writing: { title: "Writing", allPosts: "All posts →", empty: "Posts coming soon.", readTime: "{n} min read" },
     contact: {
       line1: "Have a product or system in mind?",
       before: "Let's ",
@@ -238,7 +238,7 @@ export const home: Record<Language, HomeCopy> = {
     },
     work: { title: "Loyihalar", hint: "Har birini sinab ko'ring" },
     jobs: { title: "Qayerda ishlaganman", hint: "2018 → hozir" },
-    writing: { title: "Maqolalar", allPosts: "Barcha maqolalar →", empty: "Tez orada maqolalar." },
+    writing: { title: "Maqolalar", allPosts: "Barcha maqolalar →", empty: "Tez orada maqolalar.", readTime: "{n} daqiqa o'qish" },
     contact: {
       line1: "Loyiha yoki tizim g'oyangiz bormi?",
       before: "Keling, uni ",
@@ -327,7 +327,7 @@ export const home: Record<Language, HomeCopy> = {
     },
     work: { title: "Проекты", hint: "Попробуйте каждый" },
     jobs: { title: "Где я работал", hint: "2018 → сейчас" },
-    writing: { title: "Статьи", allPosts: "Все статьи →", empty: "Скоро здесь будут статьи." },
+    writing: { title: "Статьи", allPosts: "Все статьи →", empty: "Скоро здесь будут статьи.", readTime: "{n} мин чтения" },
     contact: {
       line1: "Есть идея продукта или системы?",
       before: "Давайте её ",

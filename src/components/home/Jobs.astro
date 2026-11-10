@@ -24,9 +24,21 @@ const external = (url: string) => !url.includes("elyor.dev");
   <ol class="border-t border-border">
     {
       jobs.map(job => (
-        <li class="grid gap-x-6 gap-y-1 border-b border-border py-4 md:grid-cols-[13rem_1fr_auto] md:items-baseline">
+        <li class="group grid gap-x-6 gap-y-2 border-b border-border py-4 md:grid-cols-[13rem_1fr_auto] md:items-center">
           <span class="font-mono text-xs tabular-nums text-muted-foreground">{job.dates}</span>
-          <span class="font-semibold">{job.role}</span>
+          <span class="flex items-center gap-3 font-semibold">
+            <!-- White tile: most logos are made for a light background -->
+            <img
+              src={job.logo}
+              alt=""
+              width="32"
+              height="32"
+              loading="lazy"
+              decoding="async"
+              class="h-8 w-8 flex-none rounded-lg bg-white object-contain p-1 ring-1 ring-border transition-transform duration-300 ease-site group-hover:scale-110"
+            />
+            {job.role}
+          </span>
           {external(job.website) ? (
             <a
               href={job.website}

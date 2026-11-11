@@ -47,7 +47,7 @@ const cards = await Promise.all(
               href={buildLangUrl(`/blog/${slug}`, lang)}
               class="group flex h-full flex-col overflow-hidden rounded-[14px] border border-border bg-card transition-[border-color,transform] duration-300 ease-site hover:-translate-y-1 hover:border-acc/60"
             >
-              <div class="aspect-[16/9] overflow-hidden border-b border-border bg-surf2">
+              <div class="aspect-video overflow-hidden border-b border-border bg-surf2">
                 {post.data.heroImage ? (
                   <img
                     src={post.data.heroImage}
@@ -60,7 +60,7 @@ const cards = await Promise.all(
                     class="h-full w-full object-cover transition-transform duration-500 ease-site group-hover:scale-[1.04]"
                   />
                 ) : (
-                  <div class="grid h-full place-items-center bg-gradient-to-br from-acc/15 to-acc2/10 font-mono text-xs text-muted-foreground">
+                  <div class="grid h-full place-items-center bg-linear-to-br from-acc/15 to-acc2/10 font-mono text-xs text-muted-foreground">
                     #{post.data.tags[0] ?? "blog"}
                   </div>
                 )}

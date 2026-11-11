@@ -1,169 +1,437 @@
 /* Self-hosted fonts. Each file covers all scripts; the browser only
    downloads the subsets a page uses (unicode-range). */
-@import "@fontsource/ibm-plex-sans/400.css";
-@import "@fontsource/ibm-plex-sans/500.css";
-@import "@fontsource/ibm-plex-sans/600.css";
-@import "@fontsource/ibm-plex-sans/700.css";
-@import "@fontsource/ibm-plex-mono/400.css";
-@import "@fontsource/ibm-plex-mono/500.css";
+@import '@fontsource/ibm-plex-sans/400.css' layer(base);
+@import '@fontsource/ibm-plex-sans/500.css' layer(base);
+@import '@fontsource/ibm-plex-sans/600.css' layer(base);
+@import '@fontsource/ibm-plex-sans/700.css' layer(base);
+@import '@fontsource/ibm-plex-mono/400.css' layer(base);
+@import '@fontsource/ibm-plex-mono/500.css' layer(base);
 
-/* Heading font with font-display: optional. If it is not ready right away,
-   the page keeps the width-matched fallback for this visit instead of
-   swapping, so the big heading never re-wraps (layout shift). It still
-   downloads and is used from the next page on. */
-@font-face {
-  font-family: "IBM Plex Sans Condensed";
-  font-style: normal;
-  font-weight: 600;
-  font-display: optional;
-  src: url("../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-600-normal.woff2") format("woff2");
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: "IBM Plex Sans Condensed";
-  font-style: normal;
-  font-weight: 600;
-  font-display: optional;
-  src: url("../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-ext-600-normal.woff2") format("woff2");
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-@font-face {
-  font-family: "IBM Plex Sans Condensed";
-  font-style: normal;
-  font-weight: 700;
-  font-display: optional;
-  src: url("../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-700-normal.woff2") format("woff2");
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: "IBM Plex Sans Condensed";
-  font-style: normal;
-  font-weight: 700;
-  font-display: optional;
-  src: url("../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-ext-700-normal.woff2") format("woff2");
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:not(:where(.light, .light *)));
+
+@theme {
+  --font-sans:
+    'IBM Plex Sans', 'Plex Sans Fallback', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  /* Condensed for Latin headings; Russian swaps it below (:lang(ru)) */
+  --font-display:
+    'IBM Plex Sans Condensed', 'Plex Condensed Fallback', system-ui, sans-serif;
+
+  --text-hero: 72px;
+  --text-hero--line-height: 1.1;
+  --text-hero--letter-spacing: -0.03em;
+  --text-hero--font-weight: 700;
+  --text-display: 56px;
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 700;
+  --text-h1: 48px;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h1--font-weight: 700;
+  --text-h2: 32px;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 700;
+  --text-h3: 24px;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.02em;
+  --text-h3--font-weight: 700;
+  --text-h4: 20px;
+  --text-h4--line-height: 1.3;
+  --text-h4--letter-spacing: -0.01em;
+  --text-h4--font-weight: 700;
+  --text-h5: 16px;
+  --text-h5--line-height: 1.3;
+  --text-h5--letter-spacing: -0.01em;
+  --text-h5--font-weight: 600;
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: 0;
+  --text-small: 14px;
+  --text-small--line-height: 1.4;
+  --text-small--letter-spacing: -0.01em;
+  --text-tiny: 12px;
+  --text-tiny--line-height: 1.4;
+  --text-tiny--letter-spacing: 0;
+
+  --ease-site: var(--ease);
+
+  --transition-duration-quick: 200ms;
+  --transition-duration-smooth: 300ms;
+  --transition-duration-slow: 500ms;
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-raised:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-card:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-elevated: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.3);
+  --shadow-glow-lg: 0 0 40px rgba(139, 92, 246, 0.4);
+
+  --animate-fade-in: fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-fade-in-up: fade-in-up 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-fade-in-scale: fade-in-scale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-slide-in-right: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-pulse-soft: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-tilt: tilt 10s ease-in-out infinite;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-acc: hsl(var(--acc));
+  --color-acc2: hsl(var(--acc2));
+  --color-surf2: hsl(var(--surf2));
+  --color-good: hsl(var(--good));
+  --color-warn: hsl(var(--warn));
+  --color-crit: hsl(var(--crit));
+
+  --color-log-bg: hsl(var(--log-bg));
+  --color-log-line: hsl(var(--log-line));
+  --color-log-text: hsl(var(--log-text));
+  --color-log-mute: hsl(var(--log-mute));
+  --color-log-acc: hsl(var(--log-acc));
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in-scale {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes slide-in-right {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  @keyframes tilt {
+    0%,
+    50%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(1deg);
+    }
+    75% {
+      transform: rotate(-1deg);
+    }
+  }
 }
 
-/* Fallback faces scaled to the width of IBM Plex, so text wraps the same
-   before and after the web fonts arrive: no layout shift, and no font
-   preload holding back the first paint. Measured in Chrome on bold text:
-   Plex Sans Condensed = 0.900 × Arial, Plex Sans = 0.973 × Arial. */
-@font-face {
-  font-family: "Plex Condensed Fallback";
-  src: local("Arial"), local("Helvetica"), local("Roboto");
-  size-adjust: 90%;
-}
-@font-face {
-  font-family: "Plex Sans Fallback";
-  src: local("Arial"), local("Helvetica"), local("Roboto");
-  size-adjust: 97.3%;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  /* Tailwind v4 no longer gives buttons a pointer cursor; keep the v3 look */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@utility scrollbar-thin {
+  /* Custom Scrollbar for Table of Contents */
+  scrollbar-width: thin;
 
-/* ========================================
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--thin-scrollbar-thumb);
+    border-radius: 3px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: var(--thin-scrollbar-thumb-hover);
+  }
+}
+
+@layer base {
+  /* Heading font with font-display: optional. If it is not ready right away,
+     the page keeps the width-matched fallback for this visit instead of
+     swapping, so the big heading never re-wraps (layout shift). It still
+     downloads and is used from the next page on. */
+  @font-face {
+    font-family: 'IBM Plex Sans Condensed';
+    font-style: normal;
+    font-weight: 600;
+    font-display: optional;
+    src: url('../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-600-normal.woff2')
+      format('woff2');
+    unicode-range:
+      U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+      U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'IBM Plex Sans Condensed';
+    font-style: normal;
+    font-weight: 600;
+    font-display: optional;
+    src: url('../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-ext-600-normal.woff2')
+      format('woff2');
+    unicode-range:
+      U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+      U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+      U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'IBM Plex Sans Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-display: optional;
+    src: url('../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-700-normal.woff2')
+      format('woff2');
+    unicode-range:
+      U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+      U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'IBM Plex Sans Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-display: optional;
+    src: url('../../node_modules/@fontsource/ibm-plex-sans-condensed/files/ibm-plex-sans-condensed-latin-ext-700-normal.woff2')
+      format('woff2');
+    unicode-range:
+      U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+      U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+      U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* Fallback faces scaled to the width of IBM Plex, so text wraps the same
+     before and after the web fonts arrive: no layout shift, and no font
+     preload holding back the first paint. Measured in Chrome on bold text:
+     Plex Sans Condensed = 0.900 × Arial, Plex Sans = 0.973 × Arial. */
+  @font-face {
+    font-family: 'Plex Condensed Fallback';
+    src: local('Arial'), local('Helvetica'), local('Roboto');
+    size-adjust: 90%;
+  }
+  @font-face {
+    font-family: 'Plex Sans Fallback';
+    src: local('Arial'), local('Helvetica'), local('Roboto');
+    size-adjust: 97.3%;
+  }
+}
+
+@layer utilities {
+  /* ========================================
    View Transitions - Page Animations
    ======================================== */
 
-/* Simple fade animation */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-/* View Transition API - Clean fade effect (only when motion is welcome) */
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root) {
-    animation: fade-out 0.15s ease-out forwards;
+  /* Simple fade animation */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
-  ::view-transition-new(root) {
-    animation: fade-in 0.25s ease-out forwards;
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
-}
 
-/* Theme switch: the new theme grows as a circle from the sun button
+  /* View Transition API - Clean fade effect (only when motion is welcome) */
+  @media (prefers-reduced-motion: no-preference) {
+    ::view-transition-old(root) {
+      animation: fade-out 0.15s ease-out forwards;
+    }
+
+    ::view-transition-new(root) {
+      animation: fade-in 0.25s ease-out forwards;
+    }
+  }
+
+  /* Theme switch: the new theme grows as a circle from the sun button
    (ThemeToggle.astro sets the class and the --vt-* values) */
-html.theme-switching::view-transition-old(root) {
-  animation: none;
-}
-html.theme-switching::view-transition-new(root) {
-  animation: theme-reveal 0.6s var(--ease);
-}
-@keyframes theme-reveal {
-  from { clip-path: circle(0 at var(--vt-x) var(--vt-y)); }
-  to { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
-}
+  html.theme-switching::view-transition-old(root) {
+    animation: none;
+  }
+  html.theme-switching::view-transition-new(root) {
+    animation: theme-reveal 0.6s var(--ease);
+  }
+  @keyframes theme-reveal {
+    from {
+      clip-path: circle(0 at var(--vt-x) var(--vt-y));
+    }
+    to {
+      clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+    }
+  }
 
-/* Smooth morph for named elements (blog images and titles). Prefix
+  /* Smooth morph for named elements (blog images and titles). Prefix
    wildcards such as blog-hero-* are not valid here, so time them all. */
-::view-transition-group(*) {
-  animation-duration: 0.4s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
+  ::view-transition-group(*) {
+    animation-duration: 0.4s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-/* Anchored sections land below the fixed header */
-section[id],
-[id="experience"],
-[id="projects"],
-[id="blog"],
-[id="contact"],
-[id^="work-"] {
-  scroll-margin-top: 4.5rem;
-}
+  /* Anchored sections land below the fixed header */
+  section[id],
+  [id='experience'],
+  [id='projects'],
+  [id='blog'],
+  [id='contact'],
+  [id^='work-'] {
+    scroll-margin-top: 4.5rem;
+  }
 
-/* Prevent horizontal scroll/wobble on mobile — clip anything overflowing viewport width */
-html,
-body {
-  overflow-x: hidden;
-  overflow-x: clip;
-}
+  /* Prevent horizontal scroll/wobble on mobile — clip anything overflowing viewport width */
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
 
-.prose img {
-  border-radius: 30px;
-}
+  .prose img {
+    border-radius: 30px;
+  }
 
-/* Code block styling for Shiki syntax highlighting */
-.prose pre {
-  background-color: #0d1117 !important;
-  border: 1px solid #30363d;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  overflow-x: auto;
-}
+  /* Code block styling for Shiki syntax highlighting */
+  .prose pre {
+    background-color: #0d1117 !important;
+    border: 1px solid #30363d;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    overflow-x: auto;
+  }
 
-.prose pre code {
-  background-color: transparent !important;
-  padding: 0;
-  border-radius: 0;
-  font-size: 0.875rem;
-  line-height: 1.7;
-}
+  .prose pre code {
+    background-color: transparent !important;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
 
-/* Ensure Shiki tokens are visible */
-.prose pre code span {
-  color: inherit;
-}
+  /* Ensure Shiki tokens are visible */
+  .prose pre code span {
+    color: inherit;
+  }
 
-/* Light mode adjustments - use same dark theme for code blocks */
-.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  background-color: var(--inline-code-bg);
-  color: var(--inline-code-fg);
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-size: 0.875em;
-}
+  /* Light mode adjustments - use same dark theme for code blocks */
+  .prose
+    :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    background-color: var(--inline-code-bg);
+    color: var(--inline-code-fg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
 
-.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
-.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
-  content: none;
+  .prose
+    :where(code):not(
+      :where([class~='not-prose'], [class~='not-prose'] *)
+    )::before,
+  .prose
+    :where(code):not(
+      :where([class~='not-prose'], [class~='not-prose'] *)
+    )::after {
+    content: none;
+  }
 }
 
 @layer base {
@@ -212,7 +480,6 @@ body {
     --log-mute: 226 12.1% 59.4%;
     --log-acc: 232 100% 80.2%;
     --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-    --font-display: "IBM Plex Sans Condensed", "Plex Condensed Fallback", system-ui, sans-serif;
 
     --inline-code-bg: hsl(224 18% 12%);
     --inline-code-fg: hsl(232 100% 80.2%);
@@ -293,7 +560,6 @@ body {
 }
 
 @layer utilities {
-
   /* Smooth scrolling, unless the user prefers reduced motion */
   @media (prefers-reduced-motion: no-preference) {
     html {
@@ -317,27 +583,5 @@ body {
 
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.5);
-  }
-
-  /* Custom Scrollbar for Table of Contents */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: var(--thin-scrollbar-thumb);
-    border-radius: 3px;
-  }
-
-  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
-    background-color: var(--thin-scrollbar-thumb-hover);
   }
 }

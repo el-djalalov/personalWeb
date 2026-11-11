@@ -162,11 +162,11 @@ export default function QuizDemo({ label, t }: Props) {
                   style={{ ["--c" as string]: OPTION_COLORS[i] }}
                 >
                   <span
-                    className="absolute inset-y-0 left-0 bg-[var(--c)] transition-[width] duration-500 ease-site"
+                    className="absolute inset-y-0 left-0 bg-(--c) transition-[width] duration-500 ease-site"
                     style={{ width: `${(counts[i] / max) * 100}%`, opacity: right ? 0.3 : 0.16 }}
                     aria-hidden="true"
                   />
-                  <span className="relative grid h-[22px] w-[22px] flex-none place-items-center rounded-md bg-[var(--c)] font-mono text-[11px] text-[#0B0D12]">
+                  <span className="relative grid h-[22px] w-[22px] flex-none place-items-center rounded-md bg-(--c) font-mono text-[11px] text-[#0B0D12]">
                     {"ABCD"[i]}
                   </span>
                   <span className="relative">{text}</span>

@@ -1,18 +1,19 @@
 # Portfolio Website - Claude Code Instructions
 
 ## Project Overview
-Personal portfolio website built with **Astro 5** and **React 18**, using Tailwind CSS for styling and shadcn/ui components.
+Personal portfolio website built with **Astro 7** and **React 19**, using Tailwind CSS for styling and shadcn/ui components.
 
 **Live site:** https://www.elyor.dev
 
 ## Tech Stack
-- **Framework:** Astro 5.x (static site generation)
-- **UI Library:** React 18 (for interactive components)
-- **Styling:** Tailwind CSS 3.x with CSS variables for theming
+- **Framework:** Astro 7.x (static site generation; Vite 8, so Rolldown and Oxc under the hood)
+- **UI Library:** React 19 (for interactive components)
+- **Styling:** Tailwind CSS 4.x via `@tailwindcss/vite`, with CSS variables for theming. There is no tailwind.config: the theme is the `@theme` block in globals.css
 - **Components:** shadcn/ui (New York style)
 - **Icons:** Lucide React, Tabler Icons
 - **Animations:** Framer Motion
 - **Package Manager:** Yarn 1.22
+- **Toolchain:** Vite+ (`vp`) for lint (Oxlint), format (Oxfmt) and unit tests (Vitest 5). Its config is `vite.config.ts`; Astro does not read that file, so dev and build stay on `astro dev` / `astro build`
 
 ## Project Structure
 ```
@@ -37,6 +38,9 @@ src/
 yarn dev      # Start development server
 yarn build    # Build for production
 yarn preview  # Preview production build
+yarn test     # Unit tests (vp test, Vitest 5)
+yarn lint     # Oxlint (vp lint)
+yarn fmt      # Oxfmt (vp fmt); not yet run over the whole repo
 ```
 
 ## Code Conventions

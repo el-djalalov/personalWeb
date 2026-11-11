@@ -71,7 +71,7 @@ const groups: Group[] = [
     autocomplete="off"
     spellcheck="false"
     placeholder={copy.placeholder}
-    class="w-full border-b border-border bg-transparent px-5 py-4 font-mono text-sm outline-none placeholder:text-muted-foreground"
+    class="w-full border-b border-border bg-transparent px-5 py-4 font-mono text-sm outline-hidden placeholder:text-muted-foreground"
   />
   <div id="cmdk-list" role="listbox" aria-label={copy.menuLabel} class="max-h-80 overflow-y-auto p-2">
     {
@@ -90,7 +90,7 @@ const groups: Group[] = [
               aria-selected="false"
               data-href={item.href}
               data-action={item.action}
-              class="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm aria-selected:bg-acc/15 aria-selected:outline aria-selected:outline-1 aria-selected:outline-acc/40"
+              class="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm aria-selected:bg-acc/15 aria-selected:outline-solid aria-selected:outline-1 aria-selected:outline-acc/40"
             >
               <span>{item.label}</span>
               <span class="font-mono text-[11px] text-muted-foreground">{item.hint}</span>
@@ -107,7 +107,7 @@ const groups: Group[] = [
 <div
   id="site-toast"
   role="status"
-  class="site-toast pointer-events-none fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-foreground px-4 py-2 font-mono text-xs text-background opacity-0 md:bottom-8"
+  class="site-toast pointer-events-none fixed bottom-24 left-1/2 z-60 -translate-x-1/2 rounded-full bg-foreground px-4 py-2 font-mono text-xs text-background opacity-0 md:bottom-8"
 >
 </div>
 

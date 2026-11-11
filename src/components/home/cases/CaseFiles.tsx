@@ -177,7 +177,7 @@ export default function CaseFiles({ copy }: Props) {
         ref={listRef}
         role="tablist"
         aria-label={copy.tabsLabel}
-        className="sticky top-[4.25rem] z-20 flex gap-0.5 overflow-x-auto rounded-[14px] border border-log-line bg-log-bg p-2 text-sm text-log-text shadow-lg [scrollbar-width:none] lg:top-24 lg:flex-col lg:shadow-none"
+        className="sticky top-17 z-20 flex gap-0.5 overflow-x-auto rounded-[14px] border border-log-line bg-log-bg p-2 text-sm text-log-text shadow-lg scrollbar-none lg:top-24 lg:flex-col lg:shadow-none"
       >
         {indicator && (
           <span
@@ -205,7 +205,7 @@ export default function CaseFiles({ copy }: Props) {
             onKeyDown={e => onKeyDown(e, index)}
             onPointerEnter={() => preload(c.id)}
             onFocus={() => preload(c.id)}
-            className={`relative shrink-0 whitespace-nowrap rounded-[7px] px-3 py-2 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-log-acc ${
+            className={`relative shrink-0 whitespace-nowrap rounded-[7px] px-3 py-2 text-left transition-colors focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-log-acc ${
               c.id === active ? "font-medium text-log-text" : "text-log-mute hover:text-log-text"
             }`}
           >

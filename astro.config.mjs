@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
@@ -7,11 +7,11 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   // Dev toolbar floats over the mobile bottom nav (covers the Projects tab) — keep it off
   devToolbar: { enabled: false },
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     react(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     mdx({
       syntaxHighlight: "shiki",
       shikiConfig: {

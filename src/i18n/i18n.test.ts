@@ -20,13 +20,12 @@ describe.each(others)("%s matches English", lang => {
     expect(home[lang].skills.items.map(s => s.id)).toEqual(home.en.skills.items.map(s => s.id));
   });
 
-  it("has the same case files with the same results and build logs", () => {
+  it("has the same case files with the same results", () => {
     const mine = cases[lang];
     expect(mine.items.map(c => c.id)).toEqual(cases.en.items.map(c => c.id));
     mine.items.forEach((item, i) => {
       const en = cases.en.items[i];
       expect(item.link).toEqual(en.link);
-      expect(item.build).toEqual(en.build);
       expect(item.results.map(r => [r.count, r.suffix])).toEqual(en.results.map(r => [r.count, r.suffix]));
     });
   });

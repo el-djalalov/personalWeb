@@ -55,7 +55,7 @@ export interface HomeCopy {
   runs: Run[];
   stats: Stat[];
   skills: { title: string; hint: string; items: Skill[] };
-  work: { title: string; hint: string };
+  work: { title: string };
   jobs: { title: string; hint: string };
   writing: { title: string; allPosts: string; empty: string; readTime: string };
   contact: {
@@ -147,7 +147,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack product", text: "Next.js to Postgres, with real-time data in between.", proof: "352K users · Topqir" },
       ],
     },
-    work: { title: "Case files", hint: "Try each one" },
+    work: { title: "Case files" },
     jobs: { title: "Where I worked", hint: "2018 → now" },
     writing: { title: "Writing", allPosts: "All posts →", empty: "Posts coming soon.", readTime: "{n} min read" },
     contact: {
@@ -236,7 +236,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack mahsulot", text: "Next.js dan Postgres gacha, orada real vaqt ma'lumotlari bilan.", proof: "352K foydalanuvchi · Topqir" },
       ],
     },
-    work: { title: "Loyihalar", hint: "Har birini sinab ko'ring" },
+    work: { title: "Loyihalar" },
     jobs: { title: "Qayerda ishlaganman", hint: "2018 → hozir" },
     writing: { title: "Maqolalar", allPosts: "Barcha maqolalar →", empty: "Tez orada maqolalar.", readTime: "{n} daqiqa o'qish" },
     contact: {
@@ -325,7 +325,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack продукт", text: "От Next.js до Postgres, с данными в реальном времени.", proof: "352K пользователей · Topqir" },
       ],
     },
-    work: { title: "Проекты", hint: "Попробуйте каждый" },
+    work: { title: "Проекты" },
     jobs: { title: "Где я работал", hint: "2018 → сейчас" },
     writing: { title: "Статьи", allPosts: "Все статьи →", empty: "Скоро здесь будут статьи.", readTime: "{n} мин чтения" },
     contact: {

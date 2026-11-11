@@ -16,10 +16,7 @@ const { title, cases } = Astro.props;
   <span id="projects" aria-hidden="true"></span>
   <!-- Targets for links such as /#work-tallinja; the island opens that case -->
   {CASE_IDS.map(id => <span id={`work-${id}`} aria-hidden="true" />)}
-  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
-    <h2 class="font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{title.title}</h2>
-    <span class="font-mono text-xs text-muted-foreground">{title.hint}</span>
-  </div>
+  <h2 class="mb-6 font-display text-[clamp(1.6rem,3.4vw,2.25rem)] font-bold tracking-tight">{title.title}</h2>
   <CaseFiles client:visible={{ rootMargin: "300px" }} copy={cases} />
 </section>
 

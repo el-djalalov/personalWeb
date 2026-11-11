@@ -1,10 +1,7 @@
 import type { Language } from "@/content.config";
 import type { ModuleId, Role } from "@/lib/demos/access";
 
-/**
- * Case files: one per project, with the text for its demo. Build-log step
- * names and details stay in English (they read like log output).
- */
+/** Case files: one per project, with the text for its demo. */
 
 export type CaseId = "agro" | "topqir" | "tallinja" | "anzel" | "planner" | "cimp";
 export const CASE_IDS: readonly CaseId[] = ["agro", "topqir", "tallinja", "anzel", "planner", "cimp"];
@@ -27,7 +24,6 @@ export interface CaseFile {
   link: { label: string; href: string };
   demoLabel: string;
   results: Result[];
-  build: { name: string; detail: string }[];
 }
 
 export interface QuizQuestion {
@@ -144,7 +140,6 @@ export interface DemoCopy {
 export interface CasesCopy {
   tabsLabel: string;
   results: string;
-  built: string;
   items: CaseFile[];
   demo: DemoCopy;
 }
@@ -158,51 +153,10 @@ const LINKS = {
   cimp: { label: "soft-control.ru ↗", href: "https://www.soft-control.ru/our-solutions/cimp/" },
 } as const;
 
-const BUILD: Record<CaseId, CaseFile["build"]> = {
-  agro: [
-    { name: "map.draw", detail: "Field borders" },
-    { name: "map.render", detail: "Soil layers · ArcGIS" },
-    { name: "geo.plan", detail: "Land planning" },
-    { name: "insights", detail: "AI + gov data" },
-    { name: "app", detail: "25+ pages · Next.js" },
-  ],
-  topqir: [
-    { name: "migrate", detail: "React → Next.js" },
-    { name: "realtime", detail: "Centrifugo sockets" },
-    { name: "ai", detail: "Quiz generation" },
-    { name: "seo", detail: "Organic growth" },
-  ],
-  tallinja: [
-    { name: "realtime", detail: "Buses, shifts, depots" },
-    { name: "alarms", detail: "All screens at once" },
-    { name: "hand-off", detail: "One acts, rest resume" },
-    { name: "queue", detail: "Ordered, none lost" },
-  ],
-  anzel: [
-    { name: "knowledge", detail: "One club model" },
-    { name: "assistants", detail: "Finished documents" },
-    { name: "access", detail: "Role-scoped answers" },
-    { name: "sources", detail: "Every fact cited" },
-  ],
-  planner: [
-    { name: "auth", detail: "OAuth 2.0 + Jira" },
-    { name: "sync", detail: "Tickets in real time" },
-    { name: "search", detail: "40% faster" },
-    { name: "ui", detail: "40+ components" },
-  ],
-  cimp: [
-    { name: "modules", detail: "Plug in at runtime" },
-    { name: "rbac", detail: "Role-based access" },
-    { name: "api", detail: "150+ endpoints" },
-    { name: "team", detail: "Code reviews" },
-  ],
-};
-
 export const cases: Record<Language, CasesCopy> = {
   en: {
     tabsLabel: "Projects",
     results: "Results",
-    built: "What I built",
     items: [
       {
         id: "agro",
@@ -217,7 +171,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "25+", count: 25, suffix: "+", label: "App pages" },
           { value: "Next.js 15", label: "Built from scratch" },
         ],
-        build: BUILD.agro,
       },
       {
         id: "topqir",
@@ -232,7 +185,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "751K", count: 751, suffix: "K", label: "Organic sessions" },
           { value: "10+", count: 10, suffix: "+", label: "Countries" },
         ],
-        build: BUILD.topqir,
       },
       {
         id: "tallinja",
@@ -247,7 +199,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "3", count: 3, suffix: "", label: "Roles" },
           { value: "25+", count: 25, suffix: "+", label: "Components" },
         ],
-        build: BUILD.tallinja,
       },
       {
         id: "anzel",
@@ -262,7 +213,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "EU", label: "GDPR processing" },
           { value: "Human", label: "Decides, AI drafts" },
         ],
-        build: BUILD.anzel,
       },
       {
         id: "planner",
@@ -277,7 +227,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "40+", count: 40, suffix: "+", label: "Components" },
           { value: "OAuth", label: "Jira sign-in" },
         ],
-        build: BUILD.planner,
       },
       {
         id: "cimp",
@@ -292,7 +241,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "RBAC", label: "Access control" },
           { value: "2", count: 2, suffix: "", label: "Juniors mentored" },
         ],
-        build: BUILD.cimp,
       },
     ],
     demo: {
@@ -435,7 +383,6 @@ export const cases: Record<Language, CasesCopy> = {
   uz: {
     tabsLabel: "Loyihalar",
     results: "Natijalar",
-    built: "Nima qurdim",
     items: [
       {
         id: "agro",
@@ -450,7 +397,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "25+", count: 25, suffix: "+", label: "Ilova sahifasi" },
           { value: "Next.js 15", label: "Noldan qurilgan" },
         ],
-        build: BUILD.agro,
       },
       {
         id: "topqir",
@@ -465,7 +411,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "751K", count: 751, suffix: "K", label: "Organik sessiya" },
           { value: "10+", count: 10, suffix: "+", label: "Mamlakat" },
         ],
-        build: BUILD.topqir,
       },
       {
         id: "tallinja",
@@ -480,7 +425,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "3", count: 3, suffix: "", label: "Rol" },
           { value: "25+", count: 25, suffix: "+", label: "Komponent" },
         ],
-        build: BUILD.tallinja,
       },
       {
         id: "anzel",
@@ -495,7 +439,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "EU", label: "GDPR bo'yicha ishlov" },
           { value: "Inson", label: "Qaror qiladi, AI yozadi" },
         ],
-        build: BUILD.anzel,
       },
       {
         id: "planner",
@@ -510,7 +453,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "40+", count: 40, suffix: "+", label: "Komponent" },
           { value: "OAuth", label: "Jira orqali kirish" },
         ],
-        build: BUILD.planner,
       },
       {
         id: "cimp",
@@ -525,7 +467,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "RBAC", label: "Kirish nazorati" },
           { value: "2", count: 2, suffix: "", label: "Junior mentorligi" },
         ],
-        build: BUILD.cimp,
       },
     ],
     demo: {
@@ -668,7 +609,6 @@ export const cases: Record<Language, CasesCopy> = {
   ru: {
     tabsLabel: "Проекты",
     results: "Результаты",
-    built: "Что я сделал",
     items: [
       {
         id: "agro",
@@ -683,7 +623,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "25+", count: 25, suffix: "+", label: "Страниц приложения" },
           { value: "Next.js 15", label: "С нуля" },
         ],
-        build: BUILD.agro,
       },
       {
         id: "topqir",
@@ -698,7 +637,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "751K", count: 751, suffix: "K", label: "Органических сессий" },
           { value: "10+", count: 10, suffix: "+", label: "Стран" },
         ],
-        build: BUILD.topqir,
       },
       {
         id: "tallinja",
@@ -713,7 +651,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "3", count: 3, suffix: "", label: "Роли" },
           { value: "25+", count: 25, suffix: "+", label: "Компонентов" },
         ],
-        build: BUILD.tallinja,
       },
       {
         id: "anzel",
@@ -728,7 +665,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "EU", label: "Обработка по GDPR" },
           { value: "Человек", label: "Решает, AI готовит" },
         ],
-        build: BUILD.anzel,
       },
       {
         id: "planner",
@@ -743,7 +679,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "40+", count: 40, suffix: "+", label: "Компонентов" },
           { value: "OAuth", label: "Вход через Jira" },
         ],
-        build: BUILD.planner,
       },
       {
         id: "cimp",
@@ -758,7 +693,6 @@ export const cases: Record<Language, CasesCopy> = {
           { value: "RBAC", label: "Контроль доступа" },
           { value: "2", count: 2, suffix: "", label: "Джуниора под менторством" },
         ],
-        build: BUILD.cimp,
       },
     ],
     demo: {

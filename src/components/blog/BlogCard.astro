@@ -44,7 +44,7 @@ const formattedDate = pubDate.toLocaleDateString(dateLocales[lang] || "en-US", {
       />
     ) : (
       <div
-        class="w-full h-full bg-gradient-to-br from-acc/10 to-acc2/10 flex items-center justify-center"
+        class="w-full h-full bg-linear-to-br from-acc/10 to-acc2/10 flex items-center justify-center"
         transition:name={`blog-hero-${post.id}`}
       >
         <svg class="w-12 h-12 text-acc/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ const formattedDate = pubDate.toLocaleDateString(dateLocales[lang] || "en-US", {
     )}
 
     <!-- Gradient overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
   </a>
 
   <!-- Content -->

@@ -181,7 +181,7 @@ export default function BusDemo({ label, t }: Props) {
                 role="button"
                 tabIndex={0}
                 aria-label={`${t.bus} ${id}`}
-                className="cursor-pointer focus:outline-none [&:focus-visible_circle.dot]:stroke-foreground"
+                className="cursor-pointer focus:outline-hidden [&:focus-visible_circle.dot]:stroke-foreground"
                 onClick={() => setInfo(id)}
                 onKeyDown={event => {
                   if (event.key !== "Enter" && event.key !== " ") return;

@@ -17,7 +17,7 @@ const { copy } = Astro.props;
         viewBox="0 0 200 100"
         preserveAspectRatio="none"
         aria-hidden="true"
-        class="pointer-events-none absolute -left-[12%] -top-[20%] h-[140%] w-[124%] overflow-visible"
+        class="pointer-events-none absolute left-[-12%] top-[-20%] h-[140%] w-[124%] overflow-visible"
         ><path
           pathLength="1"
           d="M18 52 C 14 18, 120 4, 176 26 C 206 40, 190 82, 110 90 C 40 96, 6 74, 22 40 C 30 26, 60 16, 92 14"
@@ -36,7 +36,7 @@ const { copy } = Astro.props;
     <div class="flex flex-col gap-2 font-mono text-[13px] text-muted-foreground">
       <p class="max-w-[32ch]">{copy.note}</p>
       <p>
-        <span class="text-foreground">{CONTACT.email}</span> ·
+        <span class="text-foreground">{CONTACT.email}</span> ·{" "}
         <a href={CONTACT.telegramChannel} target="_blank" rel="noopener noreferrer" class="text-acc hover:underline">
           {copy.telegram} ↗
         </a>

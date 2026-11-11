@@ -55,7 +55,7 @@ export interface HomeCopy {
   runs: Run[];
   stats: Stat[];
   skills: { title: string; hint: string; items: Skill[] };
-  work: { title: string; hint: string };
+  work: { title: string };
   jobs: { title: string; hint: string };
   writing: { title: string; allPosts: string; empty: string; readTime: string };
   contact: {
@@ -84,7 +84,7 @@ export const home: Record<Language, HomeCopy> = {
       lead: "Full-stack and AI-native engineer at Vention. Eight years of products, from cloud systems to AI agents.",
       cert: CERT,
       certMore: "Foundations. Verify on Credly, opens in a new tab",
-      ctaWork: "See case files",
+      ctaWork: "See projects",
       ctaSkills: "What I build",
       resume: "Resume (PDF)",
       logLabel: "Example runs. Pick a run, then click a step to read what it means.",
@@ -147,7 +147,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack product", text: "Next.js to Postgres, with real-time data in between.", proof: "352K users · Topqir" },
       ],
     },
-    work: { title: "Case files", hint: "Try each one" },
+    work: { title: "Projects" },
     jobs: { title: "Where I worked", hint: "2018 → now" },
     writing: { title: "Writing", allPosts: "All posts →", empty: "Posts coming soon.", readTime: "{n} min read" },
     contact: {
@@ -156,7 +156,7 @@ export const home: Record<Language, HomeCopy> = {
       ring: "build",
       after: " it.",
       button: "Email me ↗",
-      note: "Architecture, an MVP or an AI feature. Start with a short call.",
+      note: "Architecture, an MVP or an AI feature. Write to me.",
       telegram: "Telegram channel",
     },
   },
@@ -236,7 +236,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack mahsulot", text: "Next.js dan Postgres gacha, orada real vaqt ma'lumotlari bilan.", proof: "352K foydalanuvchi · Topqir" },
       ],
     },
-    work: { title: "Loyihalar", hint: "Har birini sinab ko'ring" },
+    work: { title: "Loyihalar" },
     jobs: { title: "Qayerda ishlaganman", hint: "2018 → hozir" },
     writing: { title: "Maqolalar", allPosts: "Barcha maqolalar →", empty: "Tez orada maqolalar.", readTime: "{n} daqiqa o'qish" },
     contact: {
@@ -245,7 +245,7 @@ export const home: Record<Language, HomeCopy> = {
       ring: "quraylik",
       after: ".",
       button: "Menga yozing ↗",
-      note: "Arxitektura, MVP yoki AI funksiya. Qisqa qo'ng'iroqdan boshlaymiz.",
+      note: "Arxitektura, MVP yoki AI funksiya. Menga yozing.",
       telegram: "Telegram kanal",
     },
   },
@@ -325,7 +325,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack продукт", text: "От Next.js до Postgres, с данными в реальном времени.", proof: "352K пользователей · Topqir" },
       ],
     },
-    work: { title: "Проекты", hint: "Попробуйте каждый" },
+    work: { title: "Проекты" },
     jobs: { title: "Где я работал", hint: "2018 → сейчас" },
     writing: { title: "Статьи", allPosts: "Все статьи →", empty: "Скоро здесь будут статьи.", readTime: "{n} мин чтения" },
     contact: {
@@ -334,7 +334,7 @@ export const home: Record<Language, HomeCopy> = {
       ring: "построим",
       after: ".",
       button: "Написать мне ↗",
-      note: "Архитектура, MVP или AI-функция. Начнём с короткого созвона.",
+      note: "Архитектура, MVP или AI-функция. Напишите мне.",
       telegram: "Telegram-канал",
     },
   },

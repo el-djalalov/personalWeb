@@ -101,37 +101,16 @@ function CasePanel({ item, copy, animate }: { item: CaseFile; copy: CasesCopy; a
         </Suspense>
       )}
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <dl
-          aria-label={copy.results}
-          className="grid grid-cols-2 gap-px overflow-hidden rounded-[14px] border border-border bg-border"
-        >
-          {item.results.map(result => (
-            <div key={result.label} className="flex min-w-0 flex-col-reverse justify-center gap-0.5 bg-card px-4 py-3.5">
-              <dt className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">{result.label}</dt>
-              <dd className="font-display text-[clamp(1.35rem,2.4vw,1.75rem)] font-bold tabular-nums leading-tight tracking-tight">
-                <CountUp result={result} animate={animate} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <div className="rounded-[14px] border border-log-line bg-log-bg px-[18px] py-4 font-mono text-[12.5px] text-log-text">
-          <p className="mb-2.5 text-log-mute">$ {copy.built.toLowerCase()} · {item.id}</p>
-          <ol className="flex flex-col gap-1.5">
-            {item.build.map((row, i) => (
-              <li
-                key={row.name}
-                className={`grid grid-cols-[6rem_1fr_auto] gap-3 ${animate ? "row-in" : ""}`}
-                style={animate ? { animationDelay: `${150 + i * 120}ms` } : undefined}
-              >
-                <span className="text-log-acc">{row.name}</span>
-                <span>{row.detail}</span>
-                <span className="text-log-acc">pass</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+      <dl aria-label={copy.results} className="grid grid-cols-2 gap-x-6 gap-y-4 px-1 pt-1 sm:grid-cols-4">
+        {item.results.map(result => (
+          <div key={result.label} className="flex min-w-0 flex-col-reverse gap-0.5">
+            <dt className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">{result.label}</dt>
+            <dd className="font-display text-2xl font-bold tabular-nums leading-tight tracking-tight">
+              <CountUp result={result} animate={animate} />
+            </dd>
+          </div>
+        ))}
+      </dl>
     </div>
   );
 }
@@ -198,9 +177,8 @@ export default function CaseFiles({ copy }: Props) {
         ref={listRef}
         role="tablist"
         aria-label={copy.tabsLabel}
-        className="sticky top-[4.25rem] z-20 flex gap-0.5 overflow-x-auto rounded-[14px] border border-log-line bg-log-bg p-2 font-mono text-[13px] text-log-text shadow-lg [scrollbar-width:none] lg:top-24 lg:flex-col lg:p-3 lg:shadow-none"
+        className="sticky top-17 z-20 flex gap-0.5 overflow-x-auto rounded-[14px] border border-log-line bg-log-bg p-2 text-sm text-log-text shadow-lg scrollbar-none lg:top-24 lg:flex-col lg:shadow-none"
       >
-        <span className="hidden px-2 pb-2.5 pt-1 text-xs text-log-mute lg:block">$ ls ./work</span>
         {indicator && (
           <span
             aria-hidden="true"
@@ -227,12 +205,11 @@ export default function CaseFiles({ copy }: Props) {
             onKeyDown={e => onKeyDown(e, index)}
             onPointerEnter={() => preload(c.id)}
             onFocus={() => preload(c.id)}
-            className={`relative grid shrink-0 grid-cols-[auto] gap-2.5 whitespace-nowrap rounded-[7px] px-2.5 py-2 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-log-acc lg:grid-cols-[1fr_auto] ${
-              c.id === active ? "text-log-text" : "text-log-mute hover:text-log-text"
+            className={`relative shrink-0 whitespace-nowrap rounded-[7px] px-3 py-2 text-left transition-colors focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-log-acc ${
+              c.id === active ? "font-medium text-log-text" : "text-log-mute hover:text-log-text"
             }`}
           >
-            <span>{c.title.toLowerCase()}</span>
-            <span className="hidden text-[11px] text-log-acc lg:inline">{c.tag}</span>
+            {c.title}
           </button>
         ))}
       </div>

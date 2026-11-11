@@ -64,7 +64,7 @@ const { tag, posts, allTags } = Astro.props;
         <span class="text-acc">#{tag}</span>
       </h1>
       <p class="text-lg text-muted-foreground">
-        {posts.length}
+        {posts.length}{" "}
         {postCountWord(posts.length, lang)} {t("blog.taggedWith", lang)} <span
           class="font-medium">{tag}</span
         >

@@ -195,7 +195,7 @@ export default function PlannerDemo({ label, t }: Props) {
           onChange={e => setQuery(e.target.value)}
           placeholder={t.search}
           aria-label={t.search}
-          className="min-w-[150px] rounded-lg border border-border bg-surf2 px-2.5 py-1.5 font-mono text-[12.5px] outline-none focus:border-acc"
+          className="min-w-[150px] rounded-lg border border-border bg-surf2 px-2.5 py-1.5 font-mono text-[12.5px] outline-hidden focus:border-acc"
         />
         <div className="grid grid-cols-2 gap-2 md:grid-cols-[1.2fr_repeat(3,1fr)]">
           {COLUMNS.map(column => {

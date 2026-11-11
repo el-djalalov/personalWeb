@@ -39,7 +39,7 @@ export const site: Record<Language, SiteCopy> = {
     nav: {
       home: "Home",
       skills: "Skills",
-      work: "Work",
+      work: "Projects",
       jobs: "Jobs",
       writing: "Writing",
       contact: "Contact",
@@ -51,7 +51,7 @@ export const site: Record<Language, SiteCopy> = {
     placeholder: "Jump to a section, project or action…",
     noMatch: "No match",
     keyHints: "↑ ↓ move · Enter open · Esc close",
-    groups: { sections: "Sections", cases: "Case files", actions: "Actions" },
+    groups: { sections: "Sections", cases: "Projects", actions: "Actions" },
     actions: {
       switchTheme: "Switch theme",
       copyEmail: "Copy email",
@@ -68,7 +68,7 @@ export const site: Record<Language, SiteCopy> = {
     nav: {
       home: "Bosh sahifa",
       skills: "Ko'nikmalar",
-      work: "Ishlar",
+      work: "Loyihalar",
       jobs: "Tajriba",
       writing: "Maqolalar",
       contact: "Aloqa",

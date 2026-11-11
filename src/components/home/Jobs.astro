@@ -24,7 +24,13 @@ const external = (url: string) => !url.includes("elyor.dev");
   <ol class="border-t border-border">
     {
       jobs.map(job => (
-        <li class="group grid gap-x-6 gap-y-2 border-b border-border py-4 md:grid-cols-[13rem_1fr_auto] md:items-center">
+        <li
+          class:list={[
+            // -mx/px: the hover background reaches past the text, the text stays in line with the heading
+            "group relative -mx-3 grid gap-x-6 gap-y-2 border-b border-border px-3 py-4 md:grid-cols-[13rem_1fr_auto] md:items-center",
+            external(job.website) && "transition-colors duration-200 hover:bg-acc/10",
+          ]}
+        >
           <span class="font-mono text-xs tabular-nums text-muted-foreground">{job.dates}</span>
           <span class="flex items-center gap-3 font-semibold">
             <!-- White tile: most logos are made for a light background -->
@@ -40,13 +46,20 @@ const external = (url: string) => !url.includes("elyor.dev");
             {job.role}
           </span>
           {external(job.website) ? (
+            // after:inset-0 stretches the link over the whole row, so the row is one click target
             <a
               href={job.website}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-sm text-muted-foreground transition-colors hover:text-acc"
+              class="text-sm text-muted-foreground transition-colors after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-acc group-hover:text-acc"
             >
-              {job.company} ↗
+              {job.company}{" "}
+              <span
+                aria-hidden="true"
+                class="inline-block transition-transform duration-300 ease-site group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              >
+                ↗
+              </span>
             </a>
           ) : (
             <span class="text-sm text-muted-foreground">{job.company}</span>

@@ -84,7 +84,7 @@ export const home: Record<Language, HomeCopy> = {
       lead: "Full-stack and AI-native engineer at Vention. Eight years of products, from cloud systems to AI agents.",
       cert: CERT,
       certMore: "Foundations. Verify on Credly, opens in a new tab",
-      ctaWork: "See case files",
+      ctaWork: "See projects",
       ctaSkills: "What I build",
       resume: "Resume (PDF)",
       logLabel: "Example runs. Pick a run, then click a step to read what it means.",
@@ -147,7 +147,7 @@ export const home: Record<Language, HomeCopy> = {
         { id: "product", title: "Full-stack product", text: "Next.js to Postgres, with real-time data in between.", proof: "352K users · Topqir" },
       ],
     },
-    work: { title: "Case files" },
+    work: { title: "Projects" },
     jobs: { title: "Where I worked", hint: "2018 → now" },
     writing: { title: "Writing", allPosts: "All posts →", empty: "Posts coming soon.", readTime: "{n} min read" },
     contact: {

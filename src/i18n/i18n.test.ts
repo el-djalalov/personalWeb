@@ -20,7 +20,7 @@ describe.each(others)("%s matches English", lang => {
     expect(home[lang].skills.items.map(s => s.id)).toEqual(home.en.skills.items.map(s => s.id));
   });
 
-  it("has the same case files with the same results", () => {
+  it("has the same projects with the same results", () => {
     const mine = cases[lang];
     expect(mine.items.map(c => c.id)).toEqual(cases.en.items.map(c => c.id));
     mine.items.forEach((item, i) => {

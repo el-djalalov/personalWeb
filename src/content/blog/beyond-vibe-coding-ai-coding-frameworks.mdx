@@ -1,0 +1,145 @@
+---
+title: "Beyond Vibe Coding: EGM, Spec Kit, OpenSpec and Superpowers Compared"
+description: "Four frameworks that add structure to AI coding: Google's Elephant-Goldfish Model, GitHub Spec Kit, OpenSpec and Superpowers. Where each one is strict, where each one is loose, and how to combine them."
+pubDate: 2026-11-14
+author: "Elyor Djalalov"
+tags: ["Spec-Driven Development", "AI", "AI Agents", "Claude Code", "Workflow", "Elephant-Goldfish Model"]
+heroImage: "/images/blog/beyond-vibe-coding.webp"
+draft: false
+---
+
+Asking an AI agent to "just build it" works fine for a small script. It falls apart in a real product, where the code carries years of business rules, an architecture you have to respect, and people who will maintain it after you.
+
+That is why spec-driven tools keep appearing. I have written about [how I run spec-driven development](/blog/spec-driven-development-in-practice) and [walked through a real feature](/blog/spec-driven-development-real-feature-walkthrough) with it. This post puts four frameworks side by side:
+
+- **[Elephant-Goldfish Model (EGM)](https://egm.dev)** from Google
+- **[Spec Kit](https://github.github.io/spec-kit/)** from GitHub
+- **[OpenSpec](https://openspec.dev/docs)**
+- **[Superpowers](https://github.com/obra/superpowers)** by Jesse Vincent
+
+The comparison is based on a [video walkthrough by Prakash Pandey](https://www.youtube.com/watch?v=6loAUS0TXOc), who tried all four, plus my own experience running a spec-first workflow every day. Links to the official docs for every tool are at the end.
+
+## Same Loop, Different Strict Points
+
+All four follow the same basic loop: understand the problem, plan, build, check. The difference is where each one gets strict.
+
+| Stage | EGM | Spec Kit | OpenSpec | Superpowers |
+|---|---|---|---|---|
+| Understanding the codebase | Bootstrap writes a README in each folder | Constitution for project rules; Repomix or Serena for the code | Explore reads code and docs | Brainstorming reads code and docs |
+| Shaping the idea | Interview, one question at a time, then a Goldfish review of the concept | Writes a full spec first, then asks clarifying questions | Optional, loose conversation | Interview, one question at a time |
+| Stress-testing the design | Five-stage review by fresh sub-agents | Clarify, checklist and analyze check consistency | Review and validation of the design files | A fresh sub-agent checks large plans before building |
+| Building | Detailed plan, but no TDD rule and no task tracker | Task file ordered by dependencies | Task file, any order | Strict TDD, a fresh sub-agent per task, two-stage review, progress log |
+| Months later | Drift report compares docs with code | Converge checks the build against spec and plan | Verify, then archive into living specs | Tests and reviews during the build |
+
+The short version: **EGM is strict before coding. Superpowers is strict during coding.** Spec Kit and OpenSpec sit in between.
+
+## 1. Give the Agent a Map of the Code
+
+An agent is only as good as the context it works from. In a big repository, making the agent rediscover the folder structure on every task wastes tokens, and it starts missing patterns the team already uses.
+
+- **EGM** has a Bootstrap skill. It scans the code and writes README files at every level. Low-level READMEs describe specific components; higher ones explain how the modules fit together. You end up with a map that later sessions can reuse.
+- **Spec Kit** has no mapping step. Its constitution holds project-wide rules, and the spec focuses on the feature. For wider context, Pandey bundled the repo with [Repomix](https://repomix.com/guide/), which packs a whole codebase into one AI-friendly file. [Serena](https://oraios.github.io/serena/) is another option.
+- **OpenSpec** (explore) and **Superpowers** (brainstorming) tell the agent to read the existing code and docs before designing anything. Both can also take a Repomix bundle.
+
+One practical catch from the video: the agent did not read the Bootstrap READMEs on its own. Pandey had to add a rule to his agent instructions file telling it to check them. I see the same thing in my projects. My specs point at Architecture Decision Records (ADRs) and numbered coding standards, and the agent only uses them reliably because the instructions file and the spec template name them. Documentation the agent never opens does not help.
+
+Nobody measured the token cost of the two approaches, so you can't say which one is cheaper. The real choice is between a map that lives in the repo and exploring on demand with a bundled context file.
+
+## 2. Find the Assumptions Before Writing Code
+
+Next, a rough idea has to become clear requirements, without the AI quietly filling the gaps with guesses. The frameworks split into two styles here.
+
+**Interview style (EGM, Superpowers, OpenSpec).** EGM and Superpowers ask about one decision at a time. For a big feature that is a long conversation, but the slow pace is the point: it brings up edge cases you would otherwise skip. You stay in control. You can ask the agent to explain something in simpler terms, or to recommend an option before you decide. Pandey noticed that EGM did not always offer a recommendation unless asked, and compared its nonstop questioning to Matt Pocock's [grill-me skill](https://github.com/mattpocock/skills). It can get tiring. That is also why it works. OpenSpec's explore step feels similar, just looser.
+
+**Draft-first style (Spec Kit).** Spec Kit's `specify` command takes your prompt, makes reasonable assumptions and writes a full markdown spec straight away. Then `clarify` asks targeted questions about whatever is still unclear. Pandey preferred the interview style: with Spec Kit he ended up reading long documents where the big decisions were already made. If you like reviewing a quick draft, Spec Kit's way will suit you better. It also has an optional idea-assessment extension for a more guided start.
+
+This matches my experience. The interview is the most underrated step in my workflow. On one feature for [anzel](/blog/introducing-anzel-ai-for-the-business-of-sport), the agent's questions found three decisions we had never made, before any code existed. Each one would have turned into a bug or an inconsistent guess.
+
+## 3. The Elephant and the Goldfish
+
+This is the idea that sets EGM apart.
+
+After a long brainstorming session, both you and the agent are attached to the design. You have discussed dozens of options and dropped many of them. When the same agent reviews its own work, it already knows what you meant, so it misses things that were never written down clearly.
+
+In EGM, the **Elephant** is the main session that remembers everything. A **Goldfish** is a sub-agent that starts with no memory of that conversation. It gets only the proposed concept and the relevant reference material, and reviews the idea from five angles: is it needed, what does it cost, does it fit what already exists, what is it like for developers, and can it be maintained. The Elephant brings the critique back to you, and you decide what to accept.
+
+After that, EGM drafts a technical design with you (architecture, approach, trade-offs, implementation details) and puts it through a **five-stage review**, again with fresh sub-agents:
+
+1. **Zoom out:** Are we solving the right problem? Is there a simpler way?
+2. **Comprehension:** Can someone understand the design without reading the original chat?
+3. **Technical critique:** What could break? Missing edge cases, conflicts with the architecture, operational risks.
+4. **Zoom out again:** Did the fixes from stage 3 add needless complexity?
+5. **Readiness:** Is there enough detail for an agent to build it without guessing?
+
+This produces a lot of feedback, so EGM can merge it into one report sorted into blockers, major issues and minor notes. You go through it with the Elephant, fix what matters, push back on bad critiques, and run another pass if needed. The goal is not to make every Goldfish happy. It is to make your decisions on purpose before any code exists.
+
+The other three have checks too. Spec Kit has `clarify`, `checklist` and `analyze`. OpenSpec validates its design files. Superpowers can send a fresh sub-agent to look at a large plan, but only to see whether it is ready to build. None of them make a multi-stage review by fresh agents a standard step before coding.
+
+This part hit home for me. In my [first SDD post](/blog/spec-driven-development-in-practice) I wrote that the biggest weakness of my setup is that, working mostly solo, I approve my own specs. A Goldfish is a cheap way to get a reviewer who was not in the conversation. It does not replace a second human, but it beats reviewing your own work with the same context that wrote it.
+
+## 4. From Design to Working Code
+
+A good design can still go wrong during implementation, if a task that runs over several sessions loses track of what is done, or the agent skips its checks.
+
+- **Spec Kit and OpenSpec** create a markdown task file and tick tasks off as they go. A new session can pick up where the last one stopped. Spec Kit orders tasks by dependencies; OpenSpec leaves the order up to you.
+- **Superpowers** is the strictest here. It splits the design into small, testable tasks and enforces test-driven development: write a failing test, write just enough code to pass it, then refactor. In its sub-agent mode, a fresh sub-agent builds each task, and two reviews follow: did we build what the spec asked for, and is the code any good? Without sub-agents, it keeps a progress log of finished work, test results and decisions, so nothing is lost when a session restarts.
+- **EGM** puts a detailed implementation plan in the design doc, but doesn't tell the agent how to write the code. There is no TDD rule and no task tracker. If the work spans several sessions, you bring your own tracking.
+
+My own pipeline uses the same two-stage review as Superpowers, and the order matters. On the anzel feature, the spec-compliance pass found an old CSV export endpoint that skipped the new access rules. Nothing in the diff touched that file, so a code-quality review alone would never have looked there.
+
+So the strengths fit together: EGM is careful before coding, and Superpowers is careful while coding.
+
+## 5. Six Months Later
+
+All four help you check that a new feature matches its plan on day one. Spec Kit runs `converge`, OpenSpec verifies the change and then archives it into its living specs, and Superpowers tests and reviews all the way through.
+
+But code keeps changing. After a few enhancements, refactors and bug fixes, it no longer matches the design doc. Two things go wrong: the team loses accurate documentation, and future AI agents read the stale doc and make decisions about a system that no longer exists.
+
+EGM has a **drift report** for this. It compares design docs with the current code and lists where they differ. Pandey's example: the design says an API stores idempotency keys in a database, but months later someone moves them to an in-memory store and doesn't update the doc. The drift report flags it.
+
+There are two catches. It runs only when you ask for it, not in the background, so someone has to remember. And it doesn't decide who is right. A person still has to choose between fixing the code and fixing the doc.
+
+In my earlier post I called this problem "verbal decisions leak": decisions made in a chat that never reach a spec or an ADR. A drift report doesn't stop those decisions, but it catches the gap they leave behind. OpenSpec's living specs help here too, but EGM is the only one that makes drift detection its own repeatable step.
+
+## 6. What They Don't Cover: Security
+
+All four improve the quality of AI output in three ways:
+
+- **Better context:** maps, bundles and drift reports stop the agent from reasoning about a system that doesn't exist.
+- **Less bias:** fresh-context reviewers catch vague explanations and weak assumptions.
+- **Checks during the build:** TDD, per-task reviews and consistency checks keep the code tied to the spec.
+
+They also catch some reliability and operational risks. EGM's technical critique asks what could break, and its drift report catches changes in critical behavior, like the idempotency example.
+
+But none of this is a security review. The video doesn't cover any dedicated security audits in these frameworks, and you should not assume that a design review or a code-quality review covers security. If your app handles sensitive data, add explicit security checks on top of whichever framework you pick. In my own setup, that means hooks that scan for secrets on every file write, and a review step that checks things like tenant isolation. Both live outside the spec workflow.
+
+## 7. Mix and Match Based on Risk
+
+The most useful lesson: you don't have to pick one framework, and you shouldn't run the full process on every change.
+
+For small, low-risk changes, a five-stage Goldfish review or a long spec pipeline is just friction. Normal agent-assisted coding is faster. EGM's own README says the same: use it for features that need design decisions, not for small bug fixes.
+
+For big, risky features, combine the strongest parts. This is what Pandey plans to try next, and it is what I would try too:
+
+1. **Start with EGM.** Bootstrap the codebase map, shape the feature through the interview, and run Goldfish reviews to find bias and operational risk before writing code.
+2. **Build with Superpowers or OpenSpec.** Get task tracking across sessions, a progress log, TDD, and spec and code-quality reviews for each task.
+3. **Keep the docs honest.** Run EGM's drift report now and then, or keep OpenSpec's archived specs up to date, so future agent sessions don't work from an outdated picture.
+
+I learned the "use only what you need" lesson the hard way: parts of my own harness exist and never get used. A smaller process you actually follow beats a bigger one you route around.
+
+There is one more benefit that is easy to miss. Answering design questions one at a time teaches you things. The agent brings up concepts and trade-offs you might not know yet, so planning becomes a learning loop instead of a black box.
+
+## Official Docs and Links
+
+**The four frameworks**
+
+- **Elephant-Goldfish Model (EGM):** [egm.dev](https://egm.dev) · [GitHub](https://github.com/google/elephant-goldfish-model) · [Getting started](https://github.com/google/elephant-goldfish-model/blob/main/docs/getting_started.md) · [Announcement on the Google Open Source Blog](https://opensource.googleblog.com/2026/10/introducing-elephant-goldfish-model-plugin.html)
+- **GitHub Spec Kit:** [Documentation](https://github.github.io/spec-kit/) · [GitHub](https://github.com/github/spec-kit)
+- **OpenSpec:** [Documentation](https://openspec.dev/docs) · [GitHub](https://github.com/Fission-AI/OpenSpec)
+- **Superpowers:** [GitHub (the README is the docs)](https://github.com/obra/superpowers) · [Original announcement](https://blog.fsck.com/2025/10/09/superpowers/)
+
+**Other tools mentioned**
+
+- **Repomix:** [Guide](https://repomix.com/guide/) · [GitHub](https://github.com/yamadashy/repomix)
+- **Serena:** [Documentation](https://oraios.github.io/serena/) · [GitHub](https://github.com/oraios/serena)
+- **Matt Pocock's skills (grill-me):** [GitHub](https://github.com/mattpocock/skills)

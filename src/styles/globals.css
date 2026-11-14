@@ -399,6 +399,15 @@
     overflow-x: auto;
   }
 
+  /* html/body clip horizontal overflow, so a wide table would lose columns on phones.
+     Let it scroll inside itself instead. */
+  @media (max-width: 767px) {
+    .prose table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+
   .prose pre code {
     background-color: transparent !important;
     padding: 0;

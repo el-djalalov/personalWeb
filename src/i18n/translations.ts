@@ -159,6 +159,6 @@ export function buildLangUrl(path: string, lang: Language): string {
     return `/${cleanPath}`;
   }
 
-  // For other languages, add language prefix
-  return `/${lang}/${cleanPath}`;
+  // For other languages, add language prefix (home is "/uz", not "/uz/")
+  return cleanPath ? `/${lang}/${cleanPath}` : `/${lang}`;
 }

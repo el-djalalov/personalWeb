@@ -3,6 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
+import sitemap from "@astrojs/sitemap";
+import { SITE_URL, isSitemapPage } from "./src/lib/seo.ts";
 
 export default defineConfig({
   // Dev toolbar floats over the mobile bottom nav (covers the Projects tab) — keep it off
@@ -19,8 +21,11 @@ export default defineConfig({
         wrap: true,
       },
     }),
+    sitemap({ filter: isSitemapPage }),
   ],
-  site: "https://www.elyor.dev",
+  site: SITE_URL,
+  // One URL per page: /blog/x/ redirects to /blog/x, which canonicals already use
+  trailingSlash: "never",
   output: "static",
   adapter: vercel({
     webAnalytics: { enabled: true }

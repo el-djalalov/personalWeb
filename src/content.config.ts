@@ -1,6 +1,7 @@
 import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
+import { seoFrontmatterIssues } from "./lib/seo";
 
 // Supported languages for blog posts
 export const SUPPORTED_LANGUAGES = ["en", "uz", "ru"] as const;
@@ -19,11 +20,15 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      // Shorter title for search results and the browser tab, when `title` is over 60 characters
+      seoTitle: z.string().optional(),
       description: z.string(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       author: z.string().default("Elyor Djalalov"),
       heroImage: z.string().optional(),
+      // What the hero image shows (alt text); required when heroImage is set
+      heroAlt: z.string().optional(),
       tags: z.array(z.string()).default([]),
       draft: z.boolean().default(false),
       // Social sharing
@@ -34,6 +39,9 @@ const blog = defineCollection({
       lang: z.enum(SUPPORTED_LANGUAGES).default("en"),
       // Slug to group translations together (e.g., "engineering-behind-simple")
       translationKey: z.string().optional(),
+    })
+    .superRefine((post, ctx) => {
+      for (const message of seoFrontmatterIssues(post)) ctx.addIssue({ code: "custom", message });
     }),
 });
 

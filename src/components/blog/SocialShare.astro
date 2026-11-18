@@ -6,20 +6,17 @@ interface Props {
   title: string;
   url: string;
   description: string;
-  tags?: string[];
 }
 
-const { title, url, description, tags = [] } = Astro.props;
+const { title, url, description } = Astro.props;
 const s = getSiteCopy(getLangFromUrl(Astro.url)).share;
 
 const encodedUrl = encodeURIComponent(url);
 const encodedTitle = encodeURIComponent(title);
 const encodedDescription = encodeURIComponent(description);
-const hashTags = tags.map((tag) => tag.replace(/\s+/g, "")).join(",");
 
 // Social share URLs
 const shareLinks = {
-  twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}${hashTags ? `&hashtags=${hashTags}` : ""}`,
   linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
   facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
   telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
@@ -33,20 +30,6 @@ const shareLinks = {
   </h4>
 
   <div class="flex flex-wrap gap-3">
-    <!-- Twitter/X -->
-    <a
-      href={shareLinks.twitter}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-muted-foreground hover:bg-foreground hover:text-background transition-all duration-200 text-sm font-medium group"
-      aria-label={s.on.replace("{name}", "Twitter")}
-    >
-      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-      </svg>
-      <span class="hidden sm:inline">Twitter</span>
-    </a>
-
     <!-- LinkedIn -->
     <a
       href={shareLinks.linkedin}

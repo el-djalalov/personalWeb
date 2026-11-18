@@ -1,6 +1,6 @@
 ---
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, type Language } from "@/content.config";
-import { getLangFromUrl } from "@/i18n";
+import { buildLangUrl, getLangFromUrl } from "@/i18n";
 import { getSiteCopy } from "@/i18n/site";
 
 const currentLang = getLangFromUrl(Astro.url);
@@ -41,10 +41,8 @@ const basePath = getBasePath(currentPath, currentLang);
   >
     {SUPPORTED_LANGUAGES.map((lang) => {
       const isActive = lang === currentLang;
-      // Build URL with language prefix
-      const langUrl = lang === "en"
-        ? basePath
-        : `/${lang}${basePath}`;
+      // Build URL with language prefix (home is "/uz", not "/uz/")
+      const langUrl = buildLangUrl(basePath, lang);
 
       return (
         <a

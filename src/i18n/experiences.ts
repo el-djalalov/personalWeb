@@ -38,7 +38,7 @@ export const experiences: Record<Language, Experience[]> = {
       company: "Valletta Software Development",
       description:
         "Built AgroNetZero, an AI- and GIS-powered soil analytics platform (25+ pages, front-end from scratch), and the Tallinja public transport control system with 40+ REST API integrations.",
-      logo: "/images/experiences/valletta.jpeg",
+      logo: "/images/experiences/valletta.jpg",
       website: "https://www.vallettasoftware.com/",
       content: null,
     },
@@ -100,7 +100,7 @@ export const experiences: Record<Language, Experience[]> = {
       company: "Valletta Software Development",
       description:
         "AgroNetZero — AI va GIS asosidagi tuproq tahlili platformasi (25+ sahifa, front-end noldan) hamda 40+ REST API integratsiyali Tallinja jamoat transporti boshqaruv tizimini yaratdim.",
-      logo: "/images/experiences/valletta.jpeg",
+      logo: "/images/experiences/valletta.jpg",
       website: "https://www.vallettasoftware.com/",
       content: null,
     },
@@ -162,7 +162,7 @@ export const experiences: Record<Language, Experience[]> = {
       company: "Valletta Software Development",
       description:
         "Создал AgroNetZero — AI/GIS-платформу анализа почвы (25+ страниц, front-end с нуля) и систему управления общественным транспортом Tallinja с интеграцией 40+ REST API.",
-      logo: "/images/experiences/valletta.jpeg",
+      logo: "/images/experiences/valletta.jpg",
       website: "https://www.vallettasoftware.com/",
       content: null,
     },

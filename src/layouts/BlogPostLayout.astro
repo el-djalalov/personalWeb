@@ -11,6 +11,7 @@ import type { CollectionEntry } from "astro:content";
 import { DEFAULT_LANGUAGE, type Language } from "@/content.config";
 import { t, buildLangUrl } from "@/i18n";
 import { getSiteCopy } from "@/i18n/site";
+import { SITE_URL, blogPostingSchema, documentTitle, jsonLd } from "@/lib/seo";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const { post, readingTime, headings, availableLanguages = [], currentLang = DEFAULT_LANGUAGE, baseSlug = post.id } = Astro.props;
-const { title, description, pubDate, updatedDate, author, heroImage, tags, ogImage } = post.data;
+const { title, seoTitle, description, pubDate, updatedDate, author, heroImage, heroAlt, tags, ogImage } = post.data;
 
 // Date formatting based on language
 const dateLocales = {
@@ -52,12 +53,27 @@ const postUrl =
   new URL(buildLangUrl(`/blog/${baseSlug}`, post.data.lang), Astro.site).href;
 const blogUrl = buildLangUrl("/blog", currentLang);
 
+const shareImage = ogImage || heroImage || "/og-image.png";
+const schema = blogPostingSchema({
+  url: postUrl,
+  title,
+  description,
+  image: new URL(shareImage, SITE_URL).href,
+  published: pubDate,
+  modified: updatedDate,
+  author,
+  lang: post.data.lang,
+  tags,
+});
+
 ---
 
 <BaseLayout
-  title={`${title} | Elyor's Blog`}
+  title={documentTitle(seoTitle ?? title)}
+  ogTitle={title}
   description={description}
-  image={ogImage || heroImage || "/og-image.png"}
+  image={shareImage}
+  imageAlt={ogImage ? undefined : heroAlt}
   type="article"
   publishedTime={pubDate}
   modifiedTime={updatedDate}
@@ -66,6 +82,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
   lang={currentLang}
   canonicalUrl={postUrl}
 >
+  <script is:inline slot="head" type="application/ld+json" set:html={jsonLd(schema)} />
   <ReadingProgress client:load label={getSiteCopy(currentLang).a11y.readingProgress} />
 
   <main class="max-w-4xl mx-auto px-4 py-8">
@@ -162,7 +179,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
         <div class="relative aspect-video mb-8 rounded-xl overflow-hidden">
           <img
             src={heroImage}
-            alt=""
+            alt={heroAlt ?? ""}
             width={heroSize?.width}
             height={heroSize?.height}
             fetchpriority="high"
@@ -202,7 +219,7 @@ const blogUrl = buildLangUrl("/blog", currentLang);
 
       <!-- Social Share -->
       <div class="mt-12 pt-8 border-t border-border">
-        <SocialShare title={title} url={postUrl} description={description} tags={tags} />
+        <SocialShare title={title} url={postUrl} description={description} />
       </div>
 
       <!-- Author bio -->

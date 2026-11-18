@@ -50,7 +50,9 @@ describe.each(others)("%s matches English", lang => {
   });
 
   it("has the same jobs and shell text keys", () => {
-    expect(getExperiences(lang).map(j => j.website)).toEqual(getExperiences("en").map(j => j.website));
+    expect(getExperiences(lang).map(j => [j.website, j.logo])).toEqual(
+      getExperiences("en").map(j => [j.website, j.logo]),
+    );
     expect(Object.keys(site[lang].nav).sort()).toEqual(Object.keys(site.en.nav).sort());
   });
 });

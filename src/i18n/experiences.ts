@@ -54,7 +54,7 @@ export const experiences: Record<Language, Experience[]> = {
     },
     {
       dates: "July 2021 - May 2022",
-      role: "Front-end Developer",
+      role: "Software Engineer",
       company: "Intelligent Learning Centre",
       description:
         "Reworked the online registration flow of a student management system, driving a 120%+ monthly increase in registrations.",
@@ -116,7 +116,7 @@ export const experiences: Record<Language, Experience[]> = {
     },
     {
       dates: "Iyul 2021 - May 2022",
-      role: "Front-end Dasturchi",
+      role: "Dasturchi",
       company: "Intelligent Learning Centre",
       description:
         "Talabalarni boshqarish tizimining onlayn ro'yxatdan o'tish jarayonini qayta ishlab, oylik ro'yxatdan o'tishlarni 120%+ ga oshirdim.",
@@ -178,7 +178,7 @@ export const experiences: Record<Language, Experience[]> = {
     },
     {
       dates: "Июль 2021 - Май 2022",
-      role: "Front-end разработчик",
+      role: "Разработчик",
       company: "Intelligent Learning Centre",
       description:
         "Переработал процесс онлайн-регистрации в системе управления студентами, увеличив ежемесячные регистрации более чем на 120%.",

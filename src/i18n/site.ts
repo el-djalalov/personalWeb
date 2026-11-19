@@ -12,7 +12,6 @@ export interface SiteCopy {
     contact: string;
     blog: string;
   };
-  search: string;
   menu: string;
   menuLabel: string;
   placeholder: string;
@@ -45,7 +44,6 @@ export const site: Record<Language, SiteCopy> = {
       contact: "Contact",
       blog: "Blog",
     },
-    search: "Search",
     menu: "Menu",
     menuLabel: "Site menu",
     placeholder: "Jump to a section, project or action…",
@@ -74,7 +72,6 @@ export const site: Record<Language, SiteCopy> = {
       contact: "Aloqa",
       blog: "Blog",
     },
-    search: "Qidirish",
     menu: "Menyu",
     menuLabel: "Sayt menyusi",
     placeholder: "Bo'lim, loyiha yoki amalni tanlang…",
@@ -103,7 +100,6 @@ export const site: Record<Language, SiteCopy> = {
       contact: "Контакты",
       blog: "Блог",
     },
-    search: "Поиск",
     menu: "Меню",
     menuLabel: "Меню сайта",
     placeholder: "Раздел, проект или действие…",

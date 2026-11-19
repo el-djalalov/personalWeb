@@ -27,15 +27,6 @@ const home = buildLangUrl("/", lang);
       elyor.dev<span class="sr-only">, {copy.nav.home}</span>
     </a>
 
-    <button
-      type="button"
-      data-open-cmdk
-      class="hidden items-center gap-2 rounded-full border border-border px-3 py-1.5 transition-colors hover:border-acc sm:inline-flex"
-    >
-      {copy.search}
-      <kbd data-kbd class="font-mono text-[11px] text-muted-foreground">Ctrl K</kbd>
-    </button>
-
     <LanguageSwitcher />
 
     <ThemeToggle
@@ -47,9 +38,11 @@ const home = buildLangUrl("/", lang);
       type="button"
       data-open-cmdk
       aria-haspopup="dialog"
-      class="rounded-full bg-primary px-4 py-1.5 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      aria-keyshortcuts="Control+K Meta+K"
+      class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
     >
       {copy.menu}
+      <kbd data-kbd aria-hidden="true" class="hidden font-mono text-[11px] font-normal opacity-70 sm:inline">Ctrl K</kbd>
     </button>
   </div>
 </header>

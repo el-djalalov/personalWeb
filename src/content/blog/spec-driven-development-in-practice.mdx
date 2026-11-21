@@ -90,6 +90,34 @@ requirement → spec → ADR → standards → tasks → code → tests → docs
 
 Everything lives in git. Six months later, when you wonder why a constraint exists, you follow the chain instead of reverse-engineering your own code. For AI-assisted work, this matters even more: the agent can load the same chain and make decisions consistent with everything that came before.
 
+## Where Specs Themselves Fall Short
+
+Writing a spec moves ambiguity out of the chat. It does not make the ambiguity disappear. The best evidence I have seen of this is a study by [Personal Software Factory](https://personalsoftwarefactory.com/guides/what-ai-builders-get-wrong). They had Claude build 28 internal tools from their own published specs (a CRM, a help desk, a shift scheduler, an OKR tracker and more), one phase at a time, and checked every acceptance item in a real browser with Playwright.
+
+All 28 builds passed in the end, 701 acceptance checks in total. But along the way they exposed **996 gaps in the specs**: places where the spec was silent, vague or contradicted itself, so the agent had to guess.
+
+| Type of gap | Gaps |
+|---|---|
+| Ambiguous wording | 276 |
+| Missing fields or definitions a rule depends on | 207 |
+| Undefined edge cases | 186 |
+| Formats, schedules and integrations | 130 |
+| Sections that contradict each other | 99 |
+| Checks that depend on data or timing | 45 |
+| Missing people-management actions | 27 |
+| Phases in the wrong order | 26 |
+
+A few of their findings match what I see in my own specs:
+
+- **The happy path is rarely the problem.** The gaps sit next to it: restoring a record whose owner has left, reopening something already closed, acting on an archived item. Their advice boils down to asking, for every action, what happens when the other record involved is archived, inactive, missing or already finished.
+- **Contradictions come from writing the same fact twice.** A refusal message worded differently in two sections, or a permission described one way on a screen and another way in the checks. The fix is to state each fact in one place and point to it everywhere else. It is the same reason my coding standards are numbered and cited rather than copied into each spec.
+- **Integrations multiply the gaps.** The apps with schedules, emails, CSV imports and time zones had the most gaps (89 for a capacity planner, 84 for shift scheduling), while a plain bug tracker had 5. The authors are careful to say this is a small set of builds, not a controlled comparison.
+- **Admin plumbing gets forgotten.** Several specs told users to "ask an admin to add you" with no screen for adding anyone, or let the last admin deactivate themselves.
+
+The most practical idea in the study is how they found the gaps at all. Every phase prompt ended with one instruction: *"list what you built and anything in the spec you had to interpret"*. Agents are built to finish the task, so when a spec is silent they pick the most sensible reading and keep going. Asking for that list turns silent guesses into something you can review. It pairs well with a spec interview: the interview catches the questions you can predict before generation, and the list catches the ones you could not.
+
+Their own caveat is worth repeating too: the same model wrote both the code and the tests, so passing checks is not an independent audit. That is the same problem as approving your own specs, which brings me to the lessons.
+
 ## The Honest Lessons
 
 SDD is not free, and the hard parts are worth naming.
@@ -114,6 +142,7 @@ Start small:
 2. **Make the agent plan before it codes.** A task list derived from the spec is cheap and catches misunderstandings early.
 3. **Add one enforcement hook.** A secret scanner or auto-linter on every write pays for itself in a week.
 4. **Record decisions as ADRs.** One decision per record, never rewritten.
+5. **Ask the agent what it had to interpret.** End each implementation step with that question, and fold the answers back into the spec.
 
 You do not need a 28-command harness on day one. You need the habit of resolving ambiguity in writing before generation — everything else is tooling on top of that idea.
 
@@ -126,4 +155,4 @@ The industry converged on SDD for a simple reason: AI made writing code cheap, w
 - [Spec-Driven Development (SDD): The Definitive 2026 Guide — BCMS](https://thebcms.com/blog/spec-driven-development)
 - [Spec-Driven Development in 2026: What It Is, the Tooling, and How Teams Actually Use It — DEV Community](https://dev.to/krlz/spec-driven-development-in-2026-what-it-is-the-tooling-and-how-teams-actually-use-it-2fk2)
 - [What Is Spec-Driven Development? A Complete Guide — Augment Code](https://www.augmentcode.com/guides/what-is-spec-driven-development)
-- [Spec-Driven Development in 2026: Guide + Tool Comparison — CodeMySpec](https://codemyspec.com/blog/spec-driven-development)
+- [What AI App Builders Get Wrong: 996 Spec Gaps from 28 Build Tests — Personal Software Factory](https://personalsoftwarefactory.com/guides/what-ai-builders-get-wrong)
